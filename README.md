@@ -1,0 +1,147 @@
+# rcpgsd
+
+**Regional Consistency Probability under Group Sequential Designs**
+
+## Overview
+
+`rcpgsd` is an R package for computing regional consistency probabilities (RCPs) in multi-regional clinical trials (MRCTs) with a time-to-event primary endpoint analysed by a group sequential design (GSD).
+
+When a trial stops for efficacy at an interim analysis, regional consistency is evaluated with the data available at that analysis. The relevant quantity is therefore the RCP conditional on stopping for efficacy at each analysis, which depends on the stopping boundaries, on the number of events in each region at each analysis, and on the history of the trial before that analysis. This package implements:
+
+- **Closed-form stagewise RCPs** conditional on efficacy stopping at each analysis, and the overall RCP given success, based on the joint multivariate normal distribution of the overall and regional log hazard ratio estimates across analyses
+- **Two consistency scales** for Method 1: the log hazard ratio (Ikeda and Bretz, 2010; Homma, 2024) and the hazard reduction `1 - HR` (Hayashi and Itoh, 2018), the latter by exact numerical integration or by the delta method
+- **Group sequential boundaries** taken from `gsDesign` or `rpact` design objects (or supplied directly), with **binding or non-binding** futility boundaries
+- **Delayed enrolment** in the region of interest through regional event proportions that change across analyses, and **region-specific hazard ratios**
+- **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
+- **Monte Carlo simulation** of the same model for verification
+- `print()` and `plot()` methods for all results
+
+Regional consistency is evaluated following the Japanese Ministry of Health, Labour and Welfare (MHLW, 2007) guidance, with region 1 as the region of interest:
+
+- **Method 1**: region 1 retains at least a fraction `gamma_M1` of the overall treatment effect
+- **Method 2**: all regional treatment effects exceed the threshold `gamma_M2`
+
+## Installation
+
+```r
+# install.packages("devtools")
+devtools::install_github("gosukehommaEX/rcpgsd")
+```
+
+## Main Functions
+
+| Function | Description |
+|---|---|
+| `rcpgsd()` | Stagewise and overall RCPs (Method 1 and Method 2) under a GSD, by closed form or simulation |
+| `rcpgsd_get_gamma()` | Stagewise or overall consistency thresholds adjusted for the inflation of the null RCP caused by early efficacy stopping |
+
+## Model
+
+Let `delta_s = -log(HR_s)` be the treatment effect in region `s`, `d_k` the cumulative number of events at analysis `k`, and `f_{s,k}` the proportion of these events in region `s`. With allocation ratio `r`, the regional information is `I_{s,k} = r f_{s,k} d_k / (1 + r)^2`. The regional log hazard ratio estimates are normally distributed with variance `1 / I_{s,k}`, have independent increments within each region, and are independent across regions. The overall estimate is the information-weighted average of the regional estimates, and the Wald statistic at analysis `k` is compared with the efficacy and futility boundaries of the design.
+
+## Examples
+
+### 1. Stagewise RCPs under a GSD
+
+```r
+library(rcpgsd)
+
+# O'Brien-Fleming-type efficacy boundaries and a binding futility boundary
+design <- list(upper   = c(3.7103, 2.5114, 1.9930),
+               lower   = c(0, 0.5),
+               binding = TRUE,
+               alpha   = 0.025)
+
+# Japan (region 1) enrols late: 6%, 9%, and 10% of the events
+fs <- cbind(c(0.06, 0.47, 0.47),
+            c(0.09, 0.455, 0.455),
+            c(0.10, 0.45, 0.45))
+
+res <- rcpgsd(design, events = c(150, 300, 450), fs = fs, hr = 0.72)
+print(res)
+plot(res)
+plot(res, what = "prob")
+```
+
+### 2. Hazard reduction scale (Hayashi and Itoh, 2018)
+
+```r
+res_hr <- rcpgsd(design, events = c(150, 300, 450), fs = fs, hr = 0.72,
+                 method = "M1", scale = "hr", hr_method = "exact")
+print(res_hr)
+```
+
+### 3. Boundaries from gsDesign or rpact
+
+```r
+gsd <- gsDesign::gsDesign(k = 3, test.type = 4, alpha = 0.025, beta = 0.1,
+                          sfu = gsDesign::sfLDOF,
+                          sfl = gsDesign::sfHSD, sflpar = -2)
+
+# Non-binding futility: obeyed (default) or ignored
+res_obey   <- rcpgsd(gsd, events = c(150, 300, 450),
+                     fs = c(0.10, 0.45, 0.45), hr = 0.72)
+res_ignore <- rcpgsd(gsd, events = c(150, 300, 450),
+                     fs = c(0.10, 0.45, 0.45), hr = 0.72,
+                     futility = "ignore")
+
+rpd <- rpact::getDesignGroupSequential(kMax = 3, alpha = 0.025,
+                                       typeOfDesign = "asOF",
+                                       futilityBounds = c(0, 0.5),
+                                       bindingFutility = TRUE)
+res_rpact <- rcpgsd(rpd, events = c(150, 300, 450),
+                    fs = c(0.10, 0.45, 0.45), hr = 0.72)
+```
+
+### 4. Adjusted consistency thresholds
+
+```r
+design_B <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
+
+# Stagewise thresholds that restore the null RCP to the fixed-design value
+adj <- rcpgsd_get_gamma(design_B, events = c(262, 523, 785),
+                        fs = c(0.1, 0.45, 0.45))
+print(adj)
+plot(adj)
+
+# RCPs under the alternative with the adjusted thresholds
+res_adj <- rcpgsd(design_B, events = c(262, 523, 785),
+                  fs = c(0.1, 0.45, 0.45), hr = exp(-0.2),
+                  gamma_M1 = adj$result$gamma_M1_adj,
+                  gamma_M2 = adj$result$gamma_M2_adj)
+print(res_adj)
+```
+
+### 5. Fixed design and simulation check
+
+```r
+# A single-stage design gives the fixed-design results
+res_fix <- rcpgsd(list(upper = qnorm(0.975)), events = 450,
+                  fs = c(0.10, 0.45, 0.45), hr = 0.72)
+
+# Monte Carlo simulation of the same model
+res_sim <- rcpgsd(design, events = c(150, 300, 450), fs = fs, hr = 0.72,
+                  approach = "simulation", nsim = 1e6, seed = 1)
+```
+
+## Verification
+
+The test suite checks the closed-form results against:
+
+- the RCPs reported by Homma (2026) for a single primary endpoint (fixed design);
+- the consistency probability on the hazard reduction scale reported by Hayashi and Itoh (2018) (numerical integration and delta method);
+- the closed-form expressions for the fixed design given in Homma (2024);
+- independent reference values for group sequential designs computed in Python (SciPy), and Monte Carlo simulation;
+- boundaries obtained from `gsDesign` and from `rpact` for the same design.
+
+## References
+
+- Ministry of Health, Labour and Welfare (2007). Basic principles on global clinical trials.
+- Ikeda K, Bretz F (2010). Sample size and proportion of Japanese patients in multi-regional trials. *Pharmaceutical Statistics*, 9, 207-216.
+- Hayashi N, Itoh Y (2018). A re-examination of Japanese sample size calculation for multi-regional clinical trial evaluating survival endpoint. *Japanese Journal of Biometrics*, 38, 79-92.
+- Homma G (2024). Cautionary note on regional consistency evaluation in multiregional clinical trials with binary outcomes. *Pharmaceutical Statistics*, 23, 385-398.
+- Homma G (2026). A cautionary note on regional consistency evaluation with multiple primary endpoints in multiregional clinical trials. *Pharmaceutical Statistics*, 25, e70111.
+
+## License
+
+GPL (>= 2)

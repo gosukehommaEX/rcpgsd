@@ -1,6 +1,6 @@
 Package: rcpgsd
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Regional Consistency Probability under Group Sequential Designs
 Version: 0.1.0
 Authors@R: person(
     given  = "Gosuke",
@@ -8,8 +8,35 @@ Authors@R: person(
     role   = c("aut", "cre"),
     email  = "my.name.is.gosuke@gmail.com"
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Description: Computes regional consistency probabilities (RCPs) for
+    multi-regional clinical trials (MRCTs) with a time-to-event endpoint
+    analysed by a group sequential design. Method 1 and Method 2 of the
+    Japanese Ministry of Health, Labour and Welfare (MHLW) guidance are
+    evaluated at each interim and final analysis, on the log hazard ratio
+    scale or on the hazard reduction scale, conditional on stopping for
+    efficacy at that analysis. Closed-form solutions based on the
+    multivariate normal distribution of the overall and regional log hazard
+    ratio estimates are provided, with numerical integration for the exact
+    hazard reduction criterion and Monte Carlo simulation for verification.
+    Efficacy and futility boundaries can be taken from 'gsDesign' or 'rpact'
+    design objects, with binding or non-binding futility boundaries.
+    Consistency thresholds adjusted for the inflation of the null RCP caused
+    by early efficacy stopping are also provided.
+License: GPL (>= 2)
+URL: https://github.com/gosukehommaEX/rcpgsd
+BugReports: https://github.com/gosukehommaEX/rcpgsd/issues
 Encoding: UTF-8
-LazyData: true
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 4.1.0)
+Imports:
+    ggplot2 (>= 3.4.0),
+    mvtnorm (>= 1.2-0),
+    rlang,
+    stats
+Suggests:
+    gsDesign,
+    rpact,
+    testthat (>= 3.1.5)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
