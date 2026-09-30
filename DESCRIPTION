@@ -1,0 +1,15 @@
+Package: rcpgsd
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Authors@R: person(
+    given  = "Gosuke",
+    family = "Homma",
+    role   = c("aut", "cre"),
+    email  = "my.name.is.gosuke@gmail.com"
+  )
+Description: More about what it does (maybe more than one line).
+    Continuation lines should be indented.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
