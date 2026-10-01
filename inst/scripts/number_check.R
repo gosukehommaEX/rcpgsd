@@ -2,9 +2,12 @@
 # number_check.R
 #
 # Checks the numbers transcribed into the manuscript against the values
-# computed in R. The reference values are the ledger
-# inst/scripts/results/manuscript_numbers.csv written by
-# table_and_figure_manuscript.R from the .rds files of data_generate_main.R.
+# computed in R. The reference values are the ledgers
+# inst/scripts/results/manuscript_numbers.csv (written by
+# table_and_figure_manuscript.R) and
+# inst/sup_info/results/supplement_numbers.csv (written by
+# table_and_figure_supplement.R), produced from the .rds files of the
+# data_generate_*.R scripts.
 # The positions of the numbers in the manuscript are given by
 # inst/scripts/number_locations.csv, so the .tex files need no markers.
 #
@@ -31,8 +34,9 @@
 #   note     optional free text (not used)
 #
 # Checks and outcome
-#   1. The ledger is newer than the .rds files and the rendering script
-#      (otherwise table_and_figure_manuscript.R must be re-run).
+#   1. Each ledger is newer than its .rds files and its rendering script
+#      (otherwise the rendering script must be re-run), and no key appears
+#      in both ledgers.
 #   2. Each context is found exactly once.
 #   3. The number in the text equals the ledger value rounded to the number
 #      of decimals of the ledger (both as a string and numerically, within
@@ -58,11 +62,21 @@ if (!exists("MANUSCRIPT_FILES")) {
 }
 
 script_dir  <- file.path("inst", "scripts")
-data_dir    <- file.path(script_dir, "data")
-ledger_path <- file.path(script_dir, "results", "manuscript_numbers.csv")
 loc_path    <- file.path(script_dir, "number_locations.csv")
 out_path    <- file.path(script_dir, "number_check_output.txt")
-render_path <- file.path(script_dir, "table_and_figure_manuscript.R")
+
+# Ledgers of the manuscript and of the supplementary material, with the data
+# and the rendering script from which each is produced
+LEDGERS <- list(
+  list(path   = file.path(script_dir, "results", "manuscript_numbers.csv"),
+       data   = file.path(script_dir, "data"),
+       render = file.path(script_dir, "table_and_figure_manuscript.R")),
+  list(path   = file.path("inst", "sup_info", "results",
+                          "supplement_numbers.csv"),
+       data   = file.path("inst", "sup_info", "data"),
+       render = file.path("inst", "sup_info",
+                          "table_and_figure_supplement.R"))
+)
 if (file.exists(out_path)) invisible(file.remove(out_path))
 
 emit <- function(...) {
@@ -87,34 +101,44 @@ emit(" ", format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"))
 emit("==================================================================")
 
 # =============================================================================
-# 1. Ledger up to date
+# 1. Ledgers up to date
 # =============================================================================
-if (!file.exists(ledger_path)) {
-  stop(sprintf("'%s' not found; run table_and_figure_manuscript.R first.",
-               ledger_path), call. = FALSE)
-}
-ledger <- utils::read.csv(ledger_path, stringsAsFactors = FALSE,
-                          colClasses = c(key = "character",
-                                         value = "numeric",
-                                         digits = "integer",
-                                         text = "character",
-                                         description = "character",
-                                         source = "character"))
-t_ledger <- file.mtime(ledger_path)
-inputs   <- c(list.files(data_dir, pattern = "\\.rds$", full.names = TRUE),
-              render_path)
-newer    <- inputs[file.mtime(inputs) > t_ledger]
 emit("")
-emit("[1] Ledger: ", ledger_path, " (", nrow(ledger), " numbers, ",
-     format(t_ledger, "%Y-%m-%d %H:%M:%S"), ")")
-if (length(newer) > 0L) {
+emit("[1] Ledgers")
+ledger <- NULL
+for (lg in LEDGERS) {
+  if (!file.exists(lg$path)) {
+    stop(sprintf("'%s' not found; run %s first.", lg$path,
+                 basename(lg$render)), call. = FALSE)
+  }
+  one <- utils::read.csv(lg$path, stringsAsFactors = FALSE,
+                         colClasses = c(key = "character",
+                                        value = "numeric",
+                                        digits = "integer",
+                                        text = "character",
+                                        description = "character",
+                                        source = "character"))
+  ledger <- rbind(ledger, one)
+  t_ledger <- file.mtime(lg$path)
+  inputs   <- c(list.files(lg$data, pattern = "\\.rds$",
+                           full.names = TRUE), lg$render)
+  newer    <- inputs[file.mtime(inputs) > t_ledger]
+  emit("  ", lg$path, " (", nrow(one), " numbers, ",
+       format(t_ledger, "%Y-%m-%d %H:%M:%S"), ")")
+  if (length(newer) > 0L) {
+    n_fail <- n_fail + 1L
+    emit("  FAIL  files newer than the ledger (re-run ",
+         basename(lg$render), "):")
+    for (f in newer) emit("        ", f)
+  } else {
+    emit("  PASS  the ledger is newer than its .rds files and its ",
+         "rendering script")
+  }
+}
+if (anyDuplicated(ledger$key)) {
   n_fail <- n_fail + 1L
-  emit("  FAIL  files newer than the ledger (re-run ",
-       "table_and_figure_manuscript.R):")
-  for (f in newer) emit("        ", f)
-} else {
-  emit("  PASS  the ledger is newer than the .rds files and the ",
-       "rendering script")
+  emit("  FAIL  keys duplicated across the ledgers: ",
+       paste(unique(ledger$key[duplicated(ledger$key)]), collapse = ", "))
 }
 
 # =============================================================================

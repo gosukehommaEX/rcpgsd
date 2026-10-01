@@ -248,7 +248,7 @@ DESIGN_INFO <- do.call(rbind, lapply(names(DESIGNS), design_info))
 # application (OBF, no delay): expected analysis times (rpact uses the
 # unrounded interim numbers of events) and power
 pw_rpact <- rpact::getPowerSurvival(DESIGNS$OBF, lambda2 = LAMBDA_C,
-                                    hazardRatio = HR,
+                                    hazardRatio = HR, directionUpper = FALSE,
                                     allocationRatioPlanned = R_ALLOC,
                                     accrualTime = c(0, T_ACCRUAL),
                                     maxNumberOfSubjects = N_TOTAL,
@@ -272,6 +272,16 @@ DESIGN_CHECK <- data.frame(
   rcpgsd   = c(EVENTS$OBF, ev_chk$analysis$time, pw_chk),
   stringsAsFactors = FALSE)
 DESIGN_CHECK$difference <- DESIGN_CHECK$rcpgsd - DESIGN_CHECK$rpact
+# The final analysis (same number of events) must agree closely; the power
+# differs only through the rounding of the interim numbers of events
+chk_time  <- abs(DESIGN_CHECK$difference[DESIGN_CHECK$quantity ==
+                                           sprintf("time of analysis %d", K)])
+chk_power <- abs(DESIGN_CHECK$difference[DESIGN_CHECK$quantity == "power"])
+if (chk_time > 1e-4 || chk_power > 0.005) {
+  stop(sprintf(paste0("rcpgsd and rpact disagree (final analysis time ",
+                      "difference %.2e, power difference %.4f)."),
+               chk_time, chk_power), call. = FALSE)
+}
 
 SETTINGS <- list(ALPHA = ALPHA, BETA = BETA, HR = HR, R_ALLOC = R_ALLOC,
                  K = K, TIMING = TIMING, GAMMA_M1 = GAMMA_M1,

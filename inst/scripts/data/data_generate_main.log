@@ -1,6 +1,6 @@
-data_generate_main.R log -- 2026-10-01 23:32:14
+data_generate_main.R log -- 2026-10-02 00:24:43
 rcpgsd 0.1.0 loaded from C:/Users/i_lik/OneDrive/00_Amazon_drive/01_研究/08_MRCT/04_my_publication/05_MRCT_for_adaptive_design/Rpackage/rcpgsd
-git commit fd31134; modified tracked files: M DESCRIPTION; M NEWS.md; M R/print.rcpgsd_sim.R; M R/rcpgsd_sim.R; M README.md; M inst/scripts/data/data_generate_main.log; M inst/scripts/data_generate_main.R; M inst/sup_info/data_generate_supplement.R; M inst/sup_info/table_and_figure_supplement.R; M man/rcpgsd_sim.Rd; M tests/testthat/test-print.rcpgsd_sim.R; M tests/testthat/test-rcpgsd_sim.R; M vignettes/thresholds-and-simulation.Rmd
+git commit 7830fc1; modified tracked files: M inst/scripts/data/data_generate_main.log; M inst/scripts/data_generate_main.R; M inst/scripts/number_check.R; M inst/scripts/table_and_figure_manuscript.R
 Settings: alpha = 0.025, power = 0.90, HR = 0.70, K = 3, D_FIX = 330.38
   OBF    events = 112/223/335, upper = 3.7103/2.5114/1.9930
   Pocock events = 127/255/382, upper = 2.2794/2.2949/2.2959
@@ -11,33 +11,33 @@ Settings: alpha = 0.025, power = 0.90, HR = 0.70, K = 3, D_FIX = 330.38
     time of analysis 1     rpact    15.2055  rcpgsd    15.2310  difference  2.55e-02
     time of analysis 2     rpact    22.6759  rcpgsd    22.6558  difference -2.00e-02
     time of analysis 3     rpact    30.0321  rcpgsd    30.0321  difference  3.89e-11
-    power                  rpact     0.0000  rcpgsd     0.9006  difference  9.01e-01
+    power                  rpact     0.9006  rcpgsd     0.9006  difference  5.36e-06
   NSIM = 100000, SEED = 2026, ESTIMATOR = cox, RUN = fig1, fig2, delay, sim
-Figure 1 (RCP under H1)                          40.8 sec
+Figure 1 (RCP under H1)                          53.6 sec
 Saved inst/scripts/data/fig1_data.rds
-Figure 2 (null RCP, adjusted thresholds)        326.3 sec
+Figure 2 (null RCP, adjusted thresholds)        451.5 sec
 Saved inst/scripts/data/fig2_data.rds
-Delay: accrual and expected events                0.0 sec
+Delay: accrual and expected events                0.1 sec
 Feasibility: tau = 21.60 feasible = TRUE; tau = 21.70 feasible = FALSE
-Figure 3 (RCP by delay)                           4.9 sec
+Figure 3 (RCP by delay)                           7.5 sec
   max |analysis time - time without delay| = 3.55e-15 months
 Saved inst/scripts/data/fig3_data.rds
   [warning] Figure 4 (required proportion by delay): The target was not reached for M1 within the search interval (upper limit 0.6077); NA is returned.
   [warning] Figure 4 (required proportion by delay): The target was not reached for M1 within the search interval (upper limit 0.5482); NA is returned.
   [warning] Figure 4 (required proportion by delay): The target was not reached for M2 within the search interval (upper limit 0.5482); NA is returned.
-Figure 4 (required proportion by delay)         100.3 sec
+Figure 4 (required proportion by delay)         102.1 sec
 Saved inst/scripts/data/fig4_data.rds
-Table 1 (application)                             8.8 sec
+Table 1 (application)                             7.2 sec
 Saved inst/scripts/data/table1_data.rds
 Saved inst/scripts/data/table2_data.rds
-  simulation tau = 0, p1 = 0.05                 217.0 sec
-  simulation tau = 0, p1 = 0.10                 224.1 sec
-  simulation tau = 0, p1 = 0.15                 227.0 sec
-  simulation tau = 0, p1 = 0.20                 227.9 sec
-  simulation tau = 6, p1 = 0.05                 180.7 sec
-  simulation tau = 6, p1 = 0.10                 173.3 sec
-  simulation tau = 6, p1 = 0.15                 170.6 sec
-  simulation tau = 6, p1 = 0.20                 170.1 sec
-Figure 5 (patient-level simulation)            1607.1 sec
+  simulation tau = 0, p1 = 0.05                 218.6 sec
+  simulation tau = 0, p1 = 0.10                 213.2 sec
+  simulation tau = 0, p1 = 0.15                 213.1 sec
+  simulation tau = 0, p1 = 0.20                 210.8 sec
+  simulation tau = 6, p1 = 0.05                 205.8 sec
+  simulation tau = 6, p1 = 0.10                 210.6 sec
+  simulation tau = 6, p1 = 0.15                 219.8 sec
+  simulation tau = 6, p1 = 0.20                 216.4 sec
+Figure 5 (patient-level simulation)            1721.1 sec
 Saved inst/scripts/data/fig5_data.rds
 All requested data written to 'inst/scripts/data/'.

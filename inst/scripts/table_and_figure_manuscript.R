@@ -661,6 +661,23 @@ for (b in names(SET$EVENTS)) {
   }
 }
 
+# ---- Check of the overall design against rpact (OBF, no delay) ----
+dc <- SET$DESIGN_CHECK
+dc_val <- function(q, col) dc[[col]][dc$quantity == q]
+add_num("check_power_rpact", dc_val("power", "rpact"), 3,
+        "Power computed by rpact (OBF)", "settings$DESIGN_CHECK")
+add_num("check_power_rcpgsd", dc_val("power", "rcpgsd"), 3,
+        "Power computed by rcpgsd (OBF)", "settings$DESIGN_CHECK")
+for (k in seq_len(K)) {
+  q <- sprintf("time of analysis %d", k)
+  add_num(sprintf("check_time_k%d_rpact", k), dc_val(q, "rpact"), 2,
+          sprintf("Expected time of analysis %d by rpact (months)", k),
+          "settings$DESIGN_CHECK")
+  add_num(sprintf("check_time_k%d_absdiff", k), abs(dc_val(q, "difference")),
+          2, sprintf("|rcpgsd - rpact| of the time of analysis %d (months)",
+                     k), "settings$DESIGN_CHECK")
+}
+
 # ---- Figure 1 (f1 = F1_REF) ----
 for (b in names(BOUNDARY_LAB)) {
   for (m in c("M1", "M2")) {
