@@ -37,8 +37,10 @@ print.rcpgsd_sim <- function(x, digits = 4, ...) {
   cat(sprintf("   Consistency scale : %s\n",
               if (x$scale == "loghr") "log hazard ratio" else
                 "hazard reduction (1 - HR)"))
-  cat(sprintf("   Estimators        : overall HR by %s method, regional HR by Cox model\n",
-              if (x$overall_est == "pike") "Pike's" else "Peto's"))
+  est_lab <- c(cox = "Cox regression", peto = "Peto's method",
+               pike = "Pike's method")
+  cat(sprintf("   HR estimator      : %s (overall and by region)\n",
+              est_lab[[x$estimator]]))
   cat("   Test statistic    : log-rank (unstratified)\n")
   cat(sprintf("   Analyses          : K = %d (boundaries from %s)\n",
               x$design$K, x$design$source))

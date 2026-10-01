@@ -41,23 +41,25 @@
 #'   \item The efficacy and futility boundaries are applied to the
 #'     unstratified log-rank statistic, oriented so that positive values
 #'     favour the experimental group.
-#'   \item The overall hazard ratio used in the consistency criteria is
-#'     estimated by the method of Pike (\code{overall_est = "pike"},
-#'     default), \eqn{(O_T / E_T) / (O_C / E_C)}, or of Peto
-#'     (\code{overall_est = "peto"}), \eqn{\exp\{(O_T - E_T) / V\}}, where
-#'     \eqn{O}, \eqn{E} and \eqn{V} are the observed and expected numbers of
-#'     events and the variance of the log-rank statistic.
-#'   \item The hazard ratio in each region is estimated by a Cox proportional
-#'     hazards model fitted to the data of that region only, with treatment
-#'     as the single covariate. Without tied event times this is the exact
-#'     maximum partial likelihood estimate (identical to
+#'   \item The hazard ratios used in the consistency criteria are estimated
+#'     by the same method in the overall population and in each region
+#'     (argument \code{estimator}): by a Cox proportional hazards model with
+#'     treatment as the single covariate (\code{"cox"}, default), by the
+#'     method of Peto (\code{"peto"}), \eqn{\exp\{(O_T - E_T) / V\}}, or by
+#'     the method of Pike (\code{"pike"}), \eqn{(O_T / E_T) / (O_C / E_C)},
+#'     where \eqn{O}, \eqn{E} and \eqn{V} are the observed and expected
+#'     numbers of events and the variance of the log-rank statistic. The
+#'     regional estimates use the data of that region only, and the overall
+#'     estimate is unstratified. Without tied event times the Cox estimate
+#'     is the exact maximum partial likelihood estimate (identical to
 #'     \code{survival::coxph()}).
 #' }
-#' When all events of a region occur in one group, the regional estimate is
-#' infinite (hazard ratio of 0 or infinity) and is used as such in the
-#' consistency criteria. When no estimate is available (no events, or no
-#' event while both groups are at risk), the consistency criterion is
-#' regarded as not met. The frequencies of these cases are reported.
+#' When all events of a region occur in one group, the Cox and Pike
+#' estimates are infinite (hazard ratio of 0 or infinity) and are used as
+#' such in the consistency criteria; the Peto estimate is always finite.
+#' When no estimate is available (no events, or no event while both groups
+#' are at risk), the consistency criterion is regarded as not met. The
+#' frequencies of these cases are reported.
 #'
 #' The consistency criteria and the reported probabilities are those of
 #' \code{\link{rcpgsd}}. To compare with the closed form, the mean observed
@@ -87,8 +89,9 @@
 #'   column is the control group). A drop-out probability \eqn{p} by time
 #'   \eqn{t_0} corresponds to the hazard \eqn{-\log(1 - p) / t_0}. Default
 #'   is \code{0} (no drop-out).
-#' @param overall_est Character. Estimator of the overall hazard ratio used
-#'   in the consistency criteria: \code{"pike"} (default) or \code{"peto"}.
+#' @param estimator Character. Estimator of the hazard ratio in the overall
+#'   population and in each region used in the consistency criteria:
+#'   \code{"cox"} (Cox regression, default), \code{"peto"} or \code{"pike"}.
 #' @param nsim Positive integer. Number of simulated trials. Default is
 #'   \code{10000}.
 #' @param seed Integer or \code{NULL}. Random seed. Default is \code{1}.
@@ -119,7 +122,7 @@
 #'   \item{\code{design}, \code{events}, \code{hr}, \code{lambda_c},
 #'     \code{accrual_time}, \code{n_accrual}, \code{lambda_d} (as an
 #'     \code{S}-by-2 matrix), \code{r}, \code{method},
-#'     \code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{overall_est},
+#'     \code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{estimator},
 #'     \code{nsim}}{Settings used.}
 #' }
 #' Because the object also inherits from class \code{"rcpgsd"}, the
@@ -163,7 +166,7 @@ rcpgsd_sim <- function(design,
                        scale       = c("loghr", "hr"),
                        gamma_M1    = 0.5,
                        gamma_M2    = 0,
-                       overall_est = c("pike", "peto"),
+                       estimator   = c("cox", "peto", "pike"),
                        futility    = c("obey", "ignore"),
                        nsim        = 10000,
                        seed        = 1) {
@@ -172,7 +175,7 @@ rcpgsd_sim <- function(design,
   method      <- match.arg(method, c("M1", "M2"), several.ok = TRUE)
   method      <- intersect(c("M1", "M2"), method)
   scale       <- match.arg(scale)
-  overall_est <- match.arg(overall_est)
+  estimator   <- match.arg(estimator)
   futility    <- match.arg(futility)
 
   bnd <- .rcpgsd_bounds(design)
@@ -227,15 +230,15 @@ rcpgsd_sim <- function(design,
       st  <- as.integer(cal[inc] <= t_k[k])
       tr  <- pt$trt[inc]
       rg  <- pt$region[inc]
-      lr  <- .rcpgsd_logrank(.rcpgsd_riskset(obs, st, tr), overall_est)
-      z[i, k]       <- lr$z
-      est_all[i, k] <- -lr$log_hr
+      rs  <- .rcpgsd_riskset(obs, st, tr)
+      z[i, k]       <- .rcpgsd_logrank(rs)$z
+      est_all[i, k] <- -.rcpgsd_log_hr(rs, estimator)
       t_anal[i, k]  <- t_k[k]
       for (s in seq_len(S)) {
         sel <- rg == s
         n_ev[i, s, k]    <- sum(st[sel])
-        est_reg[i, s, k] <- -.rcpgsd_cox1(
-          .rcpgsd_riskset(obs[sel], st[sel], tr[sel]))
+        est_reg[i, s, k] <- -.rcpgsd_log_hr(
+          .rcpgsd_riskset(obs[sel], st[sel], tr[sel]), estimator)
       }
     }
   }
@@ -377,7 +380,7 @@ rcpgsd_sim <- function(design,
          scale        = scale,
          gamma_M1     = gamma_M1,
          gamma_M2     = gamma_M2,
-         overall_est  = overall_est,
+         estimator    = estimator,
          nsim         = nsim),
     class = c("rcpgsd_sim", "rcpgsd")
   )

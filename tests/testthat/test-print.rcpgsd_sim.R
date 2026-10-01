@@ -4,7 +4,7 @@ test_that("print.rcpgsd_sim prints all sections and returns x invisibly", {
                     n_accrual = c(40, 260), nsim = 100)
   expect_output(out <- print(sim), "Patient-Level Simulation")
   expect_identical(out, sim)
-  expect_output(print(sim), "Pike's method")
+  expect_output(print(sim), "Cox regression \\(overall and by region\\)")
   expect_output(print(sim), "Pr\\(inf est R1\\)")
   expect_output(print(sim), "Method 1")
   expect_output(print(sim), "Method 2")

@@ -22,7 +22,7 @@
 #     source("inst/sup_info/data_generate_supplement.R")
 #   Parts of the computation can be skipped with the logical vector RUN below.
 #
-# Required packages: rcpgsd, gsDesign
+# Required packages: rcpgsd, rpact
 #
 # Running time (rough guide; the time of each step is written to the log)
 #   S1, S2, S4 : about one minute each
@@ -51,8 +51,8 @@ if (!file.exists("DESCRIPTION") ||
 if (!requireNamespace("rcpgsd", quietly = TRUE)) {
   stop("The rcpgsd package is neither loaded nor installed.", call. = FALSE)
 }
-if (!requireNamespace("gsDesign", quietly = TRUE)) {
-  stop("The gsDesign package is required: install.packages(\"gsDesign\").",
+if (!requireNamespace("rpact", quietly = TRUE)) {
+  stop("The rpact package is required: install.packages(\"rpact\").",
        call. = FALSE)
 }
 
@@ -122,8 +122,7 @@ GIT  <- git_info()
 META <- list(date           = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
              rcpgsd_version = as.character(getNamespaceVersion("rcpgsd")),
              rcpgsd_path    = getNamespaceInfo("rcpgsd", "path"),
-             gsDesign_version = as.character(
-               utils::packageVersion("gsDesign")),
+             rpact_version  = as.character(utils::packageVersion("rpact")),
              git_commit     = GIT$commit,
              git_modified   = GIT$modified,
              R_version      = R.version.string)
@@ -156,56 +155,73 @@ GAMMA_M1 <- MAIN$GAMMA_M1
 GAMMA_M2 <- MAIN$GAMMA_M2
 F1_GRID  <- MAIN$F1_GRID
 D_FIX    <- MAIN$D_FIX
+LAMBDA_C <- MAIN$LAMBDA_C
+N_TOTAL  <- MAIN$N_TOTAL
+T_ACCRUAL <- MAIN$T_ACCRUAL
 
 # Futility boundaries (S2): Hwang-Shih-DeCani beta spending
-SFL_PAR <- -2
+GAMMA_B <- -2
 # Hazard ratio in Japan (S4); proportion of events in Japan
 HR1_GRID <- seq(0.6, 1.0, by = 0.02)
 F1_S4    <- 0.1
 
 fs_const <- function(f1) c(f1, (1 - f1) / 2, (1 - f1) / 2)
 
-plan_events <- function(des) {
-  d_K <- ceiling(des$n.I[K])
-  c(round(des$timing[-K] * d_K), d_K)
+# Designs and numbers of events with rpact, as in data_generate_main.R
+make_design <- function(type, binding = NULL) {
+  args <- list(kMax = K, alpha = ALPHA, beta = BETA, sided = 1,
+               typeOfDesign = type, informationRates = TIMING)
+  if (!is.null(binding)) {
+    args <- c(args, list(typeBetaSpending = "bsHSD", gammaB = GAMMA_B,
+                         bindingFutility = binding))
+  }
+  do.call(rpact::getDesignGroupSequential, args)
+}
+plan_events <- function(design) {
+  ss <- rpact::getSampleSizeSurvival(design, lambda2 = LAMBDA_C,
+                                     hazardRatio = HR,
+                                     allocationRatioPlanned = R_ALLOC,
+                                     accrualTime = c(0, T_ACCRUAL),
+                                     maxNumberOfSubjects = N_TOTAL,
+                                     typeOfComputation = "Schoenfeld")
+  d_K <- ceiling(ss$maxNumberOfEvents[1L])
+  structure(c(round(TIMING[-K] * d_K), d_K),
+            n_I = as.numeric(ss$eventsPerStage[, 1L]))
 }
 
 # Efficacy-only designs of the manuscript
-make_design <- function(sfu, test_type = 1, sfl = gsDesign::sfHSD,
-                        sflpar = SFL_PAR) {
-  gsDesign::gsDesign(k = K, test.type = test_type, alpha = ALPHA,
-                     beta = BETA, timing = TIMING, sfu = sfu, sfl = sfl,
-                     sflpar = sflpar, n.fix = D_FIX)
-}
-DESIGNS <- list(OBF    = make_design(gsDesign::sfLDOF),
-                Pocock = make_design(gsDesign::sfLDPocock))
+DESIGNS <- list(OBF    = make_design("asOF"),
+                Pocock = make_design("asP"))
 EVENTS  <- lapply(DESIGNS, plan_events)
 
 # The designs must reproduce those of the manuscript
 for (b in names(DESIGNS)) {
   di <- MAIN$DESIGN_INFO[MAIN$DESIGN_INFO$boundary == b, ]
   if (!identical(as.numeric(EVENTS[[b]]), as.numeric(MAIN$EVENTS[[b]])) ||
-      max(abs(DESIGNS[[b]]$upper$bound - di$upper)) > 1e-8) {
+      max(abs(DESIGNS[[b]]$criticalValues - di$upper)) > 1e-8) {
     stop(sprintf("The %s design differs from that of the manuscript.", b),
          call. = FALSE)
   }
 }
 
-# Designs with futility boundaries (OBF efficacy boundaries): test.type = 3
-# (binding) and 4 (non-binding)
-DES_FUT <- list(binding    = make_design(gsDesign::sfLDOF, test_type = 3),
-                nonbinding = make_design(gsDesign::sfLDOF, test_type = 4))
+# Designs with futility boundaries (OBF efficacy boundaries, HSD beta
+# spending), binding and non-binding
+DES_FUT <- list(binding    = make_design("asOF", binding = TRUE),
+                nonbinding = make_design("asOF", binding = FALSE))
 EV_FUT  <- lapply(DES_FUT, plan_events)
 
 fut_info <- function(name) {
   des <- DES_FUT[[name]]
-  data.frame(design = name, stage = seq_len(K), timing = des$timing,
-             n_I = des$n.I, events = EV_FUT[[name]],
-             upper = des$upper$bound, lower = des$lower$bound,
+  data.frame(design = name, stage = seq_len(K),
+             timing = des$informationRates,
+             n_I = attr(EV_FUT[[name]], "n_I"),
+             events = as.numeric(EV_FUT[[name]]),
+             upper = des$criticalValues,
+             lower = c(des$futilityBounds, NA_real_),
              stringsAsFactors = FALSE)
 }
 
-SETTINGS <- list(MAIN = MAIN, SFL_PAR = SFL_PAR, HR1_GRID = HR1_GRID,
+SETTINGS <- list(MAIN = MAIN, GAMMA_B = GAMMA_B, HR1_GRID = HR1_GRID,
                  F1_S4 = F1_S4, EV_FUT = EV_FUT,
                  FUT_INFO = do.call(rbind, lapply(names(DES_FUT), fut_info)))
 
@@ -214,8 +230,8 @@ log_msg("Settings from %s: alpha = %.3f, power = %.2f, HR = %.2f, K = %d",
 for (b in names(EV_FUT)) {
   log_msg("  futility (%s): events = %s, upper = %s, lower = %s", b,
           paste(EV_FUT[[b]], collapse = "/"),
-          paste(sprintf("%.4f", DES_FUT[[b]]$upper$bound), collapse = "/"),
-          paste(sprintf("%.4f", DES_FUT[[b]]$lower$bound), collapse = "/"))
+          paste(sprintf("%.4f", DES_FUT[[b]]$criticalValues), collapse = "/"),
+          paste(sprintf("%.4f", DES_FUT[[b]]$futilityBounds), collapse = "/"))
 }
 log_msg("  RUN = %s", paste(names(RUN)[RUN], collapse = ", "))
 

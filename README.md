@@ -15,7 +15,7 @@ When a trial stops for efficacy at an interim analysis, regional consistency is 
 - **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
 - **Planning tools**: accrual by region with delayed regional starts under the overall accrual plan of the protocol, expected regional event proportions derived from the accrual pattern by region (with optional exponential drop-out), and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
 - **Monte Carlo simulation** of the same normal model for verification of the numerical evaluation
-- **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times, optional exponential drop-out; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
+- **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times, optional exponential drop-out; log-rank test; Cox, Peto or Pike estimate of the hazard ratio, the same method in the overall population and in each region) to assess the accuracy of the normal approximation
 - `print()` and `plot()` methods for all results
 
 Regional consistency is evaluated following the Japanese Ministry of Health, Labour and Welfare (MHLW, 2007) guidance, with region 1 as the region of interest:

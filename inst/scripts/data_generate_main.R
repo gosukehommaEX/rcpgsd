@@ -20,7 +20,7 @@
 #   Parts of the computation can be skipped with the logical vector RUN below;
 #   the data files of the skipped parts are left unchanged.
 #
-# Required packages: rcpgsd, gsDesign
+# Required packages: rcpgsd, rpact
 #
 # Running time (rough guide; the time of each step is written to the log)
 #   fig1, fig2, delay : a few minutes each
@@ -54,8 +54,8 @@ if (!file.exists("DESCRIPTION") ||
 if (!requireNamespace("rcpgsd", quietly = TRUE)) {
   stop("The rcpgsd package is neither loaded nor installed.", call. = FALSE)
 }
-if (!requireNamespace("gsDesign", quietly = TRUE)) {
-  stop("The gsDesign package is required: install.packages(\"gsDesign\").",
+if (!requireNamespace("rpact", quietly = TRUE)) {
+  stop("The rpact package is required: install.packages(\"rpact\").",
        call. = FALSE)
 }
 
@@ -127,8 +127,7 @@ GIT  <- git_info()
 META <- list(date           = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
              rcpgsd_version = as.character(getNamespaceVersion("rcpgsd")),
              rcpgsd_path    = getNamespaceInfo("rcpgsd", "path"),
-             gsDesign_version = as.character(
-               utils::packageVersion("gsDesign")),
+             rpact_version  = as.character(utils::packageVersion("rpact")),
              git_commit     = GIT$commit,
              git_modified   = GIT$modified,
              R_version      = R.version.string)
@@ -152,25 +151,59 @@ GAMMA_M2 <- 0              # unadjusted threshold, Method 2
 TARGET   <- 0.8            # target value for the required proportion
 F1_GRID  <- seq(0.05, 0.30, by = 0.01)   # proportion of events in Japan
 
+# Accrual and event-time setting
+N_TOTAL   <- 600                     # total number of patients
+T_ACCRUAL <- 24                      # accrual period (months)
+RATE      <- N_TOTAL / T_ACCRUAL     # overall accrual rate (per month)
+N_REGION  <- c(60, 270, 270)         # patients by region (Japan first)
+MEDIAN_C  <- 12                      # median survival, control (months)
+LAMBDA_C  <- log(2) / MEDIAN_C       # control hazard
+
 # Fixed-design number of events (Schoenfeld)
 D_FIX <- (1 + R_ALLOC)^2 / R_ALLOC *
   (qnorm(1 - ALPHA) + qnorm(1 - BETA))^2 / log(HR)^2
 
-# Group sequential designs with Lan-DeMets spending functions (efficacy only)
-make_design <- function(sfu) {
-  gsDesign::gsDesign(k = K, test.type = 1, alpha = ALPHA, beta = BETA,
-                     timing = TIMING, sfu = sfu, n.fix = D_FIX)
+# Overall design with rpact: Lan-DeMets spending functions (efficacy only)
+# and the numbers of events required for power 1 - BETA (Schoenfeld, with
+# the inflation of the group sequential design). With the number of
+# patients and the accrual period given, rpact determines the follow-up
+# and the expected analysis times.
+make_design <- function(type) {
+  rpact::getDesignGroupSequential(kMax = K, alpha = ALPHA, beta = BETA,
+                                  sided = 1, typeOfDesign = type,
+                                  informationRates = TIMING)
 }
-DESIGNS <- list(OBF    = make_design(gsDesign::sfLDOF),
-                Pocock = make_design(gsDesign::sfLDPocock))
+sample_size <- function(design = NULL) {
+  args <- list(lambda2 = LAMBDA_C, hazardRatio = HR,
+               allocationRatioPlanned = R_ALLOC,
+               accrualTime = c(0, T_ACCRUAL),
+               maxNumberOfSubjects = N_TOTAL,
+               typeOfComputation = "Schoenfeld")
+  if (is.null(design)) {
+    do.call(rpact::getSampleSizeSurvival,
+            c(list(alpha = ALPHA, beta = BETA, sided = 1), args))
+  } else {
+    do.call(rpact::getSampleSizeSurvival, c(list(design = design), args))
+  }
+}
+DESIGNS     <- list(OBF    = make_design("asOF"),
+                    Pocock = make_design("asP"))
+SAMPLE_SIZE <- lapply(DESIGNS, sample_size)
+
+# The fixed-design number of events of rpact must equal the formula
+SS_FIX <- sample_size()
+if (abs(SS_FIX$maxNumberOfEvents[1L] - D_FIX) > 1e-6) {
+  stop("The fixed-design number of events of rpact differs from the ",
+       "Schoenfeld formula.", call. = FALSE)
+}
 
 # Planned numbers of events: final number rounded up, interim numbers
 # rounded to the planned information fractions
-plan_events <- function(des) {
-  d_K <- ceiling(des$n.I[K])
-  c(round(des$timing[-K] * d_K), d_K)
+plan_events <- function(ss) {
+  d_K <- ceiling(ss$maxNumberOfEvents[1L])
+  c(round(TIMING[-K] * d_K), d_K)
 }
-EVENTS <- lapply(DESIGNS, plan_events)
+EVENTS <- lapply(SAMPLE_SIZE, plan_events)
 
 # Fixed design with the fixed-design number of events
 DES_FIX <- list(upper = qnorm(1 - ALPHA), alpha = ALPHA)
@@ -178,14 +211,6 @@ EV_FIX  <- ceiling(D_FIX)
 
 # Regional proportions: Japan (region 1) and two other regions of equal size
 fs_const <- function(f1) c(f1, (1 - f1) / 2, (1 - f1) / 2)
-
-# Accrual and event-time setting (Figures 3 to 5, Tables 1 and 2)
-N_TOTAL   <- 600                     # total number of patients
-T_ACCRUAL <- 24                      # accrual period (months)
-RATE      <- N_TOTAL / T_ACCRUAL     # overall accrual rate (per month)
-N_REGION  <- c(60, 270, 270)         # patients by region (Japan first)
-MEDIAN_C  <- 12                      # median survival, control (months)
-LAMBDA_C  <- log(2) / MEDIAN_C       # control hazard
 # Delays in Japan. Even values give integer numbers of patients without
 # rounding, so the expected analysis times equal those without delay.
 TAU_GRID  <- seq(0, 14, by = 2)
@@ -196,8 +221,9 @@ TYPES     <- c("overall", "stagewise", "unconditional")
 # Patient-level simulation (Figure 5)
 P1_SIM  <- c(0.05, 0.10, 0.15, 0.20) # proportion of Japanese patients
 TAU_SIM <- c(0, APP_TAU)             # delays in Japan (months)
-NSIM    <- 100000                    # simulated trials per scenario
-SEED    <- 2026
+NSIM      <- 100000                  # simulated trials per scenario
+SEED      <- 2026
+ESTIMATOR <- "cox"                   # HR estimator, overall and by region
 
 stopifnot(APP_TAU %in% TAU_GRID,
           sum(N_REGION) == N_TOTAL,
@@ -205,38 +231,75 @@ stopifnot(APP_TAU %in% TAU_GRID,
 
 design_info <- function(name) {
   des <- DESIGNS[[name]]
-  data.frame(boundary  = name,
-             stage     = seq_len(K),
-             timing    = des$timing,
-             n_I       = des$n.I,
-             events    = EVENTS[[name]],
-             info_frac = EVENTS[[name]] / EVENTS[[name]][K],
-             upper     = des$upper$bound,
+  ss  <- SAMPLE_SIZE[[name]]
+  data.frame(boundary   = name,
+             stage      = seq_len(K),
+             timing     = des$informationRates,
+             n_I        = as.numeric(ss$eventsPerStage[, 1L]),
+             time_rpact = as.numeric(ss$analysisTime[, 1L]),
+             events     = EVENTS[[name]],
+             info_frac  = EVENTS[[name]] / EVENTS[[name]][K],
+             upper      = des$criticalValues,
              stringsAsFactors = FALSE)
 }
 DESIGN_INFO <- do.call(rbind, lapply(names(DESIGNS), design_info))
+
+# Independent check of rcpgsd against rpact for the design of the
+# application (OBF, no delay): expected analysis times (rpact uses the
+# unrounded interim numbers of events) and power
+pw_rpact <- rpact::getPowerSurvival(DESIGNS$OBF, lambda2 = LAMBDA_C,
+                                    hazardRatio = HR,
+                                    allocationRatioPlanned = R_ALLOC,
+                                    accrualTime = c(0, T_ACCRUAL),
+                                    maxNumberOfSubjects = N_TOTAL,
+                                    maxNumberOfEvents = EVENTS$OBF[K])
+acc_chk <- rcpgsd::rcpgsd_accrual(n_region = N_REGION,
+                                  accrual_time = c(0, T_ACCRUAL),
+                                  rate_overall = RATE)
+ev_chk  <- rcpgsd::rcpgsd_events(events = EVENTS$OBF, hr = HR,
+                                 lambda_c = LAMBDA_C,
+                                 accrual_time = acc_chk$accrual_time,
+                                 n_accrual = acc_chk$n_accrual, r = R_ALLOC)
+pw_chk  <- rcpgsd::rcpgsd(DESIGNS$OBF, events = EVENTS$OBF,
+                          fs = fs_const(N_REGION[1L] / N_TOTAL), hr = HR,
+                          r = R_ALLOC, method = "M1")$overall$power
+DESIGN_CHECK <- data.frame(
+  quantity = c(sprintf("events at analysis %d", seq_len(K)),
+               sprintf("time of analysis %d", seq_len(K)), "power"),
+  rpact    = c(as.numeric(pw_rpact$eventsPerStage[, 1L]),
+               as.numeric(pw_rpact$analysisTime[, 1L]),
+               pw_rpact$overallReject[1L]),
+  rcpgsd   = c(EVENTS$OBF, ev_chk$analysis$time, pw_chk),
+  stringsAsFactors = FALSE)
+DESIGN_CHECK$difference <- DESIGN_CHECK$rcpgsd - DESIGN_CHECK$rpact
 
 SETTINGS <- list(ALPHA = ALPHA, BETA = BETA, HR = HR, R_ALLOC = R_ALLOC,
                  K = K, TIMING = TIMING, GAMMA_M1 = GAMMA_M1,
                  GAMMA_M2 = GAMMA_M2, TARGET = TARGET, F1_GRID = F1_GRID,
                  D_FIX = D_FIX, EV_FIX = EV_FIX, EVENTS = EVENTS,
-                 DESIGN_INFO = DESIGN_INFO,
+                 DESIGN_INFO = DESIGN_INFO, DESIGN_CHECK = DESIGN_CHECK,
                  N_TOTAL = N_TOTAL, T_ACCRUAL = T_ACCRUAL, RATE = RATE,
                  N_REGION = N_REGION, MEDIAN_C = MEDIAN_C,
                  LAMBDA_C = LAMBDA_C, TAU_GRID = TAU_GRID,
                  TAU_LIMIT = TAU_LIMIT, APP_TAU = APP_TAU, TYPES = TYPES,
                  P1_SIM = P1_SIM, TAU_SIM = TAU_SIM, NSIM = NSIM,
-                 SEED = SEED)
+                 SEED = SEED, ESTIMATOR = ESTIMATOR)
 
 log_msg("Settings: alpha = %.3f, power = %.2f, HR = %.2f, K = %d, D_FIX = %.2f",
         ALPHA, 1 - BETA, HR, K, D_FIX)
 for (b in names(EVENTS)) {
   log_msg("  %-6s events = %s, upper = %s", b,
           paste(EVENTS[[b]], collapse = "/"),
-          paste(sprintf("%.4f", DESIGNS[[b]]$upper$bound), collapse = "/"))
+          paste(sprintf("%.4f", DESIGNS[[b]]$criticalValues), collapse = "/"))
 }
-log_msg("  NSIM = %d, SEED = %d, RUN = %s", NSIM, SEED,
-        paste(names(RUN)[RUN], collapse = ", "))
+log_msg("  Check against rpact (OBF, no delay; rcpgsd - rpact):")
+for (i in seq_len(nrow(DESIGN_CHECK))) {
+  log_msg("    %-22s rpact %10.4f  rcpgsd %10.4f  difference %9.2e",
+          DESIGN_CHECK$quantity[i], DESIGN_CHECK$rpact[i],
+          DESIGN_CHECK$rcpgsd[i], DESIGN_CHECK$difference[i])
+}
+log_msg("  NSIM = %d, SEED = %d, ESTIMATOR = %s, RUN = %s", NSIM, SEED,
+        ESTIMATOR, paste(names(RUN)[RUN], collapse = ", "))
 
 # --------------------------------------------------------------------------- #
 # Compute-side helpers
@@ -477,7 +540,8 @@ if (RUN[["sim"]]) {
                             accrual_time = d$acc$accrual_time,
                             n_accrual = d$acc$n_accrual, r = R_ALLOC,
                             gamma_M1 = GAMMA_M1, gamma_M2 = GAMMA_M2,
-                            nsim = NSIM, seed = SEED))
+                            estimator = ESTIMATOR, nsim = NSIM,
+                            seed = SEED))
         cf_plan <- rcp_h1(DESIGNS$OBF, EVENTS$OBF, d$ev$fs)
         cf_mean <- rcp_h1(DESIGNS$OBF, EVENTS$OBF, sim$fs_mean)
         key <- list(tau = tau, p1 = p1, n1 = n1)

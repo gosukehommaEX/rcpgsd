@@ -18,7 +18,7 @@ rcpgsd_sim(
   scale = c("loghr", "hr"),
   gamma_M1 = 0.5,
   gamma_M2 = 0,
-  overall_est = c("pike", "peto"),
+  estimator = c("cox", "peto", "pike"),
   futility = c("obey", "ignore"),
   nsim = 10000,
   seed = 1
@@ -82,8 +82,9 @@ returned by \code{\link{rcpgsd_get_gamma}}. Default is \code{0.5}.}
 Method 2 (non-negative; smaller than 1 when \code{scale = "hr"}).
 Default is \code{0}.}
 
-\item{overall_est}{Character. Estimator of the overall hazard ratio used
-in the consistency criteria: \code{"pike"} (default) or \code{"peto"}.}
+\item{estimator}{Character. Estimator of the hazard ratio in the overall
+population and in each region used in the consistency criteria:
+\code{"cox"} (Cox regression, default), \code{"peto"} or \code{"pike"}.}
 
 \item{futility}{Character. Treatment of non-binding futility boundaries:
 \code{"obey"} (default) or \code{"ignore"}. Binding futility boundaries
@@ -121,7 +122,7 @@ estimate, by region and analysis.}
 \item{\code{design}, \code{events}, \code{hr}, \code{lambda_c},
 \code{accrual_time}, \code{n_accrual}, \code{lambda_d} (as an
 \code{S}-by-2 matrix), \code{r}, \code{method},
-\code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{overall_est},
+\code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{estimator},
 \code{nsim}}{Settings used.}
 }
 Because the object also inherits from class \code{"rcpgsd"}, the
@@ -167,23 +168,25 @@ total number of events avoids this situation.
 \item The efficacy and futility boundaries are applied to the
 unstratified log-rank statistic, oriented so that positive values
 favour the experimental group.
-\item The overall hazard ratio used in the consistency criteria is
-estimated by the method of Pike (\code{overall_est = "pike"},
-default), \eqn{(O_T / E_T) / (O_C / E_C)}, or of Peto
-(\code{overall_est = "peto"}), \eqn{\exp\{(O_T - E_T) / V\}}, where
-\eqn{O}, \eqn{E} and \eqn{V} are the observed and expected numbers of
-events and the variance of the log-rank statistic.
-\item The hazard ratio in each region is estimated by a Cox proportional
-hazards model fitted to the data of that region only, with treatment
-as the single covariate. Without tied event times this is the exact
-maximum partial likelihood estimate (identical to
+\item The hazard ratios used in the consistency criteria are estimated
+by the same method in the overall population and in each region
+(argument \code{estimator}): by a Cox proportional hazards model with
+treatment as the single covariate (\code{"cox"}, default), by the
+method of Peto (\code{"peto"}), \eqn{\exp\{(O_T - E_T) / V\}}, or by
+the method of Pike (\code{"pike"}), \eqn{(O_T / E_T) / (O_C / E_C)},
+where \eqn{O}, \eqn{E} and \eqn{V} are the observed and expected
+numbers of events and the variance of the log-rank statistic. The
+regional estimates use the data of that region only, and the overall
+estimate is unstratified. Without tied event times the Cox estimate
+is the exact maximum partial likelihood estimate (identical to
 \code{survival::coxph()}).
 }
-When all events of a region occur in one group, the regional estimate is
-infinite (hazard ratio of 0 or infinity) and is used as such in the
-consistency criteria. When no estimate is available (no events, or no
-event while both groups are at risk), the consistency criterion is
-regarded as not met. The frequencies of these cases are reported.
+When all events of a region occur in one group, the Cox and Pike
+estimates are infinite (hazard ratio of 0 or infinity) and are used as
+such in the consistency criteria; the Peto estimate is always finite.
+When no estimate is available (no events, or no event while both groups
+are at risk), the consistency criterion is regarded as not met. The
+frequencies of these cases are reported.
 
 The consistency criteria and the reported probabilities are those of
 \code{\link{rcpgsd}}. To compare with the closed form, the mean observed

@@ -69,15 +69,26 @@ test_that("the consistency scale changes only the Method 1 criterion", {
                     0.05))
 })
 
-test_that("Pike and Peto estimators give similar results", {
+test_that("Cox, Peto and Pike estimators give similar results", {
   args <- list(design = design_S, events = events_S, hr = 0.72,
                lambda_c = lam_S, accrual_time = c(0, 6, 18),
                n_accrual = nacc_S, nsim = 150, seed = 3)
-  sim_pike <- do.call(rcpgsd_sim, c(args, overall_est = "pike"))
-  sim_peto <- do.call(rcpgsd_sim, c(args, overall_est = "peto"))
-  expect_equal(sim_pike$stage$p_eff, sim_peto$stage$p_eff)
-  expect_lt(max(abs(sim_pike$stage$rcp_uncond - sim_peto$stage$rcp_uncond)),
-            0.03)
+  sims <- lapply(c("cox", "peto", "pike"), function(e) {
+    do.call(rcpgsd_sim, c(args, estimator = e))
+  })
+  expect_equal(sim_S$estimator, "cox")
+  expect_equal(vapply(sims, `[[`, character(1L), "estimator"),
+               c("cox", "peto", "pike"))
+  # The log-rank test does not depend on the estimator. In 40 replicates of
+  # this setting in Python, the largest difference in the consistency
+  # probabilities was 0.020 (3 of 150 trials)
+  for (j in 2:3) {
+    expect_equal(sims[[j]]$stage$p_eff, sims[[1L]]$stage$p_eff)
+    expect_lt(max(abs(sims[[j]]$stage$rcp_uncond -
+                        sims[[1L]]$stage$rcp_uncond)), 0.05)
+  }
+  # The Peto estimate is always finite
+  expect_true(all(sims[[2L]]$p_inf == 0))
 })
 
 test_that("small regions produce missing or infinite estimates", {

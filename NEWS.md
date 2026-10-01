@@ -14,9 +14,10 @@
 * `rcpgsd_sim()` simulates event-driven trials at the patient level
   (piecewise uniform accrual by region, exponential event times, optional
   exponential drop-out) and
-  estimates the same probabilities as `rcpgsd()`, using the log-rank test,
-  the Pike or Peto estimate of the overall hazard ratio and regional Cox
-  models. It reports the mean regional event proportions, which can be
+  estimates the same probabilities as `rcpgsd()`, using the log-rank test
+  and the Cox (default), Peto or Pike estimate of the hazard ratio, with
+  the same method in the overall population and in each region (argument
+  `estimator`). It reports the mean regional event proportions, which can be
   passed to `rcpgsd()` for comparison with the closed form, and the
   frequencies of missing or infinite regional estimates. With drop-out, the
   proportion of trials that do not reach an analysis is also reported.

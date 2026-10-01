@@ -380,15 +380,14 @@ tab5_caption <- paste0(
   "$d_{1,k}$, expected number of events in Japan; ",
   "no est., proportion of simulated trials without a Japanese estimate; ",
   "infinite, proportion with an infinite Japanese estimate; ",
-  "Sim., simulated probability ($", format(SET5$NSIM, big.mark = ","),
+  "Sim., simulated probability ($",
+  formatC(SET5$NSIM, format = "d", big.mark = "{,}"),
   "$ trials per scenario) with its Monte Carlo standard error (SE); ",
   "Formula, closed form with the expected regional proportions of events. ",
-  "The hazard ratios are estimated by the ",
-  if (is.null(SET5$ESTIMATOR)) {
-    "Pike method (overall) and by Cox regression within each region"
-  } else {
-    paste(SET5$ESTIMATOR, "method in the overall population and in each region")
-  },
+  "The hazard ratios in the overall population and in each region are ",
+  "estimated by ",
+  c(cox = "Cox regression", peto = "the method of Peto",
+    pike = "the method of Pike")[[SET5$ESTIMATOR]],
   ".")
 
 tab5_lines <- c(

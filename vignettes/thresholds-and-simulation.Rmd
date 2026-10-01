@@ -82,7 +82,7 @@ The closed form relies on the normal approximation of the regional log hazard ra
 - patients enter by piecewise uniform accrual, specified by region and accrual interval;
 - event times are exponential, and patients may drop out at exponential times (argument `lambda_d`, no drop-out by default);
 - analysis $k$ takes place when the cumulative number of observed events reaches `events[k]`;
-- the boundaries are applied to the log-rank statistic, the overall hazard ratio is estimated by the method of Pike (or Peto), and the regional hazard ratios by Cox models fitted within each region.
+- the boundaries are applied to the log-rank statistic, and the hazard ratios in the overall population and in each region are estimated by the same method: Cox regression (`estimator = "cox"`, default), or the method of Peto or Pike (`"peto"`, `"pike"`); the regional estimates use the data of that region only.
 
 In the following example, 600 patients enter over 18 months and Japan starts enrolling after month 6. The number of simulated trials is kept small here to limit the run time; at least 10,000 trials are advisable in practice.
 

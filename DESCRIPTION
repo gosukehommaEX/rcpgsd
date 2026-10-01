@@ -20,9 +20,9 @@ Description: Computes regional consistency probabilities (RCPs) for
     hazard reduction criterion and Monte Carlo simulation for verification.
     A patient-level simulation of event-driven trials with piecewise uniform
     accrual, exponential event times and exponential drop-out, using the
-    log-rank test, the Pike or Peto estimate of the overall hazard ratio and
-    regional Cox models, is provided to assess the accuracy of the normal
-    approximation.
+    log-rank test and the Cox, Peto or Pike estimate of the hazard ratio in
+    the overall population and in each region, is provided to assess the
+    accuracy of the normal approximation.
     Efficacy and futility boundaries can be taken from 'gsDesign' or 'rpact'
     design objects, with binding or non-binding futility boundaries.
     Consistency thresholds adjusted for the inflation of the null RCP caused
