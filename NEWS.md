@@ -18,5 +18,14 @@
   models. It reports the mean regional event proportions, which can be
   passed to `rcpgsd()` for comparison with the closed form, and the
   frequencies of missing or infinite regional estimates.
+* `rcpgsd_events()` computes the expected analysis times and the expected
+  regional event proportions of an event-driven trial from the accrual
+  pattern by region and exponential event times.
+* `rcpgsd_get_fs()` computes the smallest proportion (and number) of events
+  in the region of interest that achieves a target overall RCP, stagewise
+  RCP, or unconditional probability of consistency, keeping the shape of
+  the regional proportions across analyses.
 * `print()` methods for all result classes and `plot()` methods for
   `rcpgsd` (also used for `rcpgsd_sim`) and `rcpgsd_gamma` objects.
+* Two vignettes: an introduction to the model and the stagewise RCPs, and a
+  description of the adjusted thresholds and the simulation functions.

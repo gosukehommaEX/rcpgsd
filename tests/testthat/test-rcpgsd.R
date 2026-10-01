@@ -15,6 +15,9 @@ fs_A <- cbind(c(0.05, 0.45, 0.50),
               c(0.08, 0.44, 0.48),
               c(0.10, 0.43, 0.47))
 hr_A <- c(0.75, 0.70, 0.72)
+# Closed-form results computed once and reused by several tests
+res_A    <- rcpgsd(design_A, events_A, fs_A, hr_A)
+res_A_hr <- rcpgsd(design_A, events_A, fs_A, hr_A, scale = "hr")
 
 test_that("fixed design reproduces the published RCPs of Homma (2026)", {
   # Homma (2026), Pharmaceutical Statistics 25:e70111, Section 3 with K = 1:
@@ -79,7 +82,7 @@ test_that("fixed design agrees with the closed forms of Homma (2024)", {
 })
 
 test_that("group sequential results match independent reference values", {
-  res <- rcpgsd(design_A, events_A, fs_A, hr_A)
+  res <- res_A
   expect_equal(get_m(res$stage, "M1", "p_eff"),
                c(0.2347782, 0.4710712, 0.2171700), tolerance = 1e-4)
   expect_equal(get_m(res$stage, "M1", "p_fut"),
@@ -101,15 +104,14 @@ test_that("group sequential results match independent reference values", {
 })
 
 test_that("hazard reduction scale matches independent reference values", {
-  res_ex <- rcpgsd(design_A, events_A, fs_A, hr_A, method = "M1",
-                   scale = "hr", hr_method = "exact")
   res_dm <- rcpgsd(design_A, events_A, fs_A, hr_A, method = "M1",
                    scale = "hr", hr_method = "delta")
   res_m2 <- rcpgsd(design_A, events_A, fs_A, hr_A, method = "M2",
                    scale = "hr", gamma_M2 = 0.05)
-  expect_equal(res_ex$stage$p_joint,
+  # Exact evaluation (default hr_method)
+  expect_equal(get_m(res_A_hr$stage, "M1", "p_joint"),
                c(0.1511802, 0.3141100, 0.1438625), tolerance = 1e-4)
-  expect_equal(res_ex$stage$rcp_uncond,
+  expect_equal(get_m(res_A_hr$stage, "M1", "rcp_uncond"),
                c(0.5748784, 0.6326266, 0.6797401), tolerance = 1e-6)
   expect_equal(res_dm$stage$p_joint,
                c(0.1504370, 0.3138725, 0.1436447), tolerance = 1e-4)
@@ -130,15 +132,13 @@ test_that("stage-specific thresholds are applied stage by stage", {
 })
 
 test_that("log hazard ratio and hazard ratio scales coincide for M2 with 0", {
-  res_l <- rcpgsd(design_A, events_A, fs_A, hr_A, method = "M2")
-  res_h <- rcpgsd(design_A, events_A, fs_A, hr_A, method = "M2",
-                  scale = "hr")
-  expect_equal(res_l$stage$p_joint, res_h$stage$p_joint, tolerance = 1e-10)
+  expect_equal(get_m(res_A$stage, "M2", "p_joint"),
+               get_m(res_A_hr$stage, "M2", "p_joint"), tolerance = 1e-10)
 })
 
 test_that("closed form agrees with Monte Carlo simulation", {
   for (sc in c("loghr", "hr")) {
-    res_f <- rcpgsd(design_A, events_A, fs_A, hr_A, scale = sc)
+    res_f <- if (sc == "loghr") res_A else res_A_hr
     res_s <- rcpgsd(design_A, events_A, fs_A, hr_A, scale = sc,
                     approach = "simulation", nsim = 200000, seed = 123)
     # Monte Carlo standard error is at most 0.5 / sqrt(200000) = 0.0011;
@@ -151,7 +151,7 @@ test_that("closed form agrees with Monte Carlo simulation", {
 })
 
 test_that("output structure is consistent", {
-  res <- rcpgsd(design_A, events_A, fs_A, hr_A)
+  res <- res_A
   expect_s3_class(res, "rcpgsd")
   expect_equal(nrow(res$stage), 6L)
   expect_equal(res$overall$method, c("M1", "M2"))

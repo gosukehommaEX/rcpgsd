@@ -252,6 +252,7 @@ multiple primary endpoints in multiregional clinical trials.
 \emph{Pharmaceutical Statistics}, 25, e70111.
 }
 \seealso{
-\code{\link{rcpgsd_get_gamma}}, \code{\link{rcpgsd_sim}},
+\code{\link{rcpgsd_get_gamma}}, \code{\link{rcpgsd_get_fs}},
+\code{\link{rcpgsd_events}}, \code{\link{rcpgsd_sim}},
 \code{\link{print.rcpgsd}}, \code{\link{plot.rcpgsd}}
 }

@@ -25,7 +25,10 @@ Description: Computes regional consistency probabilities (RCPs) for
     Efficacy and futility boundaries can be taken from 'gsDesign' or 'rpact'
     design objects, with binding or non-binding futility boundaries.
     Consistency thresholds adjusted for the inflation of the null RCP caused
-    by early efficacy stopping are also provided.
+    by early efficacy stopping are also provided. For planning, the expected
+    regional event proportions are derived from the accrual pattern, and the
+    smallest proportion of events in the region of interest that achieves a
+    target RCP is computed.
 License: GPL (>= 2)
 URL: https://github.com/gosukehommaEX/rcpgsd
 BugReports: https://github.com/gosukehommaEX/rcpgsd/issues
@@ -40,8 +43,11 @@ Imports:
     stats
 Suggests:
     gsDesign,
+    knitr,
+    rmarkdown,
     rpact,
     survival,
     testthat (>= 3.1.5)
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0

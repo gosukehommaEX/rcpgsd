@@ -232,17 +232,44 @@ rcpgsd_get_gamma <- function(design,
                        n_nodes)
   }
 
-  # Solve f(g) = 0 for a decreasing function f on the search interval
+  # Solve f(g) = 0 for a decreasing function f. The bracket is expanded
+  # stepwise from the unadjusted threshold (steps 0.05, 0.1, 0.2, ...) and
+  # limited to the search interval, so that thresholds far from the solution,
+  # where the probabilities are very small and slow to evaluate accurately,
+  # are not evaluated.
   solve_gamma <- function(f, m, label) {
-    g0 <- base[[m]]
-    f0 <- f(g0)
-    if (!allow_relax && f0 <= 0) {
+    g0  <- base[[m]]
+    iv  <- intervals[[m]]
+    f0  <- f(g0)
+    if (f0 == 0 || (!allow_relax && f0 < 0)) {
       return(g0)
     }
-    lo  <- if (allow_relax) intervals[[m]][1L] else g0
-    hi  <- intervals[[m]][2L]
-    flo <- if (lo == g0) f0 else f(lo)
-    fhi <- f(hi)
+    step <- 0.05
+    if (f0 > 0) {
+      lo  <- g0
+      flo <- f0
+      hi  <- min(g0 + step, iv[2L])
+      fhi <- f(hi)
+      while (fhi > 0 && hi < iv[2L]) {
+        lo   <- hi
+        flo  <- fhi
+        step <- 2 * step
+        hi   <- min(hi + step, iv[2L])
+        fhi  <- f(hi)
+      }
+    } else {
+      hi  <- g0
+      fhi <- f0
+      lo  <- max(g0 - step, iv[1L])
+      flo <- f(lo)
+      while (flo < 0 && lo > iv[1L]) {
+        hi   <- lo
+        fhi  <- flo
+        step <- 2 * step
+        lo   <- max(lo - step, iv[1L])
+        flo  <- f(lo)
+      }
+    }
     if (flo < 0 || fhi > 0) {
       warning(sprintf(paste0("No adjusted threshold for %s (%s) was found ",
                              "within the search interval; NA is returned."),

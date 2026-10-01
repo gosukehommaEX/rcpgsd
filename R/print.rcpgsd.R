@@ -53,10 +53,10 @@ print.rcpgsd <- function(x, digits = 4, ...) {
   cat(sprintf("   Regions           : S = %d (region 1 = region of interest)\n",
               S))
   cat(sprintf("   True HR           : (%s)\n",
-              paste(formatC(x$hr, format = "g", digits = 4), collapse = ", ")))
+              paste(signif(x$hr, 4), collapse = ", ")))
   cat(sprintf("   Allocation ratio  : r = %s\n", format(x$r)))
   cat(sprintf("   Total events      : (%s)\n",
-              paste(format(x$events), collapse = ", ")))
+              paste(format(x$events, trim = TRUE), collapse = ", ")))
   cat(strrep("-", 70), "\n")
 
   lab <- c(M1 = "Method 1", M2 = "Method 2")

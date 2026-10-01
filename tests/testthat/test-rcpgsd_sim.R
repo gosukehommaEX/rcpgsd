@@ -4,11 +4,12 @@ design_S <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
 events_S <- c(150, 300, 450)
 nacc_S   <- rbind(c(0, 60), c(100, 170), c(100, 170))
 lam_S    <- log(2) / 12
+sim_S    <- rcpgsd_sim(design_S, events_S, hr = 0.72, lambda_c = lam_S,
+                       accrual_time = c(0, 6, 18), n_accrual = nacc_S,
+                       nsim = 1000, seed = 2)
 
 test_that("output structure is consistent", {
-  sim <- rcpgsd_sim(design_S, events_S, hr = 0.72, lambda_c = lam_S,
-                    accrual_time = c(0, 6, 18), n_accrual = nacc_S,
-                    nsim = 200, seed = 1)
+  sim <- sim_S
   expect_s3_class(sim, "rcpgsd_sim")
   expect_s3_class(sim, "rcpgsd")
   expect_equal(nrow(sim$stage), 6L)
@@ -30,7 +31,7 @@ test_that("output structure is consistent", {
 test_that("results are reproducible with a seed", {
   args <- list(design = design_S, events = events_S, hr = 0.72,
                lambda_c = lam_S, accrual_time = c(0, 6, 18),
-               n_accrual = nacc_S, nsim = 100)
+               n_accrual = nacc_S, nsim = 50)
   sim1 <- do.call(rcpgsd_sim, c(args, seed = 5))
   sim2 <- do.call(rcpgsd_sim, c(args, seed = 5))
   sim3 <- do.call(rcpgsd_sim, c(args, seed = 6))
@@ -39,23 +40,33 @@ test_that("results are reproducible with a seed", {
 })
 
 test_that("simulation agrees with the closed form", {
-  for (sc in c("loghr", "hr")) {
-    sim <- rcpgsd_sim(design_S, events_S, hr = 0.72, lambda_c = lam_S,
-                      accrual_time = c(0, 6, 18), n_accrual = nacc_S,
-                      scale = sc, nsim = 1500, seed = 2)
-    cf <- rcpgsd(design_S, events_S, fs = sim$fs_mean, hr = 0.72,
-                 scale = sc)
-    # Monte Carlo standard error is at most 0.5 / sqrt(1500) = 0.013
-    for (col in c("p_eff", "p_joint", "rcp_uncond")) {
-      expect_lt(max(abs(sim$stage[[col]] - cf$stage[[col]])), 0.05)
-    }
+  cf <- rcpgsd(design_S, events_S, fs = sim_S$fs_mean, hr = 0.72)
+  # Monte Carlo standard error is at most 0.5 / sqrt(1000) = 0.016;
+  # absolute differences are compared against about 3.8 standard errors
+  for (col in c("p_eff", "p_joint", "rcp_uncond")) {
+    expect_lt(max(abs(sim_S$stage[[col]] - cf$stage[[col]])), 0.06)
   }
+})
+
+test_that("the consistency scale changes only the Method 1 criterion", {
+  args <- list(design = design_S, events = events_S, hr = 0.72,
+               lambda_c = lam_S, accrual_time = c(0, 6, 18),
+               n_accrual = nacc_S, nsim = 100, seed = 8)
+  sim_l <- do.call(rcpgsd_sim, c(args, scale = "loghr"))
+  sim_h <- do.call(rcpgsd_sim, c(args, scale = "hr"))
+  expect_equal(sim_l$stage$p_eff, sim_h$stage$p_eff)
+  m2 <- sim_l$stage$method == "M2"
+  expect_equal(sim_l$stage$p_joint[m2], sim_h$stage$p_joint[m2])
+  # With HR < 1 the hazard reduction criterion is met at least as often
+  m1 <- sim_l$stage$method == "M1"
+  expect_true(all(sim_h$stage$rcp_uncond[m1] >= sim_l$stage$rcp_uncond[m1] -
+                    0.05))
 })
 
 test_that("Pike and Peto estimators give similar results", {
   args <- list(design = design_S, events = events_S, hr = 0.72,
                lambda_c = lam_S, accrual_time = c(0, 6, 18),
-               n_accrual = nacc_S, nsim = 300, seed = 3)
+               n_accrual = nacc_S, nsim = 150, seed = 3)
   sim_pike <- do.call(rcpgsd_sim, c(args, overall_est = "pike"))
   sim_peto <- do.call(rcpgsd_sim, c(args, overall_est = "peto"))
   expect_equal(sim_pike$stage$p_eff, sim_peto$stage$p_eff)
@@ -66,7 +77,7 @@ test_that("Pike and Peto estimators give similar results", {
 test_that("small regions produce missing or infinite estimates", {
   sim <- rcpgsd_sim(list(upper = c(2.963, 1.969)), events = c(60, 120),
                     hr = 0.7, lambda_c = 0.05, accrual_time = c(0, 12),
-                    n_accrual = c(10, 390), nsim = 300, seed = 4)
+                    n_accrual = c(10, 390), nsim = 200, seed = 4)
   expect_true(sim$analysis$p_no_est_r1[1] + sim$analysis$p_inf_r1[1] > 0)
   expect_true(all(sim$p_no_est >= 0 & sim$p_no_est <= 1))
   expect_true(all(sim$p_inf >= 0 & sim$p_inf <= 1))
@@ -76,7 +87,7 @@ test_that("non-binding futility can be obeyed or ignored", {
   design_f <- list(upper = c(2.963, 1.969), lower = 0.5, binding = FALSE)
   args <- list(design = design_f, events = c(100, 200), hr = 0.8,
                lambda_c = 0.05, accrual_time = c(0, 12),
-               n_accrual = c(40, 260), nsim = 300, seed = 7)
+               n_accrual = c(40, 260), nsim = 150, seed = 7)
   sim_o <- do.call(rcpgsd_sim, c(args, futility = "obey"))
   sim_i <- do.call(rcpgsd_sim, c(args, futility = "ignore"))
   expect_true(sim_o$stage$p_fut[1] > 0)

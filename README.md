@@ -13,6 +13,7 @@ When a trial stops for efficacy at an interim analysis, regional consistency is 
 - **Group sequential boundaries** taken from `gsDesign` or `rpact` design objects (or supplied directly), with **binding or non-binding** futility boundaries
 - **Delayed enrolment** in the region of interest through regional event proportions that change across analyses, and **region-specific hazard ratios**
 - **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
+- **Planning tools**: expected regional event proportions derived from the accrual pattern by region, and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
 - **Monte Carlo simulation** of the same normal model for verification of the numerical evaluation
 - **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
 - `print()` and `plot()` methods for all results
@@ -26,8 +27,15 @@ Regional consistency is evaluated following the Japanese Ministry of Health, Lab
 
 ```r
 # install.packages("devtools")
-devtools::install_github("gosukehommaEX/rcpgsd")
+devtools::install_github("gosukehommaEX/rcpgsd", build_vignettes = TRUE)
 ```
+
+## Vignettes
+
+| Vignette | Contents |
+|---|---|
+| `vignette("rcpgsd", package = "rcpgsd")` | Model, stagewise RCPs, delayed enrolment, hazard reduction scale, planning of the proportion of Japanese events, boundaries from `gsDesign` and `rpact` |
+| `vignette("thresholds-and-simulation", package = "rcpgsd")` | Null RCP inflation and adjusted thresholds, simulation of the normal model, patient-level simulation |
 
 ## Main Functions
 
@@ -36,6 +44,8 @@ devtools::install_github("gosukehommaEX/rcpgsd")
 | `rcpgsd()` | Stagewise and overall RCPs (Method 1 and Method 2) under a GSD, by closed form or simulation |
 | `rcpgsd_get_gamma()` | Stagewise or overall consistency thresholds adjusted for the inflation of the null RCP caused by early efficacy stopping |
 | `rcpgsd_sim()` | Patient-level simulation of event-driven trials estimating the same probabilities as `rcpgsd()` |
+| `rcpgsd_events()` | Expected analysis times and regional event proportions from the accrual pattern by region |
+| `rcpgsd_get_fs()` | Smallest proportion (and number) of events in the region of interest achieving a target RCP |
 
 ## Model
 
@@ -148,6 +158,30 @@ cf <- rcpgsd(design_B, events = c(150, 300, 450), fs = sim$fs_mean,
 cbind(simulation = sim$stage$rcp, closed_form = cf$stage$rcp)
 ```
 
+### 7. Planning: expected proportions and required proportion of Japanese events
+
+```r
+# Expected regional event proportions with delayed enrolment in Japan
+n_acc <- rbind(c(0, 60), c(100, 170), c(100, 170))
+ev <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+                    lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+                    n_accrual = n_acc)
+print(ev)
+
+# Smallest proportion of Japanese events (keeping the delayed-enrolment
+# shape) such that the overall RCP given success is at least 0.8
+design_B <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
+req <- rcpgsd_get_fs(design_B, events = c(150, 300, 450), fs = ev$fs,
+                     hr = 0.72, target = 0.8, type = "overall")
+print(req)
+
+# Fixed design, hazard reduction scale, unconditional probability
+# (reproduces Table 1 of Hayashi and Itoh, 2018)
+rcpgsd_get_fs(list(upper = qnorm(0.975)), events = 161, fs = c(0.2, 0.8),
+              hr = 0.6, method = "M1", type = "unconditional",
+              scale = "hr")$result
+```
+
 ## Verification
 
 The test suite checks the closed-form results against:
@@ -155,6 +189,8 @@ The test suite checks the closed-form results against:
 - the RCPs reported by Homma (2026) for a single primary endpoint (fixed design);
 - the consistency probability on the hazard reduction scale reported by Hayashi and Itoh (2018) (numerical integration and delta method);
 - the closed-form expressions for the fixed design given in Homma (2024);
+- the required numbers of Japanese events in Table 1 of Hayashi and Itoh (2018) and the constant required fraction on the log hazard ratio scale;
+- numerical integration of the expected numbers of events, and the patient-level simulation for the expected regional proportions;
 - independent reference values for group sequential designs computed in Python (SciPy), and Monte Carlo simulation;
 - boundaries obtained from `gsDesign` and from `rpact` for the same design;
 - for the patient-level simulation, `survival::survdiff()` (log-rank statistic), `survival::coxph()` and direct maximization of the partial likelihood (regional Cox estimates), and the closed form evaluated at the simulated regional event proportions.

@@ -1,0 +1,187 @@
+---
+title: "Regional consistency probability under group sequential designs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Regional consistency probability under group sequential designs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+                      fig.width = 7, fig.height = 4)
+```
+
+```{r load}
+library(rcpgsd)
+```
+
+## Background
+
+In a multi-regional clinical trial (MRCT), the regional sample size is often chosen so that the regional consistency probability (RCP), the probability of meeting a regional consistency criterion, exceeds a prespecified value. The Japanese Ministry of Health, Labour and Welfare (MHLW, 2007) guidance gives two criteria. Method 1 requires the treatment effect estimated in the region of interest (e.g., Japan) to retain a fraction of the overall estimate. Method 2 requires the estimated treatment effect to favour the experimental treatment in every region.
+
+Closed-form RCPs are available for fixed designs (Ikeda and Bretz, 2010; Hayashi and Itoh, 2018; Homma, 2024). Confirmatory oncology trials, however, are usually analysed with a group sequential design (GSD). When such a trial stops for efficacy at an interim analysis, regional consistency is evaluated with the data available at that analysis, and the trial reaches that point only because the overall test statistic crossed the efficacy boundary. The package `rcpgsd` computes the RCP conditional on stopping for efficacy at each analysis, which accounts for both features.
+
+## Model
+
+Let $\delta_s = -\log(\mathrm{HR}_s)$ be the treatment effect in region $s = 1, \ldots, S$, with region 1 the region of interest, so that a positive value indicates a benefit. At analysis $k = 1, \ldots, K$ there are $d_k$ events in total, a proportion $f_{s,k}$ of which occur in region $s$. With allocation ratio $r$, the regional information is $I_{s,k} = r f_{s,k} d_k / (1 + r)^2$, and the regional estimates satisfy
+
+$$
+\hat{\delta}_{s,k} \sim N(\delta_s, 1 / I_{s,k}), \qquad
+\mathrm{Cov}(\hat{\delta}_{s,k}, \hat{\delta}_{s,k'}) = 1 / I_{s,\max(k, k')},
+$$
+
+with independence across regions. The overall estimate is $\hat{\delta}_k = \sum_s w_{s,k} \hat{\delta}_{s,k}$ with $w_{s,k} = I_{s,k} / I_k$, and the Wald statistic $Z_k = \hat{\delta}_k \sqrt{I_k}$ is compared with the efficacy boundaries $u_k$ and futility boundaries $l_k$.
+
+With $E_k = \{l_j < Z_j < u_j, \ j < k; \ Z_k \ge u_k\}$ the event of stopping for efficacy at analysis $k$ and $C_k$ the consistency event at analysis $k$, the function `rcpgsd()` reports
+
+- `p_eff` $= \Pr(E_k)$, the probability of stopping for efficacy at analysis $k$;
+- `p_joint` $= \Pr(E_k \cap C_k)$;
+- `rcp` $= \Pr(C_k \mid E_k)$, the RCP given efficacy stopping at analysis $k$;
+- `rcp_uncond` $= \Pr(C_k)$, which is what the fixed-design formula gives when it is applied to the data available at analysis $k$;
+
+and, as the overall RCP given success, $\sum_k \Pr(E_k \cap C_k) / \sum_k \Pr(E_k)$.
+
+On the log hazard ratio scale, Method 1 is $\hat{\delta}_{1,k} > \gamma_{M1} \hat{\delta}_k$ and Method 2 is $\hat{\delta}_{s,k} > \gamma_{M2}$ for all $s$. All probabilities are then multivariate normal probabilities.
+
+## A first example
+
+Consider a trial with two interim analyses and a final analysis after 150, 300 and 450 events, with Lan-DeMets O'Brien-Fleming-type efficacy boundaries for a one-sided significance level of 0.025. Japan accounts for 10% of the events, and the true hazard ratio is 0.72 in all regions.
+
+```{r example1}
+design <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
+res <- rcpgsd(design, events = c(150, 300, 450),
+              fs = c(0.10, 0.45, 0.45), hr = 0.72)
+res
+```
+
+The boundaries above were taken from `gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)`. A design object from `gsDesign` or `rpact` can also be passed directly, as shown later.
+
+```{r example1-plot}
+plot(res)
+```
+
+The solid lines show the RCP given efficacy stopping at each analysis, and the dashed lines show the unconditional probability of consistency at that analysis. A trial that stops early has crossed a boundary that is larger than the fixed-design critical value, which selects large overall estimates. Under Method 1 on the log hazard ratio scale and with a common hazard ratio, the regional estimate given the overall estimate has mean equal to the overall estimate, so the selection also moves the regional estimate upwards. For this design the RCP given stopping at the first analysis is `r sprintf("%.3f", res$stage$rcp[1])`, whereas the unconditional probability of consistency at that analysis is only `r sprintf("%.3f", res$stage$rcp_uncond[1])`.
+
+The fixed design with the same final number of events is obtained with a single analysis:
+
+```{r example1-fixed}
+res_fix <- rcpgsd(list(upper = qnorm(0.975)), events = 450,
+                  fs = c(0.10, 0.45, 0.45), hr = 0.72)
+res_fix$overall
+res$overall
+```
+
+## Delayed enrolment in the region of interest
+
+Regional enrolment often starts later in Japan than in other regions, so that the proportion of Japanese events is smaller at the interim analyses than at the final analysis. This is specified by a matrix `fs` with one column per analysis.
+
+```{r delayed}
+fs_delay <- cbind(c(0.04, 0.48, 0.48),
+                  c(0.08, 0.46, 0.46),
+                  c(0.10, 0.45, 0.45))
+res_delay <- rcpgsd(design, events = c(150, 300, 450), fs = fs_delay,
+                    hr = 0.72)
+cbind(stage       = 1:3,
+      events_r1   = res_delay$stage$events_r1[1:3],
+      rcp_equal   = res$stage$rcp[1:3],
+      rcp_delayed = res_delay$stage$rcp[1:3])
+```
+
+The last two columns compare the Method 1 RCPs given efficacy stopping when the Japanese proportion is constant and when Japanese enrolment is delayed. With delayed enrolment, the RCP given stopping at the first analysis decreases from `r sprintf("%.3f", res$stage$rcp[1])` to `r sprintf("%.3f", res_delay$stage$rcp[1])`, because only `r sprintf("%.0f", res_delay$stage$events_r1[1])` Japanese events are available at that analysis.
+
+## Hazard reduction scale
+
+Hayashi and Itoh (2018) define Method 1 on the hazard reduction scale, $1 - \widehat{\mathrm{HR}}_{1,k} > \gamma_{M1} (1 - \widehat{\mathrm{HR}}_k)$. This criterion is nonlinear in the log hazard ratio estimates. With `hr_method = "exact"` (default) the probability is computed by conditioning on the regional estimate and integrating numerically, and with `hr_method = "delta"` the criterion is linearized by the delta method.
+
+```{r hr-scale}
+res_ex <- rcpgsd(design, events = c(150, 300, 450),
+                 fs = c(0.10, 0.45, 0.45), hr = 0.72, method = "M1",
+                 scale = "hr", hr_method = "exact")
+res_dm <- rcpgsd(design, events = c(150, 300, 450),
+                 fs = c(0.10, 0.45, 0.45), hr = 0.72, method = "M1",
+                 scale = "hr", hr_method = "delta")
+cbind(stage  = 1:3,
+      loghr  = res$stage$rcp[1:3],
+      hr_exa = res_ex$stage$rcp,
+      hr_dm  = res_dm$stage$rcp)
+```
+
+For a single analysis, the exact evaluation reproduces the value 0.8009655 given by Hayashi and Itoh (2018) for 161 events, of which 30 are Japanese, and a hazard ratio of 0.6:
+
+```{r hayashi-itoh}
+rcpgsd(list(upper = qnorm(0.975)), events = 161, fs = c(30, 131) / 161,
+       hr = 0.6, method = "M1", scale = "hr")$stage$rcp_uncond
+```
+
+## Planning the proportion of Japanese events
+
+At the design stage, the regional event proportions at each analysis follow from the accrual pattern by region and the event rates. The function `rcpgsd_events()` computes the expected calendar time of each analysis and the expected regional numbers and proportions of events, assuming piecewise uniform accrual and exponential event times. In the following example, 600 patients enter over 18 months, Japan starts enrolling after month 6, and the median survival time in the control group is 12 months.
+
+```{r planning-events}
+n_acc <- rbind(c(0, 60),      # region 1 (Japan): months 0-6, 6-18
+               c(100, 170),   # region 2
+               c(100, 170))   # region 3
+ev <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+                    lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+                    n_accrual = n_acc)
+ev
+```
+
+The function `rcpgsd_get_fs()` solves the inverse problem: it finds the smallest proportion of events in region 1 at the final analysis such that a criterion reaches a target value. The matrix `fs` serves as a template, and the proportions of region 1 at the interim analyses are scaled together with the final proportion, so the delayed-enrolment pattern of `ev$fs` is kept.
+
+```{r planning-fs}
+req <- rcpgsd_get_fs(design, events = c(150, 300, 450), fs = ev$fs,
+                     hr = 0.72, target = 0.8, type = "overall")
+req$result
+req_s <- rcpgsd_get_fs(design, events = c(150, 300, 450), fs = ev$fs,
+                       hr = 0.72, target = 0.8, method = "M1",
+                       type = "stagewise")
+req_s$result
+```
+
+For an overall Method 1 RCP given success of at least 0.8, about `r req$result$events_r1_ceiling[1]` of the 450 events (`r sprintf("%.1f", 100 * req$result$fs_r1[1])`%) must occur in Japan. Requiring the Method 1 RCP given efficacy stopping to be at least 0.8 at every analysis (`type = "stagewise"`) increases this number to `r req_s$result$events_r1_ceiling[1]`.
+
+With `type = "unconditional"` and a single-stage design, the function gives the classical fixed-design calculation. On the hazard reduction scale it reproduces the 29.8 Japanese events reported in Table 1 of Hayashi and Itoh (2018) for a hazard ratio of 0.6 and 161 events:
+
+```{r planning-hi}
+rcpgsd_get_fs(list(upper = qnorm(0.975)), events = 161, fs = c(0.2, 0.8),
+              hr = 0.6, method = "M1", type = "unconditional",
+              scale = "hr")$result
+```
+
+## Boundaries from gsDesign or rpact
+
+Design objects from `gsDesign` and `rpact` can be passed as `design`. Binding futility boundaries are always applied. Non-binding futility boundaries are applied with `futility = "obey"` (default) and ignored with `futility = "ignore"`.
+
+```{r gsdesign, eval = requireNamespace("gsDesign", quietly = TRUE)}
+gsd <- gsDesign::gsDesign(k = 3, test.type = 4, alpha = 0.025, beta = 0.1,
+                          sfu = gsDesign::sfLDOF,
+                          sfl = gsDesign::sfHSD, sflpar = -2)
+res_obey <- rcpgsd(gsd, events = c(150, 300, 450),
+                   fs = c(0.10, 0.45, 0.45), hr = 0.72)
+res_ign  <- rcpgsd(gsd, events = c(150, 300, 450),
+                   fs = c(0.10, 0.45, 0.45), hr = 0.72, futility = "ignore")
+rbind(obey = res_obey$overall$rcp, ignore = res_ign$overall$rcp)
+```
+
+```{r rpact, eval = requireNamespace("rpact", quietly = TRUE)}
+rpd <- rpact::getDesignGroupSequential(kMax = 3, alpha = 0.025,
+                                       typeOfDesign = "asOF",
+                                       futilityBounds = c(0, 0.5),
+                                       bindingFutility = TRUE)
+rcpgsd(rpd, events = c(150, 300, 450), fs = c(0.10, 0.45, 0.45),
+       hr = 0.72)$overall
+```
+
+The efficacy and futility boundaries are used as they are given in the design object. A warning is issued when the information fractions implied by `events` differ from those of the design by more than 0.01.
+
+## References
+
+Hayashi N, Itoh Y (2018). A re-examination of Japanese sample size calculation for multi-regional clinical trial evaluating survival endpoint. *Japanese Journal of Biometrics*, 38, 79-92.
+
+Homma G (2024). Cautionary note on regional consistency evaluation in multiregional clinical trials with binary outcomes. *Pharmaceutical Statistics*, 23, 385-398.
+
+Ikeda K, Bretz F (2010). Sample size and proportion of Japanese patients in multi-regional trials. *Pharmaceutical Statistics*, 9, 207-216.
+
+Ministry of Health, Labour and Welfare (2007). Basic principles on global clinical trials.

@@ -3,3 +3,5 @@
 ^LICENSE\.md$
 ^\.gitignore$
 ^README\.md$
+^doc$
+^Meta$

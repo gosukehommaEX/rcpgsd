@@ -47,12 +47,11 @@ print.rcpgsd_sim <- function(x, digits = 4, ...) {
               paste(rowSums(x$n_accrual), collapse = ", "),
               as.integer(sum(x$n_accrual))))
   cat(sprintf("   Accrual intervals : %s\n",
-              paste(format(x$accrual_time), collapse = " | ")))
+              paste(format(x$accrual_time, trim = TRUE), collapse = " | ")))
   cat(sprintf("   Control hazard    : (%s)\n",
-              paste(formatC(x$lambda_c, format = "g", digits = 4),
-                    collapse = ", ")))
+              paste(signif(x$lambda_c, 4), collapse = ", ")))
   cat(sprintf("   True HR           : (%s)\n",
-              paste(formatC(x$hr, format = "g", digits = 4), collapse = ", ")))
+              paste(signif(x$hr, 4), collapse = ", ")))
   cat(sprintf("   Allocation ratio  : r = %s\n", format(x$r)))
   cat(strrep("-", 70), "\n")
 
