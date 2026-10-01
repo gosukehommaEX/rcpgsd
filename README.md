@@ -13,7 +13,7 @@ When a trial stops for efficacy at an interim analysis, regional consistency is 
 - **Group sequential boundaries** taken from `gsDesign` or `rpact` design objects (or supplied directly), with **binding or non-binding** futility boundaries
 - **Delayed enrolment** in the region of interest through regional event proportions that change across analyses, and **region-specific hazard ratios**
 - **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
-- **Planning tools**: expected regional event proportions derived from the accrual pattern by region (with optional exponential drop-out), and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
+- **Planning tools**: accrual by region with delayed regional starts under the overall accrual plan of the protocol, expected regional event proportions derived from the accrual pattern by region (with optional exponential drop-out), and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
 - **Monte Carlo simulation** of the same normal model for verification of the numerical evaluation
 - **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times, optional exponential drop-out; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
 - `print()` and `plot()` methods for all results
@@ -44,6 +44,7 @@ devtools::install_github("gosukehommaEX/rcpgsd", build_vignettes = TRUE)
 | `rcpgsd()` | Stagewise and overall RCPs (Method 1 and Method 2) under a GSD, by closed form or simulation |
 | `rcpgsd_get_gamma()` | Stagewise or overall consistency thresholds adjusted for the inflation of the null RCP caused by early efficacy stopping |
 | `rcpgsd_sim()` | Patient-level simulation of event-driven trials estimating the same probabilities as `rcpgsd()` |
+| `rcpgsd_accrual()` | Accrual by region when some regions start late, keeping the overall accrual plan (delays absorbed by the regions starting at time 0) |
 | `rcpgsd_events()` | Expected analysis times and regional event proportions from the accrual pattern by region |
 | `rcpgsd_get_fs()` | Smallest proportion (and number) of events in the region of interest achieving a target RCP |
 
@@ -161,6 +162,17 @@ cbind(simulation = sim$stage$rcp, closed_form = cf$stage$rcp)
 ### 7. Planning: expected proportions and required proportion of Japanese events
 
 ```r
+# Overall plan of the protocol: 600 patients at 50 patients per month over
+# 12 months. Japan (60 patients) starts 6 months late and the other
+# regions absorb the delay, so the analysis times are unchanged
+acc <- rcpgsd_accrual(n_region = c(60, 270, 270), start = c(6, 0, 0),
+                      accrual_time = c(0, 12), rate_overall = 50)
+print(acc)
+ev_acc <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+                        lambda_c = log(2) / 12,
+                        accrual_time = acc$accrual_time,
+                        n_accrual = acc$n_accrual)
+
 # Expected regional event proportions with delayed enrolment in Japan
 n_acc <- rbind(c(0, 60), c(100, 170), c(100, 170))
 ev <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,

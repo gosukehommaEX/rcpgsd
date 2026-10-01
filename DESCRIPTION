@@ -26,10 +26,11 @@ Description: Computes regional consistency probabilities (RCPs) for
     Efficacy and futility boundaries can be taken from 'gsDesign' or 'rpact'
     design objects, with binding or non-binding futility boundaries.
     Consistency thresholds adjusted for the inflation of the null RCP caused
-    by early efficacy stopping are also provided. For planning, the expected
-    regional event proportions are derived from the accrual pattern, and the
-    smallest proportion of events in the region of interest that achieves a
-    target RCP is computed.
+    by early efficacy stopping are also provided. For planning, the accrual
+    by region with delayed regional starts is constructed under the overall
+    accrual plan, the expected regional event proportions are derived from
+    the accrual pattern, and the smallest proportion of events in the region
+    of interest that achieves a target RCP is computed.
 License: GPL (>= 2)
 URL: https://github.com/gosukehommaEX/rcpgsd
 BugReports: https://github.com/gosukehommaEX/rcpgsd/issues

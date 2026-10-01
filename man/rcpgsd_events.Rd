@@ -119,5 +119,7 @@ rbind(no_dropout = ev$analysis$time, dropout = ev_d$analysis$time)
 }
 \seealso{
 \code{\link{rcpgsd}}, \code{\link{rcpgsd_get_fs}},
-\code{\link{rcpgsd_sim}}, \code{\link{print.rcpgsd_events}}
+\code{\link{rcpgsd_sim}}, \code{\link{rcpgsd_accrual}} (accrual by
+region with delayed starts under a fixed overall accrual plan),
+\code{\link{print.rcpgsd_events}}
 }

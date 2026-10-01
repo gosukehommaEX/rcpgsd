@@ -28,6 +28,13 @@
   in the region of interest that achieves a target overall RCP, stagewise
   RCP, or unconditional probability of consistency, keeping the shape of
   the regional proportions across analyses.
+* `rcpgsd_accrual()` constructs the accrual by region when some regions
+  start enrolling late, keeping the overall accrual plan of the protocol
+  (total number of patients, accrual period and overall accrual rate): a
+  delayed region enrols uniformly from its start to the end of accrual and
+  the regions starting at time 0 absorb the rest. The analysis times are
+  then those of the protocol. Delays that cannot be absorbed are rejected
+  with an error that states the violated condition.
 * Drop-out hazards (`lambda_d`) can be common to all patients, specific to
   the control and experimental groups, or specific to each region and
   group.

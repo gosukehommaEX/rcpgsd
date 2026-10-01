@@ -52,7 +52,9 @@
 #' }
 #'
 #' @seealso \code{\link{rcpgsd}}, \code{\link{rcpgsd_get_fs}},
-#'   \code{\link{rcpgsd_sim}}, \code{\link{print.rcpgsd_events}}
+#'   \code{\link{rcpgsd_sim}}, \code{\link{rcpgsd_accrual}} (accrual by
+#'   region with delayed starts under a fixed overall accrual plan),
+#'   \code{\link{print.rcpgsd_events}}
 #'
 #' @examples
 #' # 600 patients over 18 months; Japan (region 1) starts after month 6
