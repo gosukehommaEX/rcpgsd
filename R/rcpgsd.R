@@ -176,8 +176,8 @@
 #' multiple primary endpoints in multiregional clinical trials.
 #' \emph{Pharmaceutical Statistics}, 25, e70111.
 #'
-#' @seealso \code{\link{rcpgsd_get_gamma}}, \code{\link{print.rcpgsd}},
-#'   \code{\link{plot.rcpgsd}}
+#' @seealso \code{\link{rcpgsd_get_gamma}}, \code{\link{rcpgsd_sim}},
+#'   \code{\link{print.rcpgsd}}, \code{\link{plot.rcpgsd}}
 #'
 #' @examples
 #' # Three analyses with O'Brien-Fleming-type boundaries and a binding

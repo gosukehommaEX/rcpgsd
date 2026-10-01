@@ -30,8 +30,6 @@ test_that("invalid designs are rejected", {
 })
 
 test_that("gsDesign objects are converted", {
-  message("gsDesign available for testing: ",
-          requireNamespace("gsDesign", quietly = TRUE))
   skip_if_not_installed("gsDesign")
   gs4 <- gsDesign::gsDesign(k = 3, test.type = 4, alpha = 0.025, beta = 0.1,
                             sfu = gsDesign::sfLDOF, sfl = gsDesign::sfHSD,
@@ -58,8 +56,6 @@ test_that("gsDesign objects are converted", {
 })
 
 test_that("rpact objects are converted", {
-  message("rpact available for testing: ",
-          requireNamespace("rpact", quietly = TRUE))
   skip_if_not_installed("rpact")
   rp <- rpact::getDesignGroupSequential(kMax = 3, alpha = 0.025, beta = 0.1,
                                         typeOfDesign = "asOF",
@@ -81,10 +77,6 @@ test_that("rpact objects are converted", {
 })
 
 test_that("gsDesign and rpact boundaries give the same RCPs", {
-  avail <- c(gsDesign = requireNamespace("gsDesign", quietly = TRUE),
-             rpact    = requireNamespace("rpact", quietly = TRUE))
-  message("Packages available for cross-check: ",
-          paste(names(avail), avail, sep = " = ", collapse = ", "))
   skip_if_not_installed("gsDesign")
   skip_if_not_installed("rpact")
   gs <- gsDesign::gsDesign(k = 3, test.type = 1, alpha = 0.025, beta = 0.1,

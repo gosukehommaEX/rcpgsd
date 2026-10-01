@@ -11,4 +11,12 @@
 * `rcpgsd_get_gamma()` computes stagewise or overall consistency thresholds
   that restore the null RCP given efficacy stopping to its fixed-design
   reference value.
-* `print()` and `plot()` methods for both result classes.
+* `rcpgsd_sim()` simulates event-driven trials at the patient level
+  (piecewise uniform accrual by region, exponential event times) and
+  estimates the same probabilities as `rcpgsd()`, using the log-rank test,
+  the Pike or Peto estimate of the overall hazard ratio and regional Cox
+  models. It reports the mean regional event proportions, which can be
+  passed to `rcpgsd()` for comparison with the closed form, and the
+  frequencies of missing or infinite regional estimates.
+* `print()` methods for all result classes and `plot()` methods for
+  `rcpgsd` (also used for `rcpgsd_sim`) and `rcpgsd_gamma` objects.

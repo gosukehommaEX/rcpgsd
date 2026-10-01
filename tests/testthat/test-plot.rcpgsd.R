@@ -29,3 +29,14 @@ test_that("plot.rcpgsd works with a single method", {
   expect_s3_class(p, "ggplot")
   expect_no_error(ggplot2::ggplot_build(p))
 })
+
+test_that("plot.rcpgsd works for rcpgsd_sim objects", {
+  sim <- rcpgsd_sim(list(upper = c(2.963, 1.969)), events = c(100, 200),
+                    hr = 0.7, lambda_c = 0.05, accrual_time = c(0, 12),
+                    n_accrual = c(40, 260), nsim = 100)
+  p <- plot(sim)
+  expect_s3_class(p, "ggplot")
+  expect_no_error(ggplot2::ggplot_build(p))
+  p2 <- plot(sim, what = "prob")
+  expect_no_error(ggplot2::ggplot_build(p2))
+})

@@ -13,7 +13,8 @@ When a trial stops for efficacy at an interim analysis, regional consistency is 
 - **Group sequential boundaries** taken from `gsDesign` or `rpact` design objects (or supplied directly), with **binding or non-binding** futility boundaries
 - **Delayed enrolment** in the region of interest through regional event proportions that change across analyses, and **region-specific hazard ratios**
 - **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
-- **Monte Carlo simulation** of the same model for verification
+- **Monte Carlo simulation** of the same normal model for verification of the numerical evaluation
+- **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
 - `print()` and `plot()` methods for all results
 
 Regional consistency is evaluated following the Japanese Ministry of Health, Labour and Welfare (MHLW, 2007) guidance, with region 1 as the region of interest:
@@ -34,6 +35,7 @@ devtools::install_github("gosukehommaEX/rcpgsd")
 |---|---|
 | `rcpgsd()` | Stagewise and overall RCPs (Method 1 and Method 2) under a GSD, by closed form or simulation |
 | `rcpgsd_get_gamma()` | Stagewise or overall consistency thresholds adjusted for the inflation of the null RCP caused by early efficacy stopping |
+| `rcpgsd_sim()` | Patient-level simulation of event-driven trials estimating the same probabilities as `rcpgsd()` |
 
 ## Model
 
@@ -124,6 +126,28 @@ res_sim <- rcpgsd(design, events = c(150, 300, 450), fs = fs, hr = 0.72,
                   approach = "simulation", nsim = 1e6, seed = 1)
 ```
 
+### 6. Patient-level simulation of an event-driven trial
+
+```r
+design_B <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
+
+# 600 patients enrolled over 18 months; Japan (region 1) starts after
+# month 6; median survival 12 months in the control group
+n_acc <- rbind(c(0, 60),      # region 1: months 0-6, 6-18
+               c(100, 170),   # region 2
+               c(100, 170))   # region 3
+sim <- rcpgsd_sim(design_B, events = c(150, 300, 450), hr = 0.72,
+                  lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+                  n_accrual = n_acc, nsim = 10000, seed = 1)
+print(sim)
+plot(sim)
+
+# Closed form evaluated at the mean regional event proportions
+cf <- rcpgsd(design_B, events = c(150, 300, 450), fs = sim$fs_mean,
+             hr = 0.72)
+cbind(simulation = sim$stage$rcp, closed_form = cf$stage$rcp)
+```
+
 ## Verification
 
 The test suite checks the closed-form results against:
@@ -132,7 +156,8 @@ The test suite checks the closed-form results against:
 - the consistency probability on the hazard reduction scale reported by Hayashi and Itoh (2018) (numerical integration and delta method);
 - the closed-form expressions for the fixed design given in Homma (2024);
 - independent reference values for group sequential designs computed in Python (SciPy), and Monte Carlo simulation;
-- boundaries obtained from `gsDesign` and from `rpact` for the same design.
+- boundaries obtained from `gsDesign` and from `rpact` for the same design;
+- for the patient-level simulation, `survival::survdiff()` (log-rank statistic), `survival::coxph()` and direct maximization of the partial likelihood (regional Cox estimates), and the closed form evaluated at the simulated regional event proportions.
 
 ## References
 
