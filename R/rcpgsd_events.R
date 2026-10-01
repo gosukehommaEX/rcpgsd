@@ -13,8 +13,13 @@
 #' Patients enter by piecewise uniform accrual (\code{n_accrual[s, j]}
 #' patients of region \eqn{s} uniformly within accrual interval \eqn{j}) and
 #' have exponential event times with hazard \code{lambda_c[s]} in the
-#' control group and \code{lambda_c[s] * hr[s]} in the experimental group,
-#' without drop-out. These are the assumptions of \code{\link{rcpgsd_sim}}.
+#' control group and \code{lambda_c[s] * hr[s]} in the experimental group.
+#' Patients may drop out at exponential times with the hazards given by
+#' \code{lambda_d}; a patient who drops out before the event is censored at
+#' the drop-out time, so only a fraction \eqn{\lambda / (\lambda + \eta)}
+#' of the patients with event hazard \eqn{\lambda} and drop-out hazard
+#' \eqn{\eta} eventually has an event. These are the assumptions of
+#' \code{\link{rcpgsd_sim}}.
 #' The expected number of events in each region by calendar time \eqn{t} is
 #' obtained in closed form, and the time of analysis \eqn{k} is defined as
 #' the time at which the expected total number of events equals
@@ -41,7 +46,9 @@
 #'   \item{\code{fs}}{\code{S}-by-\code{K} matrix of expected regional event
 #'     proportions, with columns summing to 1.}
 #'   \item{\code{events}, \code{hr}, \code{lambda_c}, \code{accrual_time},
-#'     \code{n_accrual}, \code{r}}{Inputs.}
+#'     \code{n_accrual}, \code{lambda_d}, \code{r}}{Inputs
+#'     (\code{lambda_d} as an \code{S}-by-2 matrix with the control group
+#'     in the first column).}
 #' }
 #'
 #' @seealso \code{\link{rcpgsd}}, \code{\link{rcpgsd_get_fs}},
@@ -60,6 +67,13 @@
 #' res <- rcpgsd(design, events = c(150, 300, 450), fs = ev$fs, hr = 0.72)
 #' res$overall
 #'
+#' # A drop-out probability of 0.05 per year in both groups delays the
+#' # analyses
+#' ev_d <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+#'                       lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+#'                       n_accrual = n_acc, lambda_d = -log(1 - 0.05) / 12)
+#' rbind(no_dropout = ev$analysis$time, dropout = ev_d$analysis$time)
+#'
 #' @importFrom stats uniroot
 #'
 #' @export
@@ -68,10 +82,11 @@ rcpgsd_events <- function(events,
                           lambda_c,
                           accrual_time,
                           n_accrual,
-                          r = 1) {
+                          lambda_d = 0,
+                          r        = 1) {
   K   <- length(events)
   inp <- .rcpgsd_check_sim_inputs(events, hr, lambda_c, accrual_time,
-                                  n_accrual, r, K)
+                                  n_accrual, r, K, lambda_d)
   S <- nrow(inp$n_accrual)
   if (inp$events[K] >= sum(inp$n_accrual)) {
     stop("The number of events at the final analysis must be smaller than ",
@@ -80,7 +95,7 @@ rcpgsd_events <- function(events,
 
   expected <- function(t) {
     .rcpgsd_expected_events(t, inp$n_accrual, inp$accrual_time,
-                            inp$lambda_c, inp$hr, inp$r)
+                            inp$lambda_c, inp$hr, inp$r, inp$lambda_d)
   }
 
   time     <- numeric(K)
@@ -113,6 +128,7 @@ rcpgsd_events <- function(events,
          lambda_c        = inp$lambda_c,
          accrual_time    = inp$accrual_time,
          n_accrual       = inp$n_accrual,
+         lambda_d        = inp$lambda_d,
          r               = inp$r),
     class = "rcpgsd_events"
   )

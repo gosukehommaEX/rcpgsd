@@ -52,6 +52,13 @@ print.rcpgsd_sim <- function(x, digits = 4, ...) {
               paste(signif(x$lambda_c, 4), collapse = ", ")))
   cat(sprintf("   True HR           : (%s)\n",
               paste(signif(x$hr, 4), collapse = ", ")))
+  if (is.null(x$lambda_d) || all(x$lambda_d == 0)) {
+    cat("   Drop-out hazard   : none\n")
+  } else {
+    cat(sprintf("   Drop-out hazard   : control (%s), experimental (%s)\n",
+                paste(signif(x$lambda_d[, 1L], 4), collapse = ", "),
+                paste(signif(x$lambda_d[, 2L], 4), collapse = ", ")))
+  }
   cat(sprintf("   Allocation ratio  : r = %s\n", format(x$r)))
   cat(strrep("-", 70), "\n")
 
@@ -74,6 +81,11 @@ print.rcpgsd_sim <- function(x, digits = 4, ...) {
                        "Pr(inf est R1)")
   cat("Analyses (means over simulated trials):\n\n")
   print(df_an, row.names = FALSE, right = TRUE)
+  if (!is.null(an$p_not_reached) && any(an$p_not_reached > 0)) {
+    cat(sprintf(paste0("\n   Not reached because of drop-out: ",
+                       "Pr = (%s) by stage\n"),
+                paste(fmt(an$p_not_reached), collapse = ", ")))
+  }
   cat("\n")
 
   lab <- c(M1 = "Method 1", M2 = "Method 2")

@@ -13,9 +13,9 @@ When a trial stops for efficacy at an interim analysis, regional consistency is 
 - **Group sequential boundaries** taken from `gsDesign` or `rpact` design objects (or supplied directly), with **binding or non-binding** futility boundaries
 - **Delayed enrolment** in the region of interest through regional event proportions that change across analyses, and **region-specific hazard ratios**
 - **Adjusted consistency thresholds** that restore the null RCP given efficacy stopping to its fixed-design reference value, extending the adjustment of Homma (2026)
-- **Planning tools**: expected regional event proportions derived from the accrual pattern by region, and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
+- **Planning tools**: expected regional event proportions derived from the accrual pattern by region (with optional exponential drop-out), and the smallest proportion of events in the region of interest that achieves a target RCP (overall, stagewise, or unconditional)
 - **Monte Carlo simulation** of the same normal model for verification of the numerical evaluation
-- **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
+- **Patient-level simulation** of event-driven trials (piecewise uniform accrual by region, exponential event times, optional exponential drop-out; log-rank test, Pike or Peto estimate of the overall hazard ratio, regional Cox models) to assess the accuracy of the normal approximation
 - `print()` and `plot()` methods for all results
 
 Regional consistency is evaluated following the Japanese Ministry of Health, Labour and Welfare (MHLW, 2007) guidance, with region 1 as the region of interest:
@@ -168,6 +168,11 @@ ev <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
                     n_accrual = n_acc)
 print(ev)
 
+# Drop-out probability of 5% per year in both groups
+ev_d <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+                      lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+                      n_accrual = n_acc, lambda_d = -log(1 - 0.05) / 12)
+
 # Smallest proportion of Japanese events (keeping the delayed-enrolment
 # shape) such that the overall RCP given success is at least 0.8
 design_B <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
@@ -190,7 +195,7 @@ The test suite checks the closed-form results against:
 - the consistency probability on the hazard reduction scale reported by Hayashi and Itoh (2018) (numerical integration and delta method);
 - the closed-form expressions for the fixed design given in Homma (2024);
 - the required numbers of Japanese events in Table 1 of Hayashi and Itoh (2018) and the constant required fraction on the log hazard ratio scale;
-- numerical integration of the expected numbers of events, and the patient-level simulation for the expected regional proportions;
+- numerical integration of the expected numbers of events (with and without drop-out), and the patient-level simulation for the expected regional proportions;
 - independent reference values for group sequential designs computed in Python (SciPy), and Monte Carlo simulation;
 - boundaries obtained from `gsDesign` and from `rpact` for the same design;
 - for the patient-level simulation, `survival::survdiff()` (log-rank statistic), `survival::coxph()` and direct maximization of the partial likelihood (regional Cox estimates), and the closed form evaluated at the simulated regional event proportions.

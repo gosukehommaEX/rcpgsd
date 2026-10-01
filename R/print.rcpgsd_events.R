@@ -34,6 +34,13 @@ print.rcpgsd_events <- function(x, digits = 4, ...) {
               paste(signif(x$lambda_c, 4), collapse = ", ")))
   cat(sprintf("   True HR           : (%s)\n",
               paste(signif(x$hr, 4), collapse = ", ")))
+  if (is.null(x$lambda_d) || all(x$lambda_d == 0)) {
+    cat("   Drop-out hazard   : none\n")
+  } else {
+    cat(sprintf("   Drop-out hazard   : control (%s), experimental (%s)\n",
+                paste(signif(x$lambda_d[, 1L], 4), collapse = ", "),
+                paste(signif(x$lambda_d[, 2L], 4), collapse = ", ")))
+  }
   cat(sprintf("   Allocation ratio  : r = %s\n", format(x$r)))
   cat(strrep("-", 70), "\n")
 

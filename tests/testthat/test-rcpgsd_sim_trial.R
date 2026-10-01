@@ -26,3 +26,36 @@ test_that("event times follow the specified hazards", {
   expect_equal(rate(2, 0), 0.20, tolerance = 0.03)
   expect_equal(rate(2, 1), 0.20, tolerance = 0.03)
 })
+
+test_that("drop-out times follow the specified hazards", {
+  set.seed(33)
+  n_acc <- matrix(c(20000, 20000), ncol = 1)
+  # Rows are regions; columns are the control and experimental groups
+  ld <- rbind(c(0.02, 0.04), c(0, 0.1))
+  pt <- .rcpgsd_sim_trial(n_acc, c(0, 1), c(0.1, 0.2), c(0.5, 1), r = 1,
+                          lambda_d = ld)
+  rate <- function(s, a) {
+    1 / mean(pt$t_drop[pt$region == s & pt$trt == a])
+  }
+  expect_equal(rate(1, 0), 0.02, tolerance = 0.05)
+  expect_equal(rate(1, 1), 0.04, tolerance = 0.05)
+  expect_equal(rate(2, 1), 0.10, tolerance = 0.05)
+  # No drop-out in the control group of region 2
+  expect_true(all(is.infinite(pt$t_drop[pt$region == 2 & pt$trt == 0])))
+})
+
+test_that("no drop-out leaves the random number stream unchanged", {
+  n_acc <- rbind(c(0, 30), c(40, 50))
+  set.seed(34)
+  pt_a <- .rcpgsd_sim_trial(n_acc, c(0, 6, 18), c(0.05, 0.05), c(0.7, 0.7),
+                            r = 1)
+  u_a  <- stats::runif(1)
+  set.seed(34)
+  pt_b <- .rcpgsd_sim_trial(n_acc, c(0, 6, 18), c(0.05, 0.05), c(0.7, 0.7),
+                            r = 1, lambda_d = matrix(0, 2, 2))
+  u_b  <- stats::runif(1)
+  expect_identical(pt_a, pt_b)
+  # The next random number is also the same: no drop-out times were drawn
+  expect_identical(u_a, u_b)
+  expect_true(all(is.infinite(pt_a$t_drop)))
+})

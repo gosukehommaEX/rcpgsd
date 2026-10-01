@@ -37,6 +37,12 @@ test_that("results are reproducible with a seed", {
   sim3 <- do.call(rcpgsd_sim, c(args, seed = 6))
   expect_identical(sim1$stage, sim2$stage)
   expect_false(identical(sim1$analysis$time_mean, sim3$analysis$time_mean))
+  # Zero drop-out reproduces the results without drop-out exactly
+  sim4 <- do.call(rcpgsd_sim, c(args, seed = 5,
+                                list(lambda_d = matrix(0, 3, 2))))
+  expect_identical(sim1$stage, sim4$stage)
+  expect_identical(sim1$analysis, sim4$analysis)
+  expect_equal(sim1$analysis$p_not_reached, rep(0, 3))
 })
 
 test_that("simulation agrees with the closed form", {
@@ -95,6 +101,26 @@ test_that("non-binding futility can be obeyed or ignored", {
   expect_true(sim_i$stage$p_eff[2] >= sim_o$stage$p_eff[2])
 })
 
+test_that("analyses not reached because of drop-out are reported", {
+  # The expected total number of events is about 136.8, so the second
+  # analysis (135 events) is not reached in a part of the trials
+  args <- list(design = list(upper = c(2.963, 1.969)), events = c(100, 135),
+               hr = 0.7, lambda_c = 0.05, accrual_time = c(0, 12),
+               n_accrual = c(40, 260), lambda_d = 0.05, nsim = 30, seed = 10)
+  expect_warning(sim <- do.call(rcpgsd_sim, args), "not reached")
+  p_nr <- sim$analysis$p_not_reached
+  expect_equal(p_nr[1], 0)
+  expect_gt(p_nr[2], 0)
+  # Such trials neither stop nor meet the consistency criteria
+  st2 <- sim$stage[sim$stage$stage == 2, ]
+  expect_true(all(st2$p_eff + st2$p_fut <= 1 - p_nr[2]))
+  expect_true(all(st2$rcp_uncond <= 1 - p_nr[2]))
+  # Means are taken over the trials that reached the analysis
+  expect_equal(colSums(sim$fs_mean), c(1, 1), tolerance = 1e-12)
+  expect_true(all(is.finite(sim$analysis$time_mean)))
+  expect_equal(sim$lambda_d, matrix(0.05, 2, 2))
+})
+
 test_that("invalid inputs are rejected", {
   base <- list(design = design_S, events = events_S, hr = 0.72,
                lambda_c = lam_S, accrual_time = c(0, 6, 18),
@@ -117,4 +143,9 @@ test_that("invalid inputs are rejected", {
   expect_error(do.call(rcpgsd_sim, mod(n_accrual = rbind(c(0, 0),
                                                          c(300, 300)))),
                "at least one patient")
+  expect_error(do.call(rcpgsd_sim, mod(lambda_d = -0.01)), "lambda_d")
+  expect_error(do.call(rcpgsd_sim, mod(lambda_d = matrix(0.01, 2, 2))),
+               "lambda_d")
+  expect_error(do.call(rcpgsd_sim, mod(lambda_d = 0.05)),
+               "expected total number of events")
 })

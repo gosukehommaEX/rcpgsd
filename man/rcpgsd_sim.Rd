@@ -12,6 +12,7 @@ rcpgsd_sim(
   lambda_c,
   accrual_time,
   n_accrual,
+  lambda_d = 0,
   r = 1,
   method = c("M1", "M2"),
   scale = c("loghr", "hr"),
@@ -52,6 +53,15 @@ the accrual intervals, starting at 0.}
 entering in region \code{s} (row) during accrual interval \code{j}
 (column); region 1 is the region of interest. A vector of length
 \code{S} is accepted when there is a single accrual interval.}
+
+\item{lambda_d}{Numeric scalar, vector of length 2, or \code{S}-by-2
+matrix. Hazard of drop-out (per unit of time): a scalar is common to
+both groups and all regions, a vector gives the hazards in the control
+and experimental groups (in this order) common to all regions, and a
+matrix gives region-specific hazards (rows are regions, the first
+column is the control group). A drop-out probability \eqn{p} by time
+\eqn{t_0} corresponds to the hazard \eqn{-\log(1 - p) / t_0}. Default
+is \code{0} (no drop-out).}
 
 \item{r}{Numeric scalar. Allocation ratio of the experimental group to the
 control group. Default is \code{1}.}
@@ -98,15 +108,19 @@ standard error of \code{rcp}.}
 \code{stage}, \code{events}, \code{time_mean} and \code{time_sd}
 (calendar time of the analysis), \code{events_r1_mean},
 \code{p_no_est_r1} (proportion of trials without an estimate in
-region 1) and \code{p_inf_r1} (proportion of trials with an infinite
-estimate in region 1).}
+region 1), \code{p_inf_r1} (proportion of trials with an infinite
+estimate in region 1) and \code{p_not_reached} (proportion of trials
+in which the analysis was not reached because of drop-out). Means and
+proportions other than \code{p_not_reached} are taken over the trials
+that reached the analysis.}
 \item{\code{fs_mean}}{\code{S}-by-\code{K} matrix of mean regional event
 proportions.}
 \item{\code{p_no_est}, \code{p_inf}}{\code{S}-by-\code{K} matrices of the
 proportions of trials without an estimate and with an infinite
 estimate, by region and analysis.}
 \item{\code{design}, \code{events}, \code{hr}, \code{lambda_c},
-\code{accrual_time}, \code{n_accrual}, \code{r}, \code{method},
+\code{accrual_time}, \code{n_accrual}, \code{lambda_d} (as an
+\code{S}-by-2 matrix), \code{r}, \code{method},
 \code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{overall_est},
 \code{nsim}}{Settings used.}
 }
@@ -131,13 +145,22 @@ zero represents delayed enrolment in a region. Within each region,
 \code{round(n_s r / (1 + r))} of the \eqn{n_s} patients are randomly
 assigned to the experimental group. Event times are exponential with
 hazard \code{lambda_c[s]} in the control group and
-\code{lambda_c[s] * hr[s]} in the experimental group. There is no
-drop-out.
+\code{lambda_c[s] * hr[s]} in the experimental group. Drop-out times are
+exponential with the hazards given by \code{lambda_d} (no drop-out by
+default); a patient who drops out before the event is censored at the
+drop-out time, and the event is not observed.
 
 \strong{Event-driven analyses.} Analysis \eqn{k} takes place at the
-calendar time at which the cumulative number of events in the trial
-reaches \code{events[k]}. Patients who have entered by then are included,
-and those without an event are censored at that time.
+calendar time at which the cumulative number of observed events in the
+trial reaches \code{events[k]}. Patients who have entered by then are
+included, and those without an observed event are censored at that time
+or at their drop-out time, whichever comes first. With drop-out, a
+simulated trial may have fewer than \code{events[k]} observed events in
+total, so that analysis \eqn{k} is never reached. Such a trial is counted
+as neither stopping nor meeting the consistency criteria at that analysis
+and at the later analyses, a warning is issued, and the proportion of
+such trials is reported. Choosing \code{events} well below the expected
+total number of events avoids this situation.
 
 \strong{Analysis at each analysis time.}
 \itemize{

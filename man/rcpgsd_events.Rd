@@ -4,7 +4,15 @@
 \alias{rcpgsd_events}
 \title{Expected Analysis Times and Regional Event Proportions}
 \usage{
-rcpgsd_events(events, hr, lambda_c, accrual_time, n_accrual, r = 1)
+rcpgsd_events(
+  events,
+  hr,
+  lambda_c,
+  accrual_time,
+  n_accrual,
+  lambda_d = 0,
+  r = 1
+)
 }
 \arguments{
 \item{events}{Numeric vector of length \code{K}. Cumulative total numbers
@@ -26,6 +34,15 @@ entering in region \code{s} (row) during accrual interval \code{j}
 (column); region 1 is the region of interest. A vector of length
 \code{S} is accepted when there is a single accrual interval.}
 
+\item{lambda_d}{Numeric scalar, vector of length 2, or \code{S}-by-2
+matrix. Hazard of drop-out (per unit of time): a scalar is common to
+both groups and all regions, a vector gives the hazards in the control
+and experimental groups (in this order) common to all regions, and a
+matrix gives region-specific hazards (rows are regions, the first
+column is the control group). A drop-out probability \eqn{p} by time
+\eqn{t_0} corresponds to the hazard \eqn{-\log(1 - p) / t_0}. Default
+is \code{0} (no drop-out).}
+
 \item{r}{Numeric scalar. Allocation ratio of the experimental group to the
 control group. Default is \code{1}.}
 }
@@ -42,7 +59,9 @@ numbers of enrolled patients by region and analysis.}
 \item{\code{fs}}{\code{S}-by-\code{K} matrix of expected regional event
 proportions, with columns summing to 1.}
 \item{\code{events}, \code{hr}, \code{lambda_c}, \code{accrual_time},
-\code{n_accrual}, \code{r}}{Inputs.}
+\code{n_accrual}, \code{lambda_d}, \code{r}}{Inputs
+(\code{lambda_d} as an \code{S}-by-2 matrix with the control group
+in the first column).}
 }
 }
 \description{
@@ -58,8 +77,13 @@ probabilities.
 Patients enter by piecewise uniform accrual (\code{n_accrual[s, j]}
 patients of region \eqn{s} uniformly within accrual interval \eqn{j}) and
 have exponential event times with hazard \code{lambda_c[s]} in the
-control group and \code{lambda_c[s] * hr[s]} in the experimental group,
-without drop-out. These are the assumptions of \code{\link{rcpgsd_sim}}.
+control group and \code{lambda_c[s] * hr[s]} in the experimental group.
+Patients may drop out at exponential times with the hazards given by
+\code{lambda_d}; a patient who drops out before the event is censored at
+the drop-out time, so only a fraction \eqn{\lambda / (\lambda + \eta)}
+of the patients with event hazard \eqn{\lambda} and drop-out hazard
+\eqn{\eta} eventually has an event. These are the assumptions of
+\code{\link{rcpgsd_sim}}.
 The expected number of events in each region by calendar time \eqn{t} is
 obtained in closed form, and the time of analysis \eqn{k} is defined as
 the time at which the expected total number of events equals
@@ -84,6 +108,13 @@ print(ev)
 design <- list(upper = c(3.7103, 2.5114, 1.9930), alpha = 0.025)
 res <- rcpgsd(design, events = c(150, 300, 450), fs = ev$fs, hr = 0.72)
 res$overall
+
+# A drop-out probability of 0.05 per year in both groups delays the
+# analyses
+ev_d <- rcpgsd_events(events = c(150, 300, 450), hr = 0.72,
+                      lambda_c = log(2) / 12, accrual_time = c(0, 6, 18),
+                      n_accrual = n_acc, lambda_d = -log(1 - 0.05) / 12)
+rbind(no_dropout = ev$analysis$time, dropout = ev_d$analysis$time)
 
 }
 \seealso{

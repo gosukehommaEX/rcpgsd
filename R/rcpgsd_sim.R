@@ -19,13 +19,22 @@
 #' \code{round(n_s r / (1 + r))} of the \eqn{n_s} patients are randomly
 #' assigned to the experimental group. Event times are exponential with
 #' hazard \code{lambda_c[s]} in the control group and
-#' \code{lambda_c[s] * hr[s]} in the experimental group. There is no
-#' drop-out.
+#' \code{lambda_c[s] * hr[s]} in the experimental group. Drop-out times are
+#' exponential with the hazards given by \code{lambda_d} (no drop-out by
+#' default); a patient who drops out before the event is censored at the
+#' drop-out time, and the event is not observed.
 #'
 #' \strong{Event-driven analyses.} Analysis \eqn{k} takes place at the
-#' calendar time at which the cumulative number of events in the trial
-#' reaches \code{events[k]}. Patients who have entered by then are included,
-#' and those without an event are censored at that time.
+#' calendar time at which the cumulative number of observed events in the
+#' trial reaches \code{events[k]}. Patients who have entered by then are
+#' included, and those without an observed event are censored at that time
+#' or at their drop-out time, whichever comes first. With drop-out, a
+#' simulated trial may have fewer than \code{events[k]} observed events in
+#' total, so that analysis \eqn{k} is never reached. Such a trial is counted
+#' as neither stopping nor meeting the consistency criteria at that analysis
+#' and at the later analyses, a warning is issued, and the proportion of
+#' such trials is reported. Choosing \code{events} well below the expected
+#' total number of events avoids this situation.
 #'
 #' \strong{Analysis at each analysis time.}
 #' \itemize{
@@ -70,6 +79,14 @@
 #'   entering in region \code{s} (row) during accrual interval \code{j}
 #'   (column); region 1 is the region of interest. A vector of length
 #'   \code{S} is accepted when there is a single accrual interval.
+#' @param lambda_d Numeric scalar, vector of length 2, or \code{S}-by-2
+#'   matrix. Hazard of drop-out (per unit of time): a scalar is common to
+#'   both groups and all regions, a vector gives the hazards in the control
+#'   and experimental groups (in this order) common to all regions, and a
+#'   matrix gives region-specific hazards (rows are regions, the first
+#'   column is the control group). A drop-out probability \eqn{p} by time
+#'   \eqn{t_0} corresponds to the hazard \eqn{-\log(1 - p) / t_0}. Default
+#'   is \code{0} (no drop-out).
 #' @param overall_est Character. Estimator of the overall hazard ratio used
 #'   in the consistency criteria: \code{"pike"} (default) or \code{"peto"}.
 #' @param nsim Positive integer. Number of simulated trials. Default is
@@ -89,15 +106,19 @@
 #'     \code{stage}, \code{events}, \code{time_mean} and \code{time_sd}
 #'     (calendar time of the analysis), \code{events_r1_mean},
 #'     \code{p_no_est_r1} (proportion of trials without an estimate in
-#'     region 1) and \code{p_inf_r1} (proportion of trials with an infinite
-#'     estimate in region 1).}
+#'     region 1), \code{p_inf_r1} (proportion of trials with an infinite
+#'     estimate in region 1) and \code{p_not_reached} (proportion of trials
+#'     in which the analysis was not reached because of drop-out). Means and
+#'     proportions other than \code{p_not_reached} are taken over the trials
+#'     that reached the analysis.}
 #'   \item{\code{fs_mean}}{\code{S}-by-\code{K} matrix of mean regional event
 #'     proportions.}
 #'   \item{\code{p_no_est}, \code{p_inf}}{\code{S}-by-\code{K} matrices of the
 #'     proportions of trials without an estimate and with an infinite
 #'     estimate, by region and analysis.}
 #'   \item{\code{design}, \code{events}, \code{hr}, \code{lambda_c},
-#'     \code{accrual_time}, \code{n_accrual}, \code{r}, \code{method},
+#'     \code{accrual_time}, \code{n_accrual}, \code{lambda_d} (as an
+#'     \code{S}-by-2 matrix), \code{r}, \code{method},
 #'     \code{scale}, \code{gamma_M1}, \code{gamma_M2}, \code{overall_est},
 #'     \code{nsim}}{Settings used.}
 #' }
@@ -136,6 +157,7 @@ rcpgsd_sim <- function(design,
                        lambda_c,
                        accrual_time,
                        n_accrual,
+                       lambda_d    = 0,
                        r           = 1,
                        method      = c("M1", "M2"),
                        scale       = c("loghr", "hr"),
@@ -156,7 +178,7 @@ rcpgsd_sim <- function(design,
   bnd <- .rcpgsd_bounds(design)
   K   <- bnd$K
   inp <- .rcpgsd_check_sim_inputs(events, hr, lambda_c, accrual_time,
-                                  n_accrual, r, K)
+                                  n_accrual, r, K, lambda_d)
   S   <- nrow(inp$n_accrual)
 
   gamma_M1 <- .rcpgsd_check_gamma(gamma_M1, K, "gamma_M1", scale)
@@ -185,12 +207,23 @@ rcpgsd_sim <- function(design,
 
   for (i in seq_len(nsim)) {
     pt  <- .rcpgsd_sim_trial(inp$n_accrual, inp$accrual_time, inp$lambda_c,
-                             inp$hr, inp$r)
-    cal <- pt$entry + pt$t_event
-    t_k <- sort(cal, partial = ev_idx)[ev_idx]
+                             inp$hr, inp$r, inp$lambda_d)
+    # Events after drop-out are not observed (calendar time Inf)
+    obs_ev <- pt$t_event <= pt$t_drop
+    y_obs  <- pmin(pt$t_event, pt$t_drop)
+    cal    <- ifelse(obs_ev, pt$entry + pt$t_event, Inf)
+    reach  <- ev_idx <= sum(obs_ev)
+    t_k    <- rep(NA_real_, K)
+    if (any(reach)) {
+      t_k[reach] <- sort(cal, partial = ev_idx[reach])[ev_idx[reach]]
+    }
     for (k in seq_len(K)) {
+      if (!reach[k]) {
+        n_ev[i, , k] <- NA_real_
+        next
+      }
       inc <- pt$entry < t_k[k]
-      obs <- pmin(pt$t_event[inc], t_k[k] - pt$entry[inc])
+      obs <- pmin(y_obs[inc], t_k[k] - pt$entry[inc])
       st  <- as.integer(cal[inc] <= t_k[k])
       tr  <- pt$trt[inc]
       rg  <- pt$region[inc]
@@ -252,10 +285,29 @@ rcpgsd_sim <- function(design,
   })
   tab <- do.call(rbind, tab)
 
-  n_ev_mean <- matrix(apply(n_ev, c(2L, 3L), mean), S, K)
+  # Summaries over the trials that reached each analysis
+  reached   <- !is.na(t_anal)
+  p_not_rch <- 1 - colMeans(reached)
+  if (any(p_not_rch > 0)) {
+    warning(sprintf(paste0("Because of drop-out, analysis %s was not ",
+                           "reached in %s of the simulated trials; these ",
+                           "trials are counted as neither stopping nor ",
+                           "consistent at that analysis."),
+                    paste(which(p_not_rch > 0), collapse = ", "),
+                    paste(sprintf("%.4f", p_not_rch[p_not_rch > 0]),
+                          collapse = ", ")),
+            call. = FALSE)
+  }
+  n_ev_mean <- matrix(apply(n_ev, c(2L, 3L), mean, na.rm = TRUE), S, K)
   fs_mean   <- sweep(n_ev_mean, 2L, inp$events, "/")
-  p_no_est  <- matrix(apply(is.na(est_reg), c(2L, 3L), mean), S, K)
-  p_inf     <- matrix(apply(is.infinite(est_reg), c(2L, 3L), mean), S, K)
+  p_no_est  <- matrix(NA_real_, S, K)
+  p_inf     <- matrix(NA_real_, S, K)
+  for (k in seq_len(K)) {
+    if (!any(reached[, k])) next
+    est_k <- matrix(est_reg[reached[, k], , k], ncol = S)
+    p_no_est[, k] <- colMeans(is.na(est_k))
+    p_inf[, k]    <- colMeans(is.infinite(est_k))
+  }
 
   rcp    <- ifelse(tab$p_eff > 0, tab$p_joint / tab$p_eff, NA_real_)
   se_rcp <- ifelse(tab$p_eff > 0,
@@ -290,11 +342,13 @@ rcpgsd_sim <- function(design,
 
   analysis <- data.frame(stage          = seq_len(K),
                          events         = inp$events,
-                         time_mean      = colMeans(t_anal),
-                         time_sd        = apply(t_anal, 2L, stats::sd),
+                         time_mean      = colMeans(t_anal, na.rm = TRUE),
+                         time_sd        = apply(t_anal, 2L, stats::sd,
+                                                na.rm = TRUE),
                          events_r1_mean = n_ev_mean[1L, ],
                          p_no_est_r1    = p_no_est[1L, ],
-                         p_inf_r1       = p_inf[1L, ])
+                         p_inf_r1       = p_inf[1L, ],
+                         p_not_reached  = p_not_rch)
 
   structure(
     list(stage        = stage,
@@ -317,6 +371,7 @@ rcpgsd_sim <- function(design,
          lambda_c     = inp$lambda_c,
          accrual_time = inp$accrual_time,
          n_accrual    = inp$n_accrual,
+         lambda_d     = inp$lambda_d,
          r            = inp$r,
          method       = method,
          scale        = scale,
