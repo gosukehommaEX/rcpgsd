@@ -31,7 +31,8 @@
 #
 # In the manuscript, each table is included with \input{table1_application}
 # and each figure with \includegraphics{Figure1}; the captions of the
-# figures are written in the manuscript, those of the tables here.
+# figures are written in the manuscript, those of the tables here. The
+# tables use the rules of the booktabs package (\usepackage{booktabs}).
 # =============================================================================
 
 if (!file.exists("DESCRIPTION") ||
@@ -484,13 +485,18 @@ tab1_caption <- paste0(
   "Group sequential design with $K = ", K, "$ analyses at information ",
   "fractions $1/3$, $2/3$ and $1$, O'Brien-Fleming-type efficacy ",
   "boundaries (Lan-DeMets spending function), one-sided ",
-  "$\\alpha = ", SET$ALPHA, "$ and power $", 1 - SET$BETA,
-  "$ for a hazard ratio of $", SET$HR, "$ in all regions. ",
+  "$\\alpha = ", SET$ALPHA, "$ and power $", sprintf("%.2f", 1 - SET$BETA),
+  "$ for a hazard ratio of $", sprintf("%.2f", SET$HR), "$ in all regions. ",
   "A total of $", SET$N_TOTAL, "$ patients are enrolled uniformly over ",
   SET$T_ACCRUAL, " months (", SET$RATE, " patients per month), ",
   acc1$n_region[1L], " of them in Japan, where enrolment starts at month ",
-  acc1$start[1L], "; the two other regions (", acc1$n_region[2L], " and ",
-  acc1$n_region[3L], " patients) start at month 0 and absorb the delay, ",
+  acc1$start[1L], "; the two other regions (",
+  if (acc1$n_region[2L] == acc1$n_region[3L]) {
+    paste(acc1$n_region[2L], "patients each")
+  } else {
+    paste(acc1$n_region[2L], "and", acc1$n_region[3L], "patients")
+  },
+  ") start at month 0 and absorb the delay, ",
   "so that the overall accrual is as planned. ",
   "The median survival time in the control group is ", SET$MEDIAN_C,
   " months. ",
@@ -520,20 +526,20 @@ tab1_lines <- c(
   paste0("\\caption{", tab1_caption, "}"),
   "\\label{tab:application}",
   "\\begin{tabular}{rrrrrr rrrr rrrr}",
-  "\\hline",
+  "\\toprule",
   paste(" & & & & & &",
         "\\multicolumn{4}{c}{Method 1} &",
         "\\multicolumn{4}{c}{Method 2} \\\\"),
-  "\\cline{7-10}\\cline{11-14}",
+  "\\cmidrule(lr){7-10}\\cmidrule(lr){11-14}",
   paste("$k$ & $t_{k}$ & $d_{k}$ & $d_{1,k}$ & $u_{k}$ & $\\Pr(E_{k})$ &",
         "$\\phi_{k}$ & $\\psi_{k}$ & $\\gamma_{k}$ & $\\phi^{\\rm adj}_{k}$ &",
         "$\\phi_{k}$ & $\\psi_{k}$ & $\\gamma_{k}$ & $\\phi^{\\rm adj}_{k}$",
         "\\\\"),
-  "\\hline",
+  "\\midrule",
   tab1_body,
-  "\\hline",
+  "\\midrule",
   tab1_overall,
-  "\\hline",
+  "\\bottomrule",
   "\\end{tabular}",
   "\\end{table}"
 )
@@ -594,20 +600,21 @@ tab2_lines <- c(
   paste0("\\caption{", tab2_caption, "}"),
   "\\label{tab:required}",
   "\\begin{tabular}{l rrrr rrrr}",
-  "\\hline",
+  "\\toprule",
   "& \\multicolumn{4}{c}{Method 1} & \\multicolumn{4}{c}{Method 2} \\\\",
-  "\\cline{2-5}\\cline{6-9}",
+  "\\cmidrule(lr){2-5}\\cmidrule(lr){6-9}",
   paste0("Start in Japan & ",
          paste(rep(sprintf("\\multicolumn{2}{c}{%s}", tau_head), 2L),
                collapse = " & "), " \\\\"),
-  "\\cline{2-3}\\cline{4-5}\\cline{6-7}\\cline{8-9}",
+  paste0("\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
+         "\\cmidrule(lr){6-7}\\cmidrule(lr){8-9}"),
   paste("Criterion &",
         paste(rep("$f_{1}$ & $d_{1}$", 2L * length(TAU2)),
               collapse = " & "), "\\\\"),
-  "\\hline",
+  "\\midrule",
   tab2_body,
   tab2_fixed,
-  "\\hline",
+  "\\bottomrule",
   "\\end{tabular}",
   "\\end{table}"
 )
