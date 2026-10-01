@@ -1,0 +1,20 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Application to a hypothetical multi-regional clinical trial with a delayed start of enrolment in Japan. Group sequential design with $K = 3$ analyses at information fractions $1/3$, $2/3$ and $1$, O'Brien-Fleming-type efficacy boundaries (Lan-DeMets spending function), one-sided $\alpha = 0.025$ and power $0.9$ for a hazard ratio of $0.7$ in all regions. A total of $600$ patients are enrolled uniformly over 24 months (25 patients per month), 60 of them in Japan, where enrolment starts at month 6; the two other regions (270 and 270 patients) start at month 0 and absorb the delay, so that the overall accrual is as planned. The median survival time in the control group is 12 months. $t_{k}$, expected calendar time of analysis $k$ (months); $d_{k}$, number of events; $d_{1,k}$, expected number of events in Japan; $u_{k}$, efficacy boundary; $\Pr(E_{k})$, probability of stopping for efficacy at analysis $k$ (overall row, power); $\phi_{k}$, regional consistency probability given efficacy stopping at analysis $k$ with $\gamma_{\rm M1} = 0.5$ and $\gamma_{\rm M2} = 0$ (overall row, given success); $\psi_{k}$, unconditional probability of consistency at analysis $k$; $\gamma_{k}$, adjusted threshold; $\phi^{\rm adj}_{k}$, regional consistency probability given efficacy stopping with the adjusted threshold. The reference null regional consistency probabilities of the fixed design are 0.643 (Method 1) and 0.731 (Method 2).}
+\label{tab:application}
+\begin{tabular}{rrrrrr rrrr rrrr}
+\hline
+ & & & & & & \multicolumn{4}{c}{Method 1} & \multicolumn{4}{c}{Method 2} \\
+\cline{7-10}\cline{11-14}
+$k$ & $t_{k}$ & $d_{k}$ & $d_{1,k}$ & $u_{k}$ & $\Pr(E_{k})$ & $\phi_{k}$ & $\psi_{k}$ & $\gamma_{k}$ & $\phi^{\rm adj}_{k}$ & $\phi_{k}$ & $\psi_{k}$ & $\gamma_{k}$ & $\phi^{\rm adj}_{k}$ \\
+\hline
+1 & 15.2 & 112 & 6.0 & 3.710 & 0.034 & 0.687 & 0.588 & 0.610 & 0.648 & 0.835 & 0.545 & 0.232 & 0.745 \\
+2 & 22.7 & 223 & 17.5 & 2.511 & 0.526 & 0.688 & 0.650 & 0.558 & 0.668 & 0.826 & 0.719 & 0.056 & 0.785 \\
+3 & 30.0 & 335 & 30.1 & 1.993 & 0.340 & 0.684 & 0.694 & 0.516 & 0.679 & 0.802 & 0.813 & 0.001 & 0.801 \\
+\hline
+Overall &  &  &  &  & 0.901 & 0.687 &  &  & 0.672 & 0.818 &  &  & 0.790 \\
+\hline
+\end{tabular}
+\end{table}
