@@ -209,6 +209,7 @@ The test suite checks the closed-form results against:
 - the required numbers of Japanese events in Table 1 of Hayashi and Itoh (2018) and the constant required fraction on the log hazard ratio scale;
 - numerical integration of the expected numbers of events (with and without drop-out), and the patient-level simulation for the expected regional proportions;
 - independent reference values for group sequential designs computed in Python (SciPy), and Monte Carlo simulation;
+- the scaling of the adjusted thresholds with the numbers of events (Method 1 unchanged, Method 2 divided by the square root of the factor);
 - boundaries obtained from `gsDesign` and from `rpact` for the same design;
 - for the patient-level simulation, `survival::survdiff()` (log-rank statistic), `survival::coxph()` and direct maximization of the partial likelihood (regional Cox estimates), and the closed form evaluated at the simulated regional event proportions.
 

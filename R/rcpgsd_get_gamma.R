@@ -25,9 +25,9 @@
 #' events \code{events[K]}, the final regional proportions \code{fs[, K]},
 #' the one-sided significance level \eqn{\alpha} of \code{design} and the
 #' unadjusted thresholds \code{gamma_M1} and \code{gamma_M2}. On the log
-#' hazard ratio scale the reference value does not depend on the number of
-#' events. A user-specified reference value can be supplied through
-#' \code{rcp_ref}.
+#' hazard ratio scale, the reference value of Method 1 and that of Method 2
+#' with \code{gamma_M2 = 0} do not depend on the number of events. A
+#' user-specified reference value can be supplied through \code{rcp_ref}.
 #'
 #' \strong{Adjustment.} With \code{type = "stagewise"}, a separate threshold
 #' \eqn{\gamma_{m,k}} is obtained for each analysis \eqn{k} by solving
@@ -35,9 +35,21 @@
 #' with \code{stats::uniroot()}. With \code{type = "overall"}, a single
 #' threshold common to all analyses is obtained by solving
 #' \eqn{\sum_k \Pr(E_k \cap C_k) / \sum_k \Pr(E_k) =
-#' \phi^{(m)}_{\mathrm{Ref}}} under \eqn{\mathrm{HR} = 1}. Given that the
-#' overall effect estimate is positive on the stopping event, the null RCP
-#' is decreasing in the threshold, so the solution is unique.
+#' \phi^{(m)}_{\mathrm{Ref}}} under \eqn{\mathrm{HR} = 1}. The null
+#' RCP is decreasing in the threshold, for Method 1 because the overall
+#' effect estimate is positive on the stopping event and for Method 2
+#' because every regional estimate must exceed the threshold, so the
+#' solution is unique.
+#'
+#' \strong{Dependence on the numbers of events.} On the log hazard ratio
+#' scale, the null RCP of Method 1 and that of Method 2 with a zero
+#' threshold depend on \code{events} only through the information
+#' fractions. For Method 2 with a positive threshold, and for Method 1 on
+#' the hazard reduction scale, the null RCP also depends on the numbers of
+#' events, so the adjusted thresholds apply only to the numbers of events
+#' in \code{events}. On the log hazard ratio scale, multiplying all the
+#' numbers of events by \eqn{c} divides the adjusted Method 2 thresholds by
+#' \eqn{\sqrt{c}}.
 #'
 #' At some analyses (typically the final analysis) the null RCP with the
 #' unadjusted threshold may be slightly below the reference value. With

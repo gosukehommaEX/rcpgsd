@@ -45,6 +45,32 @@ test_that("stagewise adjusted thresholds restore the reference value", {
                tolerance = 5e-4)
 })
 
+test_that("adjusted Method 2 thresholds scale with the numbers of events", {
+  # Doubling the numbers of events leaves the Method 1 threshold unchanged
+  # and divides the Method 2 threshold by sqrt(2). Expected values were
+  # computed independently in Python (scipy): 0.640866 for Method 1 and
+  # 0.130102 / sqrt(2) = 0.091996 for Method 2 at the first analysis.
+  adj_1 <- rcpgsd_get_gamma(design_2, c(200, 400), c(0.15, 0.85),
+                            method = "M1")
+  adj_x <- rcpgsd_get_gamma(design_2, c(400, 800), c(0.15, 0.85))
+  expect_equal(adj_1$result$gamma_M1_adj[1], 0.640866, tolerance = 2e-3)
+  expect_equal(adj_x$result$gamma_M1_adj, adj_1$result$gamma_M1_adj,
+               tolerance = 1e-6)
+  expect_equal(adj_x$result$gamma_M2_adj[1], 0.091996, tolerance = 5e-3)
+  expect_equal(adj_x$result$gamma_M2_adj[1] * sqrt(2),
+               adj_2$result$gamma_M2_adj[1], tolerance = 1e-4)
+  # The two Method 2 thresholds differ, so the comparison is not trivial
+  expect_gt(adj_2$result$gamma_M2_adj[1] - adj_x$result$gamma_M2_adj[1],
+            0.03)
+  # The null RCPs with the unadjusted thresholds do not depend on events
+  expect_equal(adj_x$result$rcp0_M1_unadj, adj_1$result$rcp0_M1_unadj,
+               tolerance = 1e-6)
+  expect_equal(adj_x$result$rcp0_M2_unadj, adj_2$result$rcp0_M2_unadj,
+               tolerance = 1e-6)
+  expect_equal(unname(adj_x$ref), c(0.6878309, 0.8345168),
+               tolerance = 2e-4)
+})
+
 test_that("relaxation is possible only when requested", {
   adj <- rcpgsd_get_gamma(design_B, events_B, fs_B, method = "M1",
                           allow_relax = TRUE)
