@@ -95,7 +95,7 @@ SERIES_COL <- c("Analysis 1" = OKABE[6],
                 "Analysis 2" = OKABE[5],
                 "Analysis 3" = OKABE[3],
                 "Overall"    = "black")
-TYPE_LTY   <- c("Given efficacy stop" = "solid",
+TYPE_LTY   <- c("Given efficacy stopping" = "solid",
                 "Unconditional"       = "dashed")
 
 BOUNDARY_LAB <- c(OBF = "O'Brien-Fleming", Pocock = "Pocock")
@@ -150,12 +150,12 @@ rcp_long <- function(stage, overall, keys) {
   rbind(
     data.frame(stage[, keys, drop = FALSE], method = stage$method,
                series = paste("Analysis", stage$stage),
-               type = "Given efficacy stop", value = stage$rcp),
+               type = "Given efficacy stopping", value = stage$rcp),
     data.frame(stage[, keys, drop = FALSE], method = stage$method,
                series = paste("Analysis", stage$stage),
                type = "Unconditional", value = stage$rcp_uncond),
     data.frame(overall[, keys, drop = FALSE], method = overall$method,
-               series = "Overall", type = "Given efficacy stop",
+               series = "Overall", type = "Given efficacy stopping",
                value = overall$rcp)
   )
 }
@@ -270,7 +270,7 @@ s3 <- siS3$stage
 figS3_df <- rbind(
   data.frame(boundary = s3$boundary, hr_method = s3$hr_method, f1 = s3$f1,
              series = paste("Analysis", s3$stage),
-             quantity = "Given efficacy stop", value = s3$rcp),
+             quantity = "Given efficacy stopping", value = s3$rcp),
   data.frame(boundary = s3$boundary, hr_method = s3$hr_method, f1 = s3$f1,
              series = paste("Analysis", s3$stage),
              quantity = "Unconditional", value = s3$rcp_uncond)
@@ -379,9 +379,12 @@ tab5_caption <- paste0(
   "$\\tau$, start of enrollment in Japan (months); ",
   "$p_{1}$, proportion of Japanese patients; ",
   "$k$, analysis; ",
-  "$d_{1,k}$, expected number of events in Japan; ",
-  "no est., proportion of simulated trials without a Japanese estimate; ",
-  "infinite, proportion with an infinite Japanese estimate; ",
+  "$d_{1,k}$, expected number of events in Japan with the numbers of ",
+  "patients in each group of the simulation; ",
+  "no est., proportion of all simulated trials without a Japanese ",
+  "estimate (no Japanese event while both groups are at risk); ",
+  "infinite, proportion with an infinite Japanese estimate (all such ",
+  "events in one group); ",
   "Sim., simulated probability ($",
   formatC(SET5$NSIM, format = "d", big.mark = "{,}"),
   "$ trials per scenario) with its Monte Carlo standard error (SE); ",
@@ -419,7 +422,7 @@ write_tex(tab5_lines, file.path(results_dir, "tableS1_simulation.tex"))
 # Teng et al. (2018), Pr(C_k | Z_k >= u_k), which ignores that the trial
 # has not stopped before analysis k
 # =============================================================================
-MRG_LTY <- c("Given efficacy stop at the analysis" = "solid",
+MRG_LTY <- c("Given efficacy stopping at the analysis" = "solid",
              "Given crossing the boundary (Teng et al., 2018)" = "dashed")
 mg <- fig1$marginal
 key_mg <- function(d) paste(d$boundary, d$f1, d$method, d$stage)

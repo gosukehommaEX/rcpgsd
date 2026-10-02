@@ -88,7 +88,7 @@ SERIES_COL <- c("Analysis 1"   = OKABE[6],
                 "Analysis 3"   = OKABE[3],
                 "Overall"      = "black",
                 "Fixed design" = "grey55")
-TYPE_LTY   <- c("Given efficacy stop" = "solid",
+TYPE_LTY   <- c("Given efficacy stopping" = "solid",
                 "Unconditional"       = "dashed")
 CRIT_COL   <- c("Overall"       = OKABE[5],
                 "Stagewise"     = OKABE[6],
@@ -231,16 +231,16 @@ x1 <- fig1_data$fixed
 fig1_df <- rbind(
   data.frame(boundary = s1$boundary, method = s1$method, f1 = s1$f1,
              series = paste("Analysis", s1$stage),
-             type = "Given efficacy stop", value = s1$rcp),
+             type = "Given efficacy stopping", value = s1$rcp),
   data.frame(boundary = s1$boundary, method = s1$method, f1 = s1$f1,
              series = paste("Analysis", s1$stage),
              type = "Unconditional", value = s1$rcp_uncond),
   data.frame(boundary = o1$boundary, method = o1$method, f1 = o1$f1,
-             series = "Overall", type = "Given efficacy stop",
+             series = "Overall", type = "Given efficacy stopping",
              value = o1$rcp),
   do.call(rbind, lapply(names(BOUNDARY_LAB), function(b) {
     data.frame(boundary = b, method = x1$method, f1 = x1$f1,
-               series = "Fixed design", type = "Given efficacy stop",
+               series = "Fixed design", type = "Given efficacy stopping",
                value = x1$rcp)
   }))
 )
@@ -325,15 +325,15 @@ PANEL3_LAB <- c(f  = "Proportion of events in Japan",
 
 fig3_df <- rbind(
   data.frame(panel = "f", tau = a3$tau, series = paste("Analysis", a3$stage),
-             type = "Given efficacy stop", value = a3$f1),
+             type = "Given efficacy stopping", value = a3$f1),
   data.frame(panel = s3$method, tau = s3$tau,
              series = paste("Analysis", s3$stage),
-             type = "Given efficacy stop", value = s3$rcp),
+             type = "Given efficacy stopping", value = s3$rcp),
   data.frame(panel = s3$method, tau = s3$tau,
              series = paste("Analysis", s3$stage),
              type = "Unconditional", value = s3$rcp_uncond),
   data.frame(panel = o3$method, tau = o3$tau, series = "Overall",
-             type = "Given efficacy stop", value = o3$rcp)
+             type = "Given efficacy stopping", value = o3$rcp)
 )
 fig3_df$panel  <- factor(PANEL3_LAB[fig3_df$panel], levels = PANEL3_LAB)
 fig3_df$series <- factor(fig3_df$series, levels = names(SERIES_COL))

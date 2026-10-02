@@ -54,9 +54,11 @@
 #'     is the exact maximum partial likelihood estimate (identical to
 #'     \code{survival::coxph()}).
 #' }
-#' When all events of a region occur in one group, the Cox and Pike
-#' estimates are infinite (hazard ratio of 0 or infinity) and are used as
-#' such in the consistency criteria; the Peto estimate is always finite.
+#' When all events of a region occur in one group, the Pike estimate is
+#' infinite (hazard ratio of 0 or infinity), and so is the Cox estimate when
+#' all events of the region that occur while both groups are at risk are in
+#' one group. Infinite estimates are used as such in the consistency
+#' criteria; the Peto estimate is always finite.
 #' When no estimate is available (no events, or no event while both groups
 #' are at risk), the consistency criterion is regarded as not met. The
 #' frequencies of these cases are reported.

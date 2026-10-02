@@ -107,7 +107,7 @@ cbind(sim$stage[, c("method", "stage")],
       mc_se       = sim$stage$se_rcp)
 ```
 
-The columns `p_no_est_r1` and `p_inf_r1` of `sim$analysis` give the proportions of simulated trials in which no Japanese estimate was available or in which all Japanese events occurred in one group. These cases indicate where the normal approximation is least reliable.
+The columns `p_no_est_r1` and `p_inf_r1` of `sim$analysis` give the proportions of simulated trials in which no Japanese estimate was available or in which it was infinite (for the Cox estimate, all Japanese events observed while both groups were at risk occurred in one group). These cases indicate where the normal approximation is least reliable.
 
 ```{r analysis}
 sim$analysis
