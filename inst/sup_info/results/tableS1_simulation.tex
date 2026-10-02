@@ -1,0 +1,40 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Patient-level simulation and closed form of the regional consistency probability given efficacy stopping (O'Brien-Fleming-type boundaries, $K = 3$ analyses with $112/223/335$ events, hazard ratio $0.70$, $600$ patients enrolled over 24 months, median survival time of 12 months in the control group). $\tau$, start of enrolment in Japan (months); $p_{1}$, proportion of Japanese patients; $k$, analysis; $d_{1,k}$, expected number of events in Japan; no est., proportion of simulated trials without a Japanese estimate; infinite, proportion with an infinite Japanese estimate; Sim., simulated probability ($100{,}000$ trials per scenario) with its Monte Carlo standard error (SE); Formula, closed form with the expected regional proportions of events. The hazard ratios in the overall population and in each region are estimated by Cox regression.}
+\label{tab:simulation}
+\begin{tabular}{rrr rrr rrr rrr}
+\toprule
+ & & & & & & \multicolumn{3}{c}{Method 1} & \multicolumn{3}{c}{Method 2} \\
+\cmidrule(lr){7-9}\cmidrule(lr){10-12}
+$\tau$ & $p_{1}$ & $k$ & $d_{1,k}$ & No est. & Infinite & Sim. & SE & Formula & Sim. & SE & Formula \\
+\midrule
+0 & 0.05 & 1 & 5.6 & 0.002 & 0.107 & 0.688 & 0.008 & 0.681 & 0.812 & 0.007 & 0.826 \\
+ &  & 2 & 11.1 & 0.000 & 0.004 & 0.646 & 0.002 & 0.648 & 0.766 & 0.002 & 0.770 \\
+ &  & 3 & 16.7 & 0.000 & 0.000 & 0.628 & 0.003 & 0.627 & 0.726 & 0.002 & 0.728 \\
+ & 0.10 & 1 & 11.2 & 0.000 & 0.006 & 0.750 & 0.008 & 0.753 & 0.915 & 0.005 & 0.913 \\
+ &  & 2 & 22.3 & 0.000 & 0.000 & 0.706 & 0.002 & 0.709 & 0.852 & 0.002 & 0.855 \\
+ &  & 3 & 33.5 & 0.000 & 0.000 & 0.675 & 0.003 & 0.681 & 0.801 & 0.002 & 0.806 \\
+ & 0.15 & 1 & 16.8 & 0.000 & 0.000 & 0.803 & 0.007 & 0.805 & 0.947 & 0.004 & 0.956 \\
+ &  & 2 & 33.5 & 0.000 & 0.000 & 0.750 & 0.002 & 0.755 & 0.901 & 0.001 & 0.903 \\
+ &  & 3 & 50.3 & 0.000 & 0.000 & 0.725 & 0.002 & 0.723 & 0.853 & 0.002 & 0.853 \\
+ & 0.20 & 1 & 22.4 & 0.000 & 0.000 & 0.831 & 0.007 & 0.847 & 0.977 & 0.003 & 0.977 \\
+ &  & 2 & 44.6 & 0.000 & 0.000 & 0.791 & 0.002 & 0.794 & 0.931 & 0.001 & 0.932 \\
+ &  & 3 & 67.0 & 0.000 & 0.000 & 0.758 & 0.002 & 0.759 & 0.881 & 0.002 & 0.883 \\
+\midrule
+6 & 0.05 & 1 & 3.0 & 0.048 & 0.358 & 0.611 & 0.009 & 0.633 & 0.704 & 0.008 & 0.752 \\
+ &  & 2 & 8.7 & 0.000 & 0.017 & 0.631 & 0.002 & 0.633 & 0.740 & 0.002 & 0.745 \\
+ &  & 3 & 15.1 & 0.000 & 0.000 & 0.629 & 0.003 & 0.630 & 0.722 & 0.002 & 0.725 \\
+ & 0.10 & 1 & 6.0 & 0.002 & 0.093 & 0.691 & 0.008 & 0.687 & 0.825 & 0.007 & 0.835 \\
+ &  & 2 & 17.5 & 0.000 & 0.000 & 0.684 & 0.002 & 0.688 & 0.824 & 0.002 & 0.826 \\
+ &  & 3 & 30.1 & 0.000 & 0.000 & 0.681 & 0.003 & 0.684 & 0.797 & 0.002 & 0.802 \\
+ & 0.15 & 1 & 9.0 & 0.000 & 0.021 & 0.717 & 0.008 & 0.728 & 0.879 & 0.006 & 0.886 \\
+ &  & 2 & 26.3 & 0.000 & 0.000 & 0.727 & 0.002 & 0.730 & 0.874 & 0.001 & 0.877 \\
+ &  & 3 & 45.2 & 0.000 & 0.000 & 0.726 & 0.002 & 0.726 & 0.848 & 0.002 & 0.849 \\
+ & 0.20 & 1 & 12.0 & 0.000 & 0.005 & 0.761 & 0.008 & 0.761 & 0.919 & 0.005 & 0.921 \\
+ &  & 2 & 35.0 & 0.000 & 0.000 & 0.765 & 0.002 & 0.765 & 0.909 & 0.001 & 0.910 \\
+ &  & 3 & 60.3 & 0.000 & 0.000 & 0.761 & 0.002 & 0.761 & 0.878 & 0.002 & 0.880 \\
+\bottomrule
+\end{tabular}
+\end{table}

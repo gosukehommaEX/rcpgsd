@@ -342,6 +342,23 @@ stage_df <- function(res, ...) {
   data.frame(..., res$stage, stringsAsFactors = FALSE)
 }
 
+# Marginal RCP of Teng et al. (2018) at each analysis: the fixed-design
+# probability Pr(C_k | Z_k >= u_k), which conditions on crossing the
+# boundary at analysis k but not on the trial having continued to analysis
+# k. It is computed as a single-stage design with critical value u_k and
+# the data of analysis k.
+marginal_rcp <- function(design, events, fs) {
+  fs <- matrix(fs, nrow = if (is.matrix(fs)) nrow(fs) else length(fs),
+               ncol = length(events))
+  do.call(rbind, lapply(seq_along(events), function(k) {
+    res <- rcp_h1(list(upper = design$criticalValues[k], alpha = ALPHA),
+                  events[k], fs[, k])
+    data.frame(method = res$stage$method, stage = k,
+               upper = res$stage$upper, p_cross = res$stage$p_eff,
+               rcp_marginal = res$stage$rcp, stringsAsFactors = FALSE)
+  }))
+}
+
 # =============================================================================
 # Figure 1 data: RCP under H1 without delay (closed form), by boundary and f1
 # =============================================================================
@@ -349,12 +366,16 @@ if (RUN[["fig1"]]) {
   fig1 <- run_step("Figure 1 (RCP under H1)", {
     st <- list()
     ov <- list()
+    mg <- list()
     for (b in names(DESIGNS)) {
       for (f1 in F1_GRID) {
         res <- rcp_h1(DESIGNS[[b]], EVENTS[[b]], fs_const(f1))
         st[[length(st) + 1L]] <- stage_df(res, boundary = b, f1 = f1)
         ov[[length(ov) + 1L]] <- data.frame(boundary = b, f1 = f1,
                                             res$overall)
+        mg[[length(mg) + 1L]] <- data.frame(
+          boundary = b, f1 = f1,
+          marginal_rcp(DESIGNS[[b]], EVENTS[[b]], fs_const(f1)))
       }
     }
     fx <- lapply(F1_GRID, function(f1) {
@@ -364,9 +385,10 @@ if (RUN[["fig1"]]) {
                  rcp = res$stage$rcp, rcp_uncond = res$stage$rcp_uncond,
                  stringsAsFactors = FALSE)
     })
-    list(stage   = do.call(rbind, st),
-         overall = do.call(rbind, ov),
-         fixed   = do.call(rbind, fx))
+    list(stage    = do.call(rbind, st),
+         overall  = do.call(rbind, ov),
+         fixed    = do.call(rbind, fx),
+         marginal = do.call(rbind, mg))
   })
   save_data(fig1, "fig1_data")
 }
@@ -507,6 +529,7 @@ if (RUN[["delay"]]) {
          stage_unadj  = res$stage,
          overall_unadj = res$overall,
          stage_adj    = res_adj$stage,
+         marginal     = marginal_rcp(DESIGNS$OBF, EVENTS$OBF, d$ev$fs),
          overall_adj  = res_adj$overall,
          gamma        = gam$result,
          gamma_overall = gam$overall,

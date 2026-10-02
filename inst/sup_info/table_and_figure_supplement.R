@@ -3,8 +3,8 @@
 #
 # Rendering stage for the supplementary material of the rcpgsd article. This
 # script reads the data written by data_generate_supplement.R
-# (inst/sup_info/data/*.rds) and, for Figure S1 and Table S5, the main data
-# (inst/scripts/data/fig1_data.rds and fig5_data.rds). It produces the
+# (inst/sup_info/data/*.rds) and, for Figures S1 and S5 and Table S1, the
+# main data (inst/scripts/data/fig1_data.rds and fig5_data.rds). It produces the
 # figures, the LaTeX table and the ledger of the numbers cited in the
 # supplementary material, without any computation of probabilities.
 #
@@ -12,7 +12,9 @@
 #   Figure S2  Futility boundaries
 #   Figure S3  Hazard reduction scale, exact and delta-method evaluation
 #   Figure S4  Hazard ratio in Japan different from the other regions
-#   Table S5   Patient-level simulation versus closed form (details)
+#   Figure S5  RCP given efficacy stop versus the marginal RCP of
+#              Teng et al. (2018)
+#   Table S1   Patient-level simulation versus closed form (details)
 #
 # Usage
 #   Open rcpgsd.Rproj (the working directory must be the package root) and
@@ -22,8 +24,8 @@
 # Required packages: ggplot2
 #
 # Outputs (relative to the package root)
-#   inst/sup_info/results/FigureS1.pdf, .eps ... FigureS4.pdf, .eps
-#   inst/sup_info/results/tableS5_simulation.tex
+#   inst/sup_info/results/FigureS1.pdf, .eps ... FigureS5.pdf, .eps
+#   inst/sup_info/results/tableS1_simulation.tex
 #   inst/sup_info/results/supplement_numbers.csv   Ledger of cited numbers
 # The table uses the rules of the booktabs package (\usepackage{booktabs}).
 # =============================================================================
@@ -330,7 +332,7 @@ print(FigureS4)
 save_figure(FigureS4, "FigureS4", width = 16, height = 13)
 
 # =============================================================================
-# Table S5: patient-level simulation versus closed form (OBF boundaries)
+# Table S1: patient-level simulation versus closed form (OBF boundaries)
 # =============================================================================
 s5  <- fig5$stage
 an5 <- fig5$analysis
@@ -410,7 +412,52 @@ tab5_lines <- c(
   "\\end{tabular}",
   "\\end{table}"
 )
-write_tex(tab5_lines, file.path(results_dir, "tableS5_simulation.tex"))
+write_tex(tab5_lines, file.path(results_dir, "tableS1_simulation.tex"))
+
+# =============================================================================
+# Figure S5: RCP given efficacy stop (proposed) versus the marginal RCP of
+# Teng et al. (2018), Pr(C_k | Z_k >= u_k), which ignores that the trial
+# has not stopped before analysis k
+# =============================================================================
+MRG_LTY <- c("Given efficacy stop at the analysis" = "solid",
+             "Given crossing the boundary (Teng et al., 2018)" = "dashed")
+mg <- fig1$marginal
+key_mg <- function(d) paste(d$boundary, d$f1, d$method, d$stage)
+s1m <- s1u[match(key_mg(mg), key_mg(s1u)), ]
+# At the first analysis both probabilities are the same
+stopifnot(max(abs(mg$rcp_marginal[mg$stage == 1L] -
+                    s1m$rcp[mg$stage == 1L])) < 1e-6)
+figS5_df <- rbind(
+  data.frame(boundary = mg$boundary, method = mg$method, f1 = mg$f1,
+             series = paste("Analysis", mg$stage),
+             type = names(MRG_LTY)[1L], value = s1m$rcp),
+  data.frame(boundary = mg$boundary, method = mg$method, f1 = mg$f1,
+             series = paste("Analysis", mg$stage),
+             type = names(MRG_LTY)[2L], value = mg$rcp_marginal)
+)
+figS5_df$boundary <- factor(BOUNDARY_LAB[figS5_df$boundary],
+                            levels = BOUNDARY_LAB)
+figS5_df$method   <- factor(METHOD_LAB[figS5_df$method], levels = METHOD_LAB)
+figS5_df$series   <- factor(figS5_df$series, levels = names(SERIES_COL))
+figS5_df$type     <- factor(figS5_df$type, levels = names(MRG_LTY))
+
+FigureS5 <- ggplot(figS5_df,
+                   aes(x = f1, y = value, colour = series, linetype = type,
+                       group = interaction(series, type))) +
+  geom_line(linewidth = LW) +
+  facet_grid(boundary ~ method) +
+  scale_x_continuous(name = X_F1, breaks = seq(0.05, 0.30, by = 0.05)) +
+  scale_y_continuous(name = Y_RCP) +
+  scale_colour_manual(name = NULL, values = SERIES_COL,
+                      breaks = c("Analysis 1", "Analysis 2",
+                                 "Analysis 3")) +
+  scale_linetype_manual(name = NULL, values = MRG_LTY) +
+  guides(colour = guide_legend(order = 1, nrow = 1),
+         linetype = guide_legend(order = 2, nrow = 2)) +
+  theme_paper()
+
+print(FigureS5)
+save_figure(FigureS5, "FigureS5", width = 16, height = 13)
 
 # =============================================================================
 # Ledger of the numbers cited in the supplementary material:
@@ -476,6 +523,20 @@ for (b in names(BOUNDARY_LAB)) {
           max(abs(ex$rcp_uncond - de$rcp_uncond)), 3,
           sprintf("Largest |exact - delta| of the unconditional RCP, %s", b),
           "siS3_data$stage$rcp_uncond")
+}
+
+# S5: largest overestimation by the marginal RCP of Teng et al. (2018)
+for (b in names(BOUNDARY_LAB)) {
+  for (m in c("M1", "M2")) {
+    for (k in 2:K) {
+      sel <- mg$boundary == b & mg$method == m & mg$stage == k
+      add_num(sprintf("siS5_%s_%s_k%d_maxdiff", b, m, k),
+              max(mg$rcp_marginal[sel] - s1m$rcp[sel]), 3,
+              sprintf(paste0("Largest (marginal - given efficacy stop) RCP ",
+                             "over f1, analysis %d, %s, %s"), k, b, m),
+              "fig1_data$marginal, fig1_data$stage")
+    }
+  }
 }
 
 # S4: no treatment effect in Japan (hazard ratio 1)

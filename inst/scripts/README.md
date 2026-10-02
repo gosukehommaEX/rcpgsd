@@ -25,8 +25,8 @@ inst/scripts/
                                  folder with MD5 verification
 inst/sup_info/
   data_generate_supplement.R     computation  -> data/siS1-siS4_data.rds, ...
-  table_and_figure_supplement.R  rendering    -> results/FigureS1-S4.pdf/.eps,
-                                                 results/tableS5_simulation.tex,
+  table_and_figure_supplement.R  rendering    -> results/FigureS1-S5.pdf/.eps,
+                                                 results/tableS1_simulation.tex,
                                                  results/supplement_numbers.csv
 ```
 
@@ -63,7 +63,8 @@ run first.
 | Figure S2 | Binding and non-binding futility boundaries | `siS2_data.rds` | `rcpgsd()` |
 | Figure S3 | Hazard reduction scale, exact and delta-method evaluation | `siS3_data.rds` | `rcpgsd()` |
 | Figure S4 | Hazard ratio in Japan different from the other regions | `siS4_data.rds` | `rcpgsd()` |
-| Table S5 | Details of the patient-level simulation | `fig5_data.rds` | as Figure 5 |
+| Figure S5 | RCP given efficacy stop versus the marginal RCP of Teng et al. (2018), Pr(C_k \| Z_k >= u_k) | `fig1_data.rds` | `rcpgsd()` |
+| Table S1 | Details of the patient-level simulation | `fig5_data.rds` | as Figure 5 |
 
 The figures are saved as PDF (fonts embedded) and EPS (vector, no
 transparency). The tables are complete `table` environments with caption and

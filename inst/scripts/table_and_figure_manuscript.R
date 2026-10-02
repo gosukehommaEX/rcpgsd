@@ -713,6 +713,32 @@ add_num("fig1_power_OBF", o1$power[o1$boundary == "OBF"][1L], 3,
 add_num("fig1_power_Pocock", o1$power[o1$boundary == "Pocock"][1L], 3,
         "Power, Pocock", "fig1_data$overall$power")
 
+# ---- Marginal RCP of Teng et al. (2018), Pr(C_k | Z_k >= u_k) ----
+mg1 <- fig1_data$marginal
+for (b in names(BOUNDARY_LAB)) {
+  for (m in c("M1", "M2")) {
+    for (k in seq_len(K)) {
+      add_num(sprintf("fig1_%s_%s_marginal_k%d", b, m, k),
+              mg1$rcp_marginal[mg1$boundary == b & mg1$method == m &
+                                 mg1$stage == k &
+                                 abs(mg1$f1 - F1_REF) < 1e-9], 3,
+              sprintf(paste0("Marginal RCP of Teng et al. (2018), ",
+                             "analysis %d, %s, %s, f1 = %g"), k, b, m,
+                      F1_REF), "fig1_data$marginal$rcp_marginal")
+    }
+  }
+}
+mgt <- table1_data$marginal
+for (m in c("M1", "M2")) {
+  for (k in seq_len(K)) {
+    add_num(sprintf("tab1_%s_marginal_k%d", m, k),
+            mgt$rcp_marginal[mgt$method == m & mgt$stage == k], 3,
+            sprintf(paste0("Marginal RCP of Teng et al. (2018) in the ",
+                           "application, analysis %d, %s"), k, m),
+            "table1_data$marginal$rcp_marginal")
+  }
+}
+
 # ---- Figure 2 (f1 = F1_REF, and ranges over f1) ----
 for (m in c("M1", "M2")) {
   add_num(sprintf("fig2_ref_%s", m),

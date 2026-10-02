@@ -17,7 +17,7 @@
 #
 # Inputs (relative to the package root)
 #   inst/scripts/results/   Figure1-5 (.pdf, .eps), table1, table2 (.tex)
-#   inst/sup_info/results/  FigureS1-S4 (.pdf, .eps), tableS5 (.tex)
+#   inst/sup_info/results/  FigureS1-S5 (.pdf, .eps), tableS1 (.tex)
 #
 # Output
 #   The files in DEST_DIR (all in one folder, so that the manuscript uses
