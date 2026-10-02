@@ -44,7 +44,8 @@ source("inst/scripts/number_check.R")
 
 The patient-level simulation (Figure 5) takes most of the time. Parts of the
 computation can be skipped with the vector `RUN` at the top of each
-`data_generate_*.R` script. The supplementary scripts read the settings and
+`data_generate_*.R` script. In `data_generate_main.R`, `RUN` can also be
+assigned before the script is sourced. The supplementary scripts read the settings and
 the adjusted thresholds from the main data, so `data_generate_main.R` must be
 run first.
 
@@ -55,7 +56,7 @@ run first.
 | Figure 1 | RCP under H1 by analysis (given efficacy stop and unconditional), overall RCP and fixed design, versus the proportion of events in Japan | `fig1_data.rds` | `rcpgsd()` |
 | Figure 2 | Null RCP with the unadjusted thresholds and adjusted thresholds | `fig2_data.rds` | `rcpgsd_get_gamma()` |
 | Figure 3 | Delayed start of enrolment in Japan: proportion of events in Japan and RCP | `fig3_data.rds` | `rcpgsd_accrual()`, `rcpgsd_events()`, `rcpgsd()` |
-| Figure 4 | Required proportion of events in Japan by delay and criterion | `fig4_data.rds` | `rcpgsd_get_fs()` |
+| Figure 4 | Required proportion of events in Japan by delay and criterion, and the longest delay at which the stagewise target is attainable | `fig4_data.rds` | `rcpgsd_get_fs()` |
 | Figure 5 | Patient-level simulation versus closed form | `fig5_data.rds` | `rcpgsd_sim()`, `rcpgsd()` |
 | Table 1 | Application with a 6-month delay in Japan, unadjusted and adjusted thresholds | `table1_data.rds` | as Figures 2 and 3 |
 | Table 2 | Required proportion and number of events in Japan in the application | `table2_data.rds` | subset of Figure 4 |

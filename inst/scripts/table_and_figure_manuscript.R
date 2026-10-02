@@ -825,13 +825,11 @@ for (tau in c(0, max(SET$TAU_GRID))) {
   }
 }
 for (m in c("M1", "M2")) {
-  na_tau <- r4$tau[r4$type == "stagewise" & r4$method == m &
-                     is.na(r4$fs_r1)]
-  if (length(na_tau) > 0L) {
-    add_num(sprintf("fig4_stagewise_%s_first_na", m), min(na_tau), 0,
-            sprintf("Smallest delay with the stagewise target not attainable, %s",
-                    m), "fig4_data$required$fs_r1")
-  }
+  add_num(sprintf("fig4_stagewise_%s_limit", m),
+          fig4_data$critical$tau_limit[fig4_data$critical$method == m], 1,
+          sprintf(paste0("Longest delay (months) at which the stagewise ",
+                         "target is attainable, %s"), m),
+          "fig4_data$critical$tau_limit")
   add_num(sprintf("fig4_fixed_%s_fs", m),
           fig4_data$fixed$fs_r1[fig4_data$fixed$method == m], 3,
           sprintf("Required proportion of events in Japan, fixed design, %s",

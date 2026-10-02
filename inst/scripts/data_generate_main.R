@@ -59,11 +59,20 @@ if (!requireNamespace("rpact", quietly = TRUE)) {
        call. = FALSE)
 }
 
-# Parts of the computation to run
-RUN <- c(fig1  = TRUE,   # Figure 1
-         fig2  = TRUE,   # Figure 2
-         delay = TRUE,   # Figures 3 and 4, Tables 1 and 2
-         sim   = TRUE)   # Figure 5 (patient-level simulation, slow)
+# Parts of the computation to run. RUN can also be assigned before this
+# file is sourced to rerun only some parts, e.g.
+#   RUN <- c(fig1 = FALSE, fig2 = FALSE, delay = TRUE, sim = FALSE)
+if (!exists("RUN", inherits = FALSE)) {
+  RUN <- c(fig1  = TRUE,   # Figure 1
+           fig2  = TRUE,   # Figure 2
+           delay = TRUE,   # Figures 3 and 4, Tables 1 and 2
+           sim   = TRUE)   # Figure 5 (patient-level simulation, slow)
+}
+if (!is.logical(RUN) ||
+    !setequal(names(RUN), c("fig1", "fig2", "delay", "sim"))) {
+  stop("RUN must be a logical vector with the elements fig1, fig2, delay ",
+       "and sim.", call. = FALSE)
+}
 
 # --------------------------------------------------------------------------- #
 # Output location and logging
@@ -215,6 +224,11 @@ fs_const <- function(f1) c(f1, (1 - f1) / 2, (1 - f1) / 2)
 # rounding, so the expected analysis times equal those without delay.
 TAU_GRID  <- seq(0, 14, by = 2)
 TAU_LIMIT <- (1 - N_REGION[1L] / N_TOTAL) * T_ACCRUAL   # feasibility limit
+# Step of the delays used to find the longest delay at which the stagewise
+# target is attainable. Multiples of 0.08 months give integer numbers of
+# patients in every accrual interval (12.5 patients per month in each of
+# the other regions before the start in Japan).
+TAU_STEP  <- 0.08
 APP_TAU   <- 6                       # delay in the application (months)
 TYPES     <- c("overall", "stagewise", "unconditional")
 
@@ -291,7 +305,8 @@ SETTINGS <- list(ALPHA = ALPHA, BETA = BETA, HR = HR, R_ALLOC = R_ALLOC,
                  N_TOTAL = N_TOTAL, T_ACCRUAL = T_ACCRUAL, RATE = RATE,
                  N_REGION = N_REGION, MEDIAN_C = MEDIAN_C,
                  LAMBDA_C = LAMBDA_C, TAU_GRID = TAU_GRID,
-                 TAU_LIMIT = TAU_LIMIT, APP_TAU = APP_TAU, TYPES = TYPES,
+                 TAU_LIMIT = TAU_LIMIT, TAU_STEP = TAU_STEP,
+                 APP_TAU = APP_TAU, TYPES = TYPES,
                  P1_SIM = P1_SIM, TAU_SIM = TAU_SIM, NSIM = NSIM,
                  SEED = SEED, ESTIMATOR = ESTIMATOR)
 
@@ -335,6 +350,32 @@ make_delay <- function(n_region, tau) {
                               n_accrual = acc$n_accrual, r = R_ALLOC)
   list(acc = acc, ev = ev,
        max_round = max(abs(acc$n_accrual - acc$n_accrual_exact)))
+}
+
+# Search interval for the required proportion of events in Japan at the
+# final analysis. Under the overall accrual plan, the expected numbers of
+# events in Japan are proportional to n_1 while the analysis times do not
+# change, so a proportion x corresponds to n_1 = x n_1^0 / f_{1,K}^0, where
+# n_1^0 and f_{1,K}^0 are the planned values. Condition (4) of the article,
+# n_1 <= (1 - tau / T) N, then bounds x by f_{1,K}^0 (1 - tau / T) N / n_1^0.
+fs_interval <- function(fs, tau) {
+  c(0.01, min(0.99, fs[1L, ncol(fs)] * (1 - tau / T_ACCRUAL) * N_TOTAL /
+                N_REGION[1L]))
+}
+
+# Whether the stagewise target is attainable for a delay tau in Japan
+stagewise_ok <- function(tau, m) {
+  d <- make_delay(N_REGION, tau)
+  if (d$max_round > 1e-8) {
+    stop(sprintf("The accrual by region is not integer for a delay of %g.",
+                 tau), call. = FALSE)
+  }
+  fsr <- suppressWarnings(rcpgsd::rcpgsd_get_fs(
+    DESIGNS$OBF, events = EVENTS$OBF, fs = d$ev$fs, hr = HR,
+    target = TARGET, r = R_ALLOC, method = m, type = "stagewise",
+    gamma_M1 = GAMMA_M1, gamma_M2 = GAMMA_M2,
+    interval = fs_interval(d$ev$fs, tau)))
+  !is.na(fsr$result$fs_r1)
 }
 
 # Long data frame with one row per method and analysis
@@ -493,7 +534,9 @@ if (RUN[["delay"]]) {
                                      fs = delay[[i]]$ev$fs, hr = HR,
                                      target = TARGET, r = R_ALLOC,
                                      type = ty, gamma_M1 = GAMMA_M1,
-                                     gamma_M2 = GAMMA_M2)
+                                     gamma_M2 = GAMMA_M2,
+                                     interval = fs_interval(delay[[i]]$ev$fs,
+                                                            TAU_GRID[i]))
         rq[[length(rq) + 1L]] <- data.frame(tau = TAU_GRID[i], type = ty,
                                             fsr$result,
                                             stringsAsFactors = FALSE)
@@ -509,6 +552,44 @@ if (RUN[["delay"]]) {
     list(required = do.call(rbind, rq),
          fixed    = data.frame(events = EV_FIX, fsr_fix$result))
   })
+
+  # Longest delay at which the stagewise target is attainable, by bisection
+  # over the delays that are multiples of TAU_STEP. The limit is reported
+  # as the midpoint of the final bracket.
+  fig4$critical <- run_step("Figure 4 (longest attainable delay)", {
+    do.call(rbind, lapply(c("M1", "M2"), function(m) {
+      lo <- 0L
+      hi <- as.integer(round(max(TAU_GRID) / TAU_STEP))
+      if (!stagewise_ok(lo * TAU_STEP, m) || stagewise_ok(hi * TAU_STEP, m)) {
+        stop(sprintf(paste0("The stagewise target of %s must be attainable ",
+                            "without delay and not attainable at %g months."),
+                     m, max(TAU_GRID)), call. = FALSE)
+      }
+      while (hi - lo > 1L) {
+        mid <- (lo + hi) %/% 2L
+        if (stagewise_ok(mid * TAU_STEP, m)) lo <- mid else hi <- mid
+      }
+      data.frame(method             = m,
+                 tau_attainable     = lo * TAU_STEP,
+                 tau_not_attainable = hi * TAU_STEP,
+                 tau_limit          = (lo + hi) / 2 * TAU_STEP,
+                 stringsAsFactors   = FALSE)
+    }))
+  })
+  # The delays of TAU_GRID must agree with the limit
+  for (m in c("M1", "M2")) {
+    rq  <- fig4$required[fig4$required$type == "stagewise" &
+                           fig4$required$method == m, ]
+    lim <- fig4$critical$tau_limit[fig4$critical$method == m]
+    if (!identical(!is.na(rq$fs_r1), rq$tau < lim)) {
+      stop(sprintf(paste0("The stagewise results of %s on TAU_GRID disagree ",
+                          "with the longest attainable delay."), m),
+           call. = FALSE)
+    }
+    log_msg("  %s: stagewise target attainable at %.2f, not at %.2f months",
+            m, fig4$critical$tau_attainable[fig4$critical$method == m],
+            fig4$critical$tau_not_attainable[fig4$critical$method == m])
+  }
   save_data(fig4, "fig4_data")
 
   # ---- Table 1: application (delay APP_TAU), unadjusted and adjusted ----
@@ -618,3 +699,6 @@ writeLines(
 )
 
 log_msg("All requested data written to '%s/'.", data_dir)
+
+# A RUN assigned for this run must not carry over to the next one
+rm(RUN)

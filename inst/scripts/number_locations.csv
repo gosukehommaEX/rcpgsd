@@ -143,8 +143,8 @@ fig4_tau14_overall_M1_fs,"with the delay, to {} (91 events)",,
 fig4_tau14_overall_M1_events,to 0.271 ({} events) for Method~1,,
 fig4_tau14_overall_M2_fs,Method~1 and {} (33 events),,
 fig4_tau14_overall_M2_events,and 0.098 ({} events) for Method~2,,
-fig4_stagewise_M1_first_na,for delays of {} months or more under Method~1,,
-fig4_stagewise_M2_first_na,and of {} months under Method~2,,
+fig4_stagewise_M1_limit,longer than about {} months under Method~1,,
+fig4_stagewise_M2_limit,and about {} months under Method~2,,
 -,"Japanese patients of {}, 0.10, 0.15 and 0.20",,setting
 -,"Japanese patients of 0.05, {}, 0.15 and 0.20",,setting
 -,"Japanese patients of 0.05, 0.10, {} and 0.20",,setting
