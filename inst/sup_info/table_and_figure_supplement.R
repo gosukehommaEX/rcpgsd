@@ -498,6 +498,26 @@ for (cs in names(CASE_LAB)) {
   add_num(sprintf("siS2_power_%s", cs), o2$power[o2$case == cs][1L], 3,
           sprintf("Power, %s", CASE_LAB[[cs]]), "siS2_data$overall$power")
 }
+# S2: numbers of events and boundaries of the designs with futility
+# boundaries
+fi <- SET$FUT_INFO
+for (ds in unique(fi$design)) {
+  d <- fi[fi$design == ds, ]
+  d <- d[order(d$stage), ]
+  for (k in seq_len(K)) {
+    add_num(sprintf("siS2_%s_events_k%d", ds, k), d$events[k], 0,
+            sprintf("Number of events at analysis %d, %s futility design",
+                    k, ds), "settings$FUT_INFO$events")
+    add_num(sprintf("siS2_%s_upper_k%d", ds, k), d$upper[k], 3,
+            sprintf("Efficacy boundary at analysis %d, %s futility design",
+                    k, ds), "settings$FUT_INFO$upper")
+    if (k < K) {
+      add_num(sprintf("siS2_%s_lower_k%d", ds, k), d$lower[k], 2,
+              sprintf("Futility boundary at analysis %d, %s futility design",
+                      k, ds), "settings$FUT_INFO$lower")
+    }
+  }
+}
 st2 <- siS2$stage
 for (m in c("M1", "M2")) {
   ref <- st2[st2$case == "binding" & st2$method == m, ]

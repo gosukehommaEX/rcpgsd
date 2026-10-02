@@ -153,7 +153,7 @@ fig5_M1_maxdiff_ev5,absolute difference was {} for Method~1,,
 fig5_M2_maxdiff_ev5,was 0.016 for Method~1 and {} for Method~2,,
 fig5_power_min,power ranged from {} to 0.901,,
 fig5_power_max,power ranged from 0.897 to {}.,,
--,6-month delay and {}\% Japanese patients,,setting
+-,discrepancy occurred with a 6-month delay and {}\% Japanese patients,,setting
 fig5_worst_events_r1,where Japan had {} expected events,,
 fig5_worst_p_inf,was infinite in {}\% of the trials,100,
 fig5_worst_p_no_est,"and unavailable in {}\%, and",100,
@@ -214,7 +214,87 @@ siS3_OBF_maxdiff_cond,differed by at most {} (Figure~S3),,largest of the four si
 -,"$\alpha = 0.025$, power {}, hazard ratio",,setting
 -,"power 0.90, hazard ratio {} in all regions, two",,setting
 -,"of equal size, $\gamma_{\mathrm{M1}} = {}$ and",,setting
--,unadjusted thresholds $\gamma_{\mathrm{M1}} = {}$ and,,setting
+-,null hypothesis with the unadjusted thresholds $\gamma_{\mathrm{M1}} = {}$ and,,setting
 -,the hazard ratio is {} in all regions.},,setting
 -,"for a target value of {}, by start",,setting
 -,(points with {}\% Monte Carlo,,95% interval
+-,"a one-sided significance level of {}, a power of 0.90",,setting
+-,"significance level of 0.025, a power of {} for a hazard",,setting
+-,"a power of 0.90 for a hazard ratio of {} in all regions, equal",,setting
+-,and the consistency thresholds are $\gamma_{\mathrm{M1}} = {}$ and,,setting
+-,"\texttt{rcpgsd} (version {}.0), whose",,package version
+events_OBF_k1,"design then has {}, 223 and 335 events",,
+events_OBF_k2,"design then has 112, {} and 335 events",,
+events_OBF_k3,"design then has 112, 223 and {} events, and",,
+events_Pocock_k1,"design has {}, 255 and 382 events.",,
+events_Pocock_k2,"design has 127, {} and 382 events.",,
+events_Pocock_k3,"design has 127, 255 and {} events.",,
+d_fix,"events, that is {}, which we round up",,
+-,which we round up to {}; the script checks,,ceiling of d_fix
+check_time_k1_rpact,"expected analysis times of {}, 22.68 and 30.03 months",,
+check_time_k2_rpact,"expected analysis times of 15.21, {} and 30.03 months",,
+check_time_k3_rpact,"expected analysis times of 15.21, 22.68 and {} months",,
+check_time_k1_absdiff,"differed by {}, 0.02 and 0.00 months",,
+check_time_k2_absdiff,"differed by 0.03, {} and 0.00 months",,
+check_time_k3_absdiff,"differed by 0.03, 0.02 and {} months",,
+check_power_rpact,Both packages gave a power of {}.,,equal to check_power_rcpgsd
+-,the powers by more than {}.,,tolerance in data_generate_main.R
+-,"unadjusted thresholds, under a hazard ratio of {} in all regions",,setting
+siS1_OBF_M1_maxdiff,efficacy stopping by up to {} for Method~1 and up to 0.150,,
+siS1_OBF_M2_maxdiff,up to 0.124 for Method~1 and up to {} for Method~2 over,,
+siS1_Pocock_M1_maxdiff,the RCP decreases by at most {} for Method~1,,
+siS1_Pocock_M2_maxdiff,at most 0.027 for Method~1 and at most {} for Method~2.,,
+-,unadjusted thresholds $\gamma_{\mathrm{M1}} = {}$ and $\gamma_{\mathrm{M2}} = 0$ (dashed),,setting
+-,events for a power of {} as in Section~S1,,setting
+siS2_binding_events_k1,"boundaries has {}, 231 and 346 events",,
+siS2_binding_events_k2,"boundaries has 115, {} and 346 events",,
+siS2_binding_events_k3,"boundaries has 115, 231 and {} events",,
+siS2_binding_upper_k1,"efficacy boundaries of {}, 2.511 and 1.958",,
+siS2_binding_upper_k2,"efficacy boundaries of 3.710, {} and 1.958",,
+siS2_binding_upper_k3,"efficacy boundaries of 3.710, 2.511 and {}, and",,
+siS2_binding_lower_k1,futility boundaries of ${}$ and 0.91,,
+siS2_binding_lower_k2,futility boundaries of $-0.26$ and {} at the two,,
+siS2_nonbinding_events_k1,"boundaries has {}, 235 and 353 events",,
+siS2_nonbinding_events_k2,"boundaries has 118, {} and 353 events",,
+siS2_nonbinding_events_k3,"boundaries has 118, 235 and {} events",,
+siS2_nonbinding_upper_k1,"without futility boundaries, {}, 2.511 and 1.993",,
+siS2_nonbinding_upper_k2,"without futility boundaries, 3.710, {} and 1.993",,
+siS2_nonbinding_upper_k3,"without futility boundaries, 3.710, 2.511 and {}, and",,
+siS2_nonbinding_lower_k1,futility boundaries of ${}$ and 0.94,,
+siS2_nonbinding_lower_k2,futility boundaries of $-0.24$ and {}. For,,
+siS2_power_binding,The power is {} with the binding boundaries,,
+siS2_power_nonbinding_obeyed,"with the binding boundaries, {} with the obeyed",,
+siS2_power_nonbinding_ignored,non-binding boundaries and {} with the ignored ones,,
+siS2_nonbinding_obeyed_M1_maxdiff,non-binding boundaries differ by at most {} for Method~1,,
+siS2_nonbinding_obeyed_M2_maxdiff,"at most 0.002 for Method~1 and {} for Method~2, and those",,
+siS2_nonbinding_ignored_M1_maxdiff,ignored non-binding boundaries by at most {} for both methods,,equal to siS2_nonbinding_ignored_M2_maxdiff
+-,"$1 - \widehat{\mathrm{HR}}_{1,k} > {} (1 - \widehat{\mathrm{HR}}_k)$",,setting
+siS3_OBF_maxdiff_cond,two evaluations differ by at most {} for the RCP,,
+siS3_OBF_maxdiff_uncond,efficacy stopping and {} for the unconditional probability,,
+siS3_Pocock_maxdiff_cond,they differ by at most {} and 0.004,,
+siS3_Pocock_maxdiff_uncond,they differ by at most 0.003 and {}.,,
+-,hazard ratio in Japan vary from {} to 1.0,,setting
+-,hazard ratio in Japan vary from 0.6 to {} while,,setting
+-,to 1.0 while it is {} in the other regions,,setting
+-,"in the other regions, with {}\% of the events in Japan. All",,setting
+siS4_OBF_power_hr1,"Japan is 1, the power is {} for the",,
+siS4_Pocock_power_hr1,"O'Brien-Fleming-type design and {} for the Pocock-type design, and the RCP",,
+siS4_OBF_M1_overall_hr1,the RCP given success is {} (Method~1),,
+siS4_OBF_M2_overall_hr1,is 0.358 (Method~1) and {} (Method~2),,
+siS4_Pocock_M1_overall_hr1,O'Brien-Fleming-type design and {} and 0.559 for the Pocock-type,,
+siS4_Pocock_M2_overall_hr1,design and 0.378 and {} for the Pocock-type,,
+-,with a hazard ratio of {} in the other regions (dotted,,setting
+-,(dotted vertical line) and {}\% of the events,,setting
+siS5_OBF_M2_k2_maxdiff,exceeds $\phi_2$ by at most {} for both methods,,equal to siS5_OBF_M1_k2_maxdiff
+siS5_Pocock_M1_k2_maxdiff,and by at most {} (Method~1) and 0.026,,
+siS5_Pocock_M2_k2_maxdiff,at most 0.023 (Method~1) and {} (Method~2),,
+siS5_OBF_M1_k3_maxdiff,the excess is up to {} and 0.052 for,,
+siS5_OBF_M2_k3_maxdiff,the excess is up to 0.044 and {} for,,
+siS5_Pocock_M1_k3_maxdiff,design and up to {} and 0.058 for,,
+siS5_Pocock_M2_k3_maxdiff,design and up to 0.052 and {} for,,
+-,The simulation of Section~{} of the main article,,section of the main article
+-,piecewise uniform accrual of Section~{} of the main,,section of the main article
+-,"a median of 12 months in the control group and a hazard ratio of {} in all regions, without",,setting
+-,"with a 6-month delay and {}\% Japanese patients at the first analysis, where Japan has",,setting
+fig5_worst_events_r1,where Japan has {} expected events and,,
+fig5_worst_p_inf,estimate is infinite in {}\% of the simulated,100,

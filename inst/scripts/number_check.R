@@ -15,7 +15,8 @@
 #   Open rcpgsd.Rproj (the working directory must be the package root) and
 #   source this file:
 #     source("inst/scripts/number_check.R")
-#   The manuscript files are MANUSCRIPT_FILES below. To check other files
+#   The manuscript files are MANUSCRIPT_FILES below (the main article and
+#   the supporting information). To check other files
 #   (e.g., the supplementary material or a response letter), assign
 #   MANUSCRIPT_FILES before sourcing this file.
 #
@@ -58,7 +59,8 @@ if (!file.exists("DESCRIPTION") ||
 }
 
 if (!exists("MANUSCRIPT_FILES")) {
-  MANUSCRIPT_FILES <- file.path("..", "..", "Manuscript", "main.tex")
+  MANUSCRIPT_FILES <- file.path("..", "..", "Manuscript",
+                                c("main.tex", "supporting_information.tex"))
 }
 
 script_dir  <- file.path("inst", "scripts")

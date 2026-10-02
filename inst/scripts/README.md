@@ -100,7 +100,8 @@ session information in `meta` and in the log files.
 4. Run `number_check.R`. It reports, for each location, the number in the
    text, the recomputed value and the expected text, lists decimal numbers of
    the text that are not registered, and stops with an error if any check
-   fails. The manuscript file is `../../Manuscript/main.tex` by default
+   fails. The manuscript files are `../../Manuscript/main.tex` and
+   `../../Manuscript/supporting_information.tex` by default
    (`MANUSCRIPT_FILES` can be assigned before sourcing).
 
 The ledger of the supplementary material is
