@@ -72,7 +72,8 @@ log_path <- file.path(DEST_DIR, "copy_results.log")
 out <- c(sprintf("copy_results.R -- %s", format(Sys.time())),
          sprintf("Destination: %s", normalizePath(DEST_DIR)),
          "",
-         utils::capture.output(print(res, row.names = FALSE, right = FALSE)))
+         utils::capture.output(print(res, row.names = FALSE, right = FALSE,
+                                     max = nrow(res) * ncol(res) + 1L)))
 writeLines(out, log_path)
 writeLines(out)
 

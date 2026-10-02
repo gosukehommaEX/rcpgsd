@@ -91,7 +91,9 @@ emit_table <- function(df) {
     emit("  (none)")
     return(invisible(NULL))
   }
-  out <- utils::capture.output(print(df, row.names = FALSE, right = FALSE))
+  # max is set so that long tables are not cut at getOption("max.print")
+  out <- utils::capture.output(print(df, row.names = FALSE, right = FALSE,
+                                     max = nrow(df) * ncol(df) + 1L))
   for (l in out) emit("  ", l)
 }
 
