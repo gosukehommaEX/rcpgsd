@@ -1,1 +1,220 @@
 key,context,scale,note
+-,"generally {} or more, of the effect",,MHLW guidance
+-,"(RCP), is {}\% or higher",,MHLW guidance
+-,87 ({}\%) of the 3386,,Ando and Hamasaki (2010)
+-,recommends $\gamma_{\mathrm{M1}} \ge {}$ and uses,,MHLW guidance
+-,"significance level $\alpha = {}$, equal allocation",,setting
+-,and a hazard ratio of {} in all regions. The efficacy,,setting
+-,for a power of {} were computed,,setting
+events_OBF_k1,"which gives {}, 223 and 335 events",,
+events_OBF_k2,"which gives 112, {} and 335 events",,
+events_OBF_k3,"which gives 112, 223 and {} events with boundaries",,
+upper_OBF_k1,"events with boundaries {}, 2.511 and 1.993",,
+upper_OBF_k2,"boundaries 3.710, {} and 1.993",,
+upper_OBF_k3,"boundaries 3.710, 2.511 and {} for the",,
+events_Pocock_k1,"design, and {}, 255 and 382 events",,
+events_Pocock_k2,"and 127, {} and 382 events",,
+events_Pocock_k3,"and 127, 255 and {} events with boundaries",,
+upper_Pocock_k1,"events with boundaries {}, 2.295 and 2.296",,
+upper_Pocock_k2,"boundaries 2.279, {} and 2.296",,
+upper_Pocock_k3,"boundaries 2.279, 2.295 and {} for the Pocock-type",,
+d_fix,"The fixed design requires {} events, which",,
+-,which we round up to {}. We use,,ceiling of d_fix
+-,"We use $\gamma_{\mathrm{M1}} = {}$, $\gamma_{\mathrm{M2}} = 0$ and",,setting
+-,and a target value of {}.,,setting
+fig3_time_k1,"design are then {}, 22.7 and 30.0 months",,
+fig3_time_k2,"are then 15.2, {} and 30.0 months",,
+fig3_time_k3,"15.2, 22.7 and {} months. We checked",,
+check_power_rpact,the same power of {} and analysis times,,
+check_time_k1_absdiff,"by at most {} months, a difference",,
+-,"With the O'Brien-Fleming-type boundaries and $f_1 = {}$, the Method~1 RCP",,setting
+fig1_OBF_M1_cond_k1,"at the first analysis is {}, whereas",,
+fig1_OBF_M1_uncond_k1,consistency at that analysis is {}. The first analysis,,
+fig1_OBF_M1_cond_k2,$\phi_k$ is {} and 0.681. At the final,,
+fig1_OBF_M1_cond_k3,$\phi_k$ is 0.709 and {}. At the final,,
+fig1_OBF_M1_uncond_k3,"the unconditional probability of {}, because a trial",,
+fig1_OBF_M1_overall,"The RCP given success is {}, slightly below",,
+fig1_fixed_M1_cond,slightly below the {} of the fixed design,,
+fig1_fixed_M1_uncond,whose unconditional RCP is {}. Method~2,,
+fig1_OBF_M2_cond_k1,"with $\phi_k$ of {}, 0.855 and 0.806",,
+fig1_OBF_M2_cond_k2,"$\phi_k$ of 0.913, {} and 0.806",,
+fig1_OBF_M2_cond_k3,"0.913, 0.855 and {}, an unconditional",,
+fig1_OBF_M2_uncond_k1,"an unconditional probability of {} at the first analysis, and $\phi",,
+fig1_OBF_M2_overall,and $\phi = {}$ against 0.856,,
+fig1_fixed_M2_cond,$\phi = 0.838$ against {} for the fixed design,,
+fig1_power_OBF,The power is {} for both designs,,equal to fig1_power_Pocock
+fig1_Pocock_M1_cond_k1,"being {}, 0.691 and 0.687 for Method~1",,
+fig1_Pocock_M1_cond_k2,"being 0.690, {} and 0.687 for Method~1",,
+fig1_Pocock_M1_cond_k3,"being 0.690, 0.691 and {} for Method~1",,
+fig1_Pocock_M2_cond_k1,"for Method~1 and {}, 0.826 and 0.821 for Method~2",,
+fig1_Pocock_M2_cond_k2,"for Method~1 and 0.824, {} and 0.821 for Method~2",,
+fig1_Pocock_M2_cond_k3,"0.824, 0.826 and {} for Method~2, with",,
+fig1_Pocock_M1_overall,with $\phi$ of {} and 0.824. These,,
+fig1_Pocock_M2_overall,with $\phi$ of 0.690 and {}. These,,
+fig1_Pocock_M1_uncond_k1,"the unconditional probability of {} at the first analysis, and the moderate",,
+-,"boundaries and $f_1 = {}$, it is 0.716",,setting
+fig1_OBF_M1_marginal_k3,it is {} for Method~1 and 0.858,,
+fig1_OBF_M2_marginal_k3,it is 0.716 for Method~1 and {} for Method~2 at the final,,
+fig1_OBF_M1_cond_k3,against $\phi_3$ of {} and 0.806,,
+fig1_OBF_M2_cond_k3,against $\phi_3$ of 0.681 and {}. Over,,
+-,"0.806. Over $f_1$ from {} to 0.30, the difference",,setting
+-,"0.806. Over $f_1$ from 0.05 to {}, the difference",,setting
+siS5_OBF_M1_k3_maxdiff,final analysis reaches {} (Method~1),,
+siS5_OBF_M2_k3_maxdiff,reaches 0.044 (Method~1) and {} (Method~2),,
+siS5_Pocock_M1_k3_maxdiff,boundaries and {} and 0.058 with the Pocock,,
+siS5_Pocock_M2_k3_maxdiff,boundaries and 0.052 and {} with the Pocock,,
+-,"With $f_1 = {}$, the fixed-design reference",,setting
+fig2_ref_M1,reference values are {} for Method~1,,
+fig2_ref_M2,"are 0.651 for Method~1 and {} for Method~2, the values",,
+fig2_OBF_M1_null_k1,"Method~1 null RCP is {}, 0.681 and 0.650",,
+fig2_OBF_M1_null_k2,"null RCP is 0.745, {} and 0.650",,
+fig2_OBF_M1_null_k3,"null RCP is 0.745, 0.681 and {} at the three",,
+fig2_OBF_M1_gamma_k1,"thresholds are {}, 0.587 and 0.500",,
+fig2_OBF_M1_gamma_k2,"thresholds are 0.705, {} and 0.500",,
+fig2_OBF_M1_gamma_k3,"thresholds are 0.705, 0.587 and {}; at the final",,
+fig2_OBF_M2_null_k1,"For Method~2 the null RCP is {}, 0.814 and 0.739",,
+fig2_OBF_M2_null_k2,"the null RCP is 0.905, {} and 0.739",,
+fig2_OBF_M2_null_k3,"the null RCP is 0.905, 0.814 and {}, and",,
+fig2_OBF_M2_gamma_k1,"thresholds are {}, 0.067 and 0.000",,
+fig2_OBF_M2_gamma_k2,"thresholds are 0.309, {} and 0.000",,
+fig2_OBF_M2_gamma_k3,"thresholds are 0.309, 0.067 and {}. A trial",,
+fig2_OBF_M2_gamma_k1,"\hat{\delta}_{s,1} > {}$ in every region",,
+fig2_Pocock_M1_null_k1,"It is {}, 0.667 and 0.665 for Method~1",,
+fig2_Pocock_M1_null_k2,"It is 0.669, {} and 0.665",,
+fig2_Pocock_M1_null_k3,"It is 0.669, 0.667 and {} for Method~1",,
+fig2_Pocock_M2_null_k1,"for Method~1 and {}, 0.784 and 0.780",,
+fig2_Pocock_M2_null_k2,"and 0.787, {} and 0.780",,
+fig2_Pocock_M2_null_k3,"0.787, 0.784 and {} for Method~2",,
+fig2_Pocock_M1_gamma_k1,"thresholds are {}, 0.549 and 0.543",,
+fig2_Pocock_M1_gamma_k2,"thresholds are 0.555, {} and 0.543",,
+fig2_Pocock_M1_gamma_k3,"thresholds are 0.555, 0.549 and {} and 0.052",,
+fig2_Pocock_M2_gamma_k1,"0.549 and 0.543 and {}, 0.033 and 0.024",,
+fig2_Pocock_M2_gamma_k2,"0.543 and 0.052, {} and 0.024",,
+fig2_Pocock_M2_gamma_k3,"0.052, 0.033 and {}. Over",,
+-,0.024. Over $f_1$ from {} to 0.30 the adjusted,,setting
+-,0.024. Over $f_1$ from 0.05 to {} the adjusted,,setting
+fig2_OBF_M2_gamma_k1_range,"change by at most {}, so a single",,largest of the fig2 ranges (equal to fig2_Pocock_M1_gamma_k3_range)
+siS1_OBF_M1_maxdiff,decreases by up to {} for Method~1 and 0.150,,
+siS1_OBF_M2_maxdiff,up to 0.124 for Method~1 and {} for Method~2,,
+siS1_Pocock_M1_maxdiff,it decreases by up to {} and 0.040,,
+siS1_Pocock_M2_maxdiff,it decreases by up to 0.027 and {}.,,
+fig3_tau_limit,absorb delays of up to {} months,,
+fig3_time_k1,analysis takes place at {} months,,
+fig3_tau6_f1_k1,"three analyses are {}, 0.078 and 0.090",,
+fig3_tau6_f1_k2,"three analyses are 0.054, {} and 0.090",,
+fig3_tau6_f1_k3,"three analyses are 0.054, 0.078 and {}, or",,
+fig3_tau6_events_r1_k1,"or {}, 17.5 and 30.1 events, compared",,
+fig3_tau6_events_r1_k2,"or 6.0, {} and 30.1 events, compared",,
+fig3_tau6_events_r1_k3,"or 6.0, 17.5 and {} events, compared",,
+-,compared with {} without delay,,setting
+fig3_tau14_f1_k1,"delay they are {}, 0.043 and 0.073",,
+fig3_tau14_f1_k2,"delay they are 0.002, {} and 0.073",,
+fig3_tau14_f1_k3,"delay they are 0.002, 0.043 and {}, or",,
+fig3_tau14_events_r1_k1,"or {}, 9.6 and 24.6 events",,
+fig3_tau14_events_r1_k2,"or 0.2, {} and 24.6 events",,
+fig3_tau14_events_r1_k3,"or 0.2, 9.6 and {} events",,
+fig1_OBF_M1_cond_k1,falls from {} without delay to,,
+fig3_tau6_M1_cond_k1,without delay to {} with a 6-month delay,,
+fig3_tau14_M1_cond_k1,delay and to {} with a 14-month delay,,
+fig1_OBF_M2_cond_k1,value falls from {} to 0.835,,
+fig3_tau6_M2_cond_k1,falls from 0.913 to {} and 0.572,,
+fig3_tau14_M2_cond_k1,falls from 0.913 to 0.835 and {}. At the final,,
+fig1_OBF_M1_cond_k3,"with the delay, from {} to 0.684 and 0.693",,
+fig3_tau6_M1_cond_k3,from 0.681 to {} and 0.693,,
+fig3_tau14_M1_cond_k3,"from 0.681 to 0.684 and {}, although",,
+fig3_tau0_M1_overall,success decreases from {} to 0.687 and 0.659,,
+fig3_tau6_M1_overall,decreases from 0.700 to {} and 0.659,,
+fig3_tau14_M1_overall,from 0.700 to 0.687 and {} for Method~1,,
+fig3_tau0_M2_overall,and from {} to 0.818 and 0.767,,
+fig3_tau6_M2_overall,and from 0.838 to {} and 0.767,,
+fig3_tau14_M2_overall,from 0.838 to 0.818 and {} for Method~2.,,
+-,for a target of {}. Without delay,,setting
+fig4_tau0_overall_M1_fs,Method~1 requires {} (76 events),,
+fig4_tau0_overall_M1_events,requires 0.226 ({} events) under,,
+fig4_tau0_unconditional_M1_fs,success and {} (75 events),,
+fig4_tau0_unconditional_M1_events,success and 0.222 ({} events) under,,
+fig4_fixed_M1_fs,close to the {} of the fixed design,,
+fig4_tau0_overall_M2_fs,Method~2 requires {} (25 events),,
+fig4_tau0_overall_M2_events,requires 0.073 ({} events) and,,
+fig4_tau0_unconditional_M2_fs,events) and {} (27 events),,
+fig4_tau0_unconditional_M2_events,"and 0.080 ({} events), against",,
+fig4_fixed_M2_fs,"events), against {} for the fixed design",,
+fig4_tau14_overall_M1_fs,"with the delay, to {} (91 events)",,
+fig4_tau14_overall_M1_events,to 0.271 ({} events) for Method~1,,
+fig4_tau14_overall_M2_fs,Method~1 and {} (33 events),,
+fig4_tau14_overall_M2_events,and 0.098 ({} events) for Method~2,,
+fig4_stagewise_M1_first_na,for delays of {} months or more under Method~1,,
+fig4_stagewise_M2_first_na,and of {} months under Method~2,,
+-,"Japanese patients of {}, 0.10, 0.15 and 0.20",,setting
+-,"Japanese patients of 0.05, {}, 0.15 and 0.20",,setting
+-,"Japanese patients of 0.05, 0.10, {} and 0.20",,setting
+-,"Japanese patients of 0.05, 0.10, 0.15 and {}, with",,setting
+fig5_M1_maxdiff_ev5,absolute difference was {} for Method~1,,
+fig5_M2_maxdiff_ev5,was 0.016 for Method~1 and {} for Method~2,,
+fig5_power_min,power ranged from {} to 0.901,,
+fig5_power_max,power ranged from 0.897 to {}.,,
+-,6-month delay and {}\% Japanese patients,,setting
+fig5_worst_events_r1,where Japan had {} expected events,,
+fig5_worst_p_inf,was infinite in {}\% of the trials,100,
+fig5_worst_p_no_est,"and unavailable in {}\%, and",100,
+fig5_worst_M1_sim,stopping was {} for Method~1 and 0.704,,
+fig5_worst_M2_sim,was 0.611 for Method~1 and {} for Method~2,,
+fig5_worst_M1_formula,"for Method~2, against {} and 0.752",,
+fig5_worst_M2_formula,against 0.633 and {} from the closed form,,
+events_OBF_k1,interim analyses after {} and 223 events,,
+events_OBF_k2,interim analyses after 112 and {} events,,
+events_OBF_k3,"final analysis after {} events, and",,
+fig3_tau6_events_r1_k1,"expected to contribute {}, 17.5 and 30.1 events",,
+fig3_tau6_events_r1_k2,"expected to contribute 6.0, {} and 30.1 events",,
+fig3_tau6_events_r1_k3,"expected to contribute 6.0, 17.5 and {} events",,
+tab1_peff_k2,"with probability {}, and the RCPs",,
+tab1_M1_cond_k1,"stopping are {}, 0.688 and 0.684",,
+tab1_M1_cond_k2,"stopping are 0.687, {} and 0.684",,
+tab1_M1_cond_k3,"stopping are 0.687, 0.688 and {} for Method~1",,
+tab1_M2_cond_k1,"for Method~1 and {}, 0.826 and 0.802 for Method~2",,
+tab1_M2_cond_k2,"and 0.835, {} and 0.802 for Method~2",,
+tab1_M2_cond_k3,"0.835, 0.826 and {} for Method~2, so",,
+tab1_overall_unadj_M1,given success is {} and 0.818,,
+tab1_overall_unadj_M2,given success is 0.687 and {}. Method~2,,
+-,Method~2 reaches {} at every analysis,,target
+tab1_M1_marginal_k3,would obtain {} and 0.846,,
+tab1_M2_marginal_k3,would obtain 0.705 and {} instead,,
+tab1_M1_cond_k3,instead of {} and 0.802.,,
+tab1_M2_cond_k3,instead of 0.684 and {}.,,
+tab1_ref_M1,fixed design are {} for Method~1,,
+tab1_ref_M2,are 0.643 for Method~1 and {} for Method~2. The adjusted,,
+tab1_M1_gamma_k1,"restore them are {}, 0.558 and 0.516",,
+tab1_M1_gamma_k2,"restore them are 0.610, {} and 0.516",,
+tab1_M1_gamma_k3,"restore them are 0.610, 0.558 and {} for Method~1",,
+tab1_M2_gamma_k1,"for Method~1 and {}, 0.056 and 0.001",,
+tab1_M2_gamma_k2,"and 0.232, {} and 0.001",,
+tab1_M2_gamma_k3,"0.232, 0.056 and {} for Method~2",,
+tab1_overall_adj_M1,success decreases to {} and 0.790,,
+tab1_overall_adj_M2,decreases to 0.672 and {}. The probability,,
+tab1_peff_k1,"first analysis is only {}, so",,
+-,success reaches {} for Method~1 with 79,,target
+tab2_tau6_overall_M1_events,for Method~1 with {} Japanese events,,
+tab2_tau6_overall_M1_fs,"a proportion of {}, against 76",,
+tab2_tau0_overall_M1_events,against {} without delay. The stagewise,,
+tab2_tau6_stagewise_M1_events,criterion requires {} events with the delay,,
+tab2_tau0_stagewise_M1_events,with the delay and {} without it,,
+tab2_tau6_unconditional_M1_events,criterion requires {} in both cases,,equal to tab2_tau0_unconditional_M1_events
+tab2_tau0_overall_M2_events,require between {} and 32 events,,smallest of the six Method 2 numbers in Table 2
+tab2_tau0_stagewise_M2_events,require between 25 and {} events,,largest of the six Method 2 numbers in Table 2
+fig3_tau6_events_r1_k3,expected to contribute {} events at the final analysis,,
+siS5_Pocock_M2_k3_maxdiff,by up to {} in our settings,,largest of the siS5 differences
+-,was 1 with {}\% of the events in Japan,,setting
+siS4_OBF_M1_overall_hr1,design fell to {} for Method~1,,
+siS4_OBF_M2_overall_hr1,fell to 0.358 for Method~1 and {} for Method~2,,
+siS2_nonbinding_obeyed_M2_maxdiff,changed the RCPs by at most {} between,,largest of the four siS2 differences
+siS3_OBF_maxdiff_cond,differed by at most {} (Figure~S3),,largest of the four siS3 differences
+-,Claude Opus {} (Anthropic),,model version
+-,(version {}.0) at,,package version
+-,"one-sided $\alpha = {}$, power 0.90",,setting
+-,"$\alpha = 0.025$, power {}, hazard ratio",,setting
+-,"power 0.90, hazard ratio {} in all regions, two",,setting
+-,"of equal size, $\gamma_{\mathrm{M1}} = {}$ and",,setting
+-,unadjusted thresholds $\gamma_{\mathrm{M1}} = {}$ and,,setting
+-,the hazard ratio is {} in all regions.},,setting
+-,"for a target value of {}, by start",,setting
+-,(points with {}\% Monte Carlo,,95% interval

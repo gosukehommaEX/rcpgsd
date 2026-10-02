@@ -100,7 +100,7 @@ CRIT_LAB     <- c(overall = "Overall", stagewise = "Stagewise",
                   unconditional = "Unconditional")
 
 X_F1  <- "Proportion of events in Japan"
-X_TAU <- "Start of enrolment in Japan (months)"
+X_TAU <- "Start of enrollment in Japan (months)"
 Y_RCP <- "Regional consistency probability"
 
 # --------------------------------------------------------------------------- #
@@ -108,7 +108,7 @@ Y_RCP <- "Regional consistency probability"
 # --------------------------------------------------------------------------- #
 theme_paper <- function() {
   theme_bw(base_size = BASE_SIZE) +
-    theme(strip.background = element_rect(fill = "grey92", colour = NA),
+    theme(strip.background = element_rect(fill = "white", colour = "black"),
           strip.text       = element_text(face = "plain"),
           panel.grid.minor = element_blank(),
           legend.position  = "bottom",
@@ -406,7 +406,7 @@ save_figure(Figure4, "Figure4", width = 16, height = 9)
 # =============================================================================
 s5 <- fig5_data$stage
 DELAY_LAB <- c("0" = "No delay",
-               setNames(sprintf("Enrolment in Japan from month %g",
+               setNames(sprintf("Enrollment in Japan from month %g",
                                 SET$APP_TAU), SET$APP_TAU))
 
 fig5_sim <- s5[s5$source == "simulation", ]
@@ -480,8 +480,8 @@ tab1_overall <- paste(paste(c(
 
 acc1 <- t1$accrual
 tab1_caption <- paste0(
-  "Application to a hypothetical multi-regional clinical trial with a ",
-  "delayed start of enrolment in Japan. ",
+  "Application to a hypothetical multiregional clinical trial with a ",
+  "delayed start of enrollment in Japan. ",
   "Group sequential design with $K = ", K, "$ analyses at information ",
   "fractions $1/3$, $2/3$ and $1$, O'Brien-Fleming-type efficacy ",
   "boundaries (Lan-DeMets spending function), one-sided ",
@@ -489,7 +489,7 @@ tab1_caption <- paste0(
   "$ for a hazard ratio of $", sprintf("%.2f", SET$HR), "$ in all regions. ",
   "A total of $", SET$N_TOTAL, "$ patients are enrolled uniformly over ",
   SET$T_ACCRUAL, " months (", SET$RATE, " patients per month), ",
-  acc1$n_region[1L], " of them in Japan, where enrolment starts at month ",
+  acc1$n_region[1L], " of them in Japan, where enrollment starts at month ",
   acc1$start[1L], "; the two other regions (",
   if (acc1$n_region[2L] == acc1$n_region[3L]) {
     paste(acc1$n_region[2L], "patients each")
@@ -576,7 +576,7 @@ tab2_caption <- paste0(
   "Required proportion $f_{1}$ and number $d_{1}$ of events in Japan at ",
   "the final analysis for a target value of ", SET$TARGET, " in the ",
   "application of Table~\\ref{tab:application}, without delay and with ",
-  "enrolment in Japan starting at month ", TAU2[2L], ". ",
+  "enrollment in Japan starting at month ", TAU2[2L], ". ",
   "The proportions of events in Japan at the interim analyses are scaled ",
   "together with the final proportion, keeping the pattern implied by the ",
   "accrual. ",
@@ -899,6 +899,52 @@ for (m in c("M1", "M2")) {
   add_num(sprintf("tab1_overall_adj_%s", m), oa1$rcp[oa1$method == m], 3,
           sprintf("Overall RCP given success, adjusted, %s", m),
           "table1_data$overall_adj$rcp")
+}
+
+# ---- Table 1 by analysis and Table 2 (values cited in the application) ----
+for (k in seq_len(K)) {
+  add_num(sprintf("tab1_peff_k%d", k), by_stage(su1, "M1", "p_eff")[k], 3,
+          sprintf("Probability of stopping for efficacy at analysis %d (application)",
+                  k), "table1_data$stage_unadj$p_eff")
+  for (m in c("M1", "M2")) {
+    add_num(sprintf("tab1_%s_cond_k%d", m, k), by_stage(su1, m, "rcp")[k], 3,
+            sprintf("RCP given efficacy stop, analysis %d, %s (application)",
+                    k, m), "table1_data$stage_unadj$rcp")
+    add_num(sprintf("tab1_%s_uncond_k%d", m, k),
+            by_stage(su1, m, "rcp_uncond")[k], 3,
+            sprintf("Unconditional RCP, analysis %d, %s (application)", k, m),
+            "table1_data$stage_unadj$rcp_uncond")
+    add_num(sprintf("tab1_%s_gamma_k%d", m, k), by_stage(sa1, m, "gamma")[k],
+            3, sprintf("Adjusted threshold, analysis %d, %s (application)", k,
+                       m), "table1_data$stage_adj$gamma")
+    add_num(sprintf("tab1_%s_adj_k%d", m, k), by_stage(sa1, m, "rcp")[k], 3,
+            sprintf(paste0("RCP given efficacy stop with the adjusted ",
+                           "threshold, analysis %d, %s (application)"), k, m),
+            "table1_data$stage_adj$rcp")
+  }
+}
+add_num("tab1_power", ou1$power[ou1$method == "M1"], 3,
+        "Power (application)", "table1_data$overall_unadj$power")
+for (tau in TAU2) {
+  for (ty in names(CRIT_LAB)) {
+    for (m in c("M1", "M2")) {
+      row <- r2[r2$tau == tau & r2$type == ty & r2$method == m, ]
+      if (is.na(row$fs_r1)) next
+      add_num(sprintf("tab2_tau%g_%s_%s_fs", tau, ty, m), row$fs_r1, 3,
+              sprintf("Required proportion of events in Japan, %s, %s, delay %g (application)",
+                      ty, m, tau), "table2_data$required$fs_r1")
+      add_num(sprintf("tab2_tau%g_%s_%s_events", tau, ty, m),
+              row$events_r1_ceiling, 0,
+              sprintf("Required events in Japan, %s, %s, delay %g (application)",
+                      ty, m, tau), "table2_data$required$events_r1_ceiling")
+    }
+  }
+}
+for (m in c("M1", "M2")) {
+  add_num(sprintf("fig4_fixed_%s_events", m),
+          fix2$events_r1_ceiling[fix2$method == m], 0,
+          sprintf("Required events in Japan, fixed design, %s", m),
+          "table2_data$fixed$events_r1_ceiling")
 }
 
 ledger_df <- do.call(rbind, ledger)

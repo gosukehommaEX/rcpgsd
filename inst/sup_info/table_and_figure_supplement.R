@@ -105,7 +105,7 @@ Y_RCP <- "Regional consistency probability"
 
 theme_paper <- function() {
   theme_bw(base_size = BASE_SIZE) +
-    theme(strip.background = element_rect(fill = "grey92", colour = NA),
+    theme(strip.background = element_rect(fill = "white", colour = "black"),
           strip.text       = element_text(face = "plain"),
           panel.grid.minor = element_blank(),
           legend.position  = "bottom",
@@ -376,7 +376,7 @@ tab5_caption <- paste0(
   SET5$N_TOTAL, "$ patients enrolled over ", SET5$T_ACCRUAL, " months, ",
   "median survival time of ", SET5$MEDIAN_C, " months in the control ",
   "group). ",
-  "$\\tau$, start of enrolment in Japan (months); ",
+  "$\\tau$, start of enrollment in Japan (months); ",
   "$p_{1}$, proportion of Japanese patients; ",
   "$k$, analysis; ",
   "$d_{1,k}$, expected number of events in Japan; ",
