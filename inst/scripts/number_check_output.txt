@@ -1,6 +1,6 @@
 ==================================================================
  Number check: manuscript versus ledger
- 2026-10-03 16:40:17 JST
+ 2026-10-03 20:11:37 JST
 ==================================================================
 
 [1] Ledgers
@@ -15,305 +15,305 @@
 
 [3] Numbers at the registered locations
    key                                location                       in_text recomputed   expected status
-   -                                  main.tex:59                    0.5                           SKIP  
-   -                                  main.tex:59                    80                            SKIP  
-   -                                  main.tex:63                    2.6                           SKIP  
-   -                                  main.tex:103                   0.5                           SKIP  
-   -                                  main.tex:166                   0.025                         SKIP  
-   -                                  main.tex:166                   0.70                          SKIP  
-   -                                  main.tex:166                   0.90                          SKIP  
-   events_OBF_k1                      main.tex:166                   112     112          112      PASS  
-   events_OBF_k2                      main.tex:166                   223     223          223      PASS  
-   events_OBF_k3                      main.tex:166                   335     335          335      PASS  
-   upper_OBF_k1                       main.tex:166                   3.710   3.710303     3.710    PASS  
-   upper_OBF_k2                       main.tex:166                   2.511   2.511427     2.511    PASS  
-   upper_OBF_k3                       main.tex:166                   1.993   1.993048     1.993    PASS  
-   events_Pocock_k1                   main.tex:166                   127     127          127      PASS  
-   events_Pocock_k2                   main.tex:166                   255     255          255      PASS  
-   events_Pocock_k3                   main.tex:166                   382     382          382      PASS  
-   upper_Pocock_k1                    main.tex:166                   2.279   2.279428     2.279    PASS  
-   upper_Pocock_k2                    main.tex:166                   2.295   2.294911     2.295    PASS  
-   upper_Pocock_k3                    main.tex:166                   2.296   2.29594      2.296    PASS  
-   d_fix                              main.tex:166                   330.4   330.3779     330.4    PASS  
-   -                                  main.tex:166                   331                           SKIP  
-   -                                  main.tex:166                   0.5                           SKIP  
-   -                                  main.tex:166                   0.8                           SKIP  
-   fig3_time_k1                       main.tex:168                   15.2    15.23099     15.2     PASS  
-   fig3_time_k2                       main.tex:168                   22.7    22.65583     22.7     PASS  
-   fig3_time_k3                       main.tex:168                   30.0    30.03214     30.0     PASS  
-   check_power_rpact                  main.tex:168                   0.901   0.9006012    0.901    PASS  
-   check_time_k1_absdiff              main.tex:168                   0.03    0.02553388   0.03     PASS  
-   -                                  main.tex:173                   0.1                           SKIP  
-   fig1_OBF_M1_cond_k1                main.tex:173                   0.753   0.7526669    0.753    PASS  
-   fig1_OBF_M1_uncond_k1              main.tex:173                   0.622   0.6218252    0.622    PASS  
-   fig1_OBF_M1_cond_k2                main.tex:173                   0.709   0.7085134    0.709    PASS  
-   fig1_OBF_M1_cond_k3                main.tex:173                   0.681   0.6807936    0.681    PASS  
-   fig1_OBF_M1_uncond_k3              main.tex:173                   0.704   0.7042338    0.704    PASS  
-   fig1_OBF_M1_overall                main.tex:173                   0.700   0.6997237    0.700    PASS  
-   fig1_fixed_M1_cond                 main.tex:173                   0.715   0.7147697    0.715    PASS  
-   fig1_fixed_M1_uncond               main.tex:173                   0.703   0.7031228    0.703    PASS  
-   fig1_OBF_M2_cond_k1                main.tex:173                   0.913   0.9126327    0.913    PASS  
-   fig1_OBF_M2_cond_k2                main.tex:173                   0.855   0.8547099    0.855    PASS  
-   fig1_OBF_M2_cond_k3                main.tex:173                   0.806   0.8059029    0.806    PASS  
-   fig1_OBF_M2_uncond_k1              main.tex:173                   0.583   0.5834251    0.583    PASS  
-   fig1_OBF_M2_overall                main.tex:173                   0.838   0.838482     0.838    PASS  
-   fig1_fixed_M2_cond                 main.tex:173                   0.856   0.8558937    0.856    PASS  
-   fig1_power_OBF                     main.tex:173                   0.901   0.9006065    0.901    PASS  
-   fig1_Pocock_M1_cond_k1             main.tex:175                   0.690   0.6899076    0.690    PASS  
-   fig1_Pocock_M1_cond_k2             main.tex:175                   0.691   0.6906453    0.691    PASS  
-   fig1_Pocock_M1_cond_k3             main.tex:175                   0.687   0.6871004    0.687    PASS  
-   fig1_Pocock_M2_cond_k1             main.tex:175                   0.824   0.8239074    0.824    PASS  
-   fig1_Pocock_M2_cond_k2             main.tex:175                   0.826   0.8263266    0.826    PASS  
-   fig1_Pocock_M2_cond_k3             main.tex:175                   0.821   0.8213735    0.821    PASS  
-   fig1_Pocock_M1_overall             main.tex:175                   0.690   0.6896629    0.690    PASS  
-   fig1_Pocock_M2_overall             main.tex:175                   0.824   0.824347     0.824    PASS  
-   fig1_Pocock_M1_uncond_k1           main.tex:175                   0.629   0.6294521    0.629    PASS  
-   -                                  main.tex:177                   0.1                           SKIP  
-   fig1_OBF_M1_marginal_k3            main.tex:177                   0.716   0.7160936    0.716    PASS  
-   fig1_OBF_M2_marginal_k3            main.tex:177                   0.858   0.8581274    0.858    PASS  
-   fig1_OBF_M1_cond_k3                main.tex:177                   0.681   0.6807936    0.681    PASS  
-   fig1_OBF_M2_cond_k3                main.tex:177                   0.806   0.8059029    0.806    PASS  
-   -                                  main.tex:177                   0.05                          SKIP  
-   -                                  main.tex:177                   0.30                          SKIP  
-   siS5_OBF_M1_k3_maxdiff             main.tex:177                   0.044   0.04384069   0.044    PASS  
-   siS5_OBF_M2_k3_maxdiff             main.tex:177                   0.052   0.0522245    0.052    PASS  
-   siS5_Pocock_M1_k3_maxdiff          main.tex:177                   0.052   0.05157867   0.052    PASS  
-   siS5_Pocock_M2_k3_maxdiff          main.tex:177                   0.058   0.05787886   0.058    PASS  
-   -                                  main.tex:182                   0.1                           SKIP  
-   fig2_ref_M1                        main.tex:182                   0.651   0.6513492    0.651    PASS  
-   fig2_ref_M2                        main.tex:182                   0.742   0.7419674    0.742    PASS  
-   fig2_OBF_M1_null_k1                main.tex:182                   0.745   0.7446937    0.745    PASS  
-   fig2_OBF_M1_null_k2                main.tex:182                   0.681   0.6811546    0.681    PASS  
-   fig2_OBF_M1_null_k3                main.tex:182                   0.650   0.6497179    0.650    PASS  
-   fig2_OBF_M1_gamma_k1               main.tex:182                   0.705   0.7045226    0.705    PASS  
-   fig2_OBF_M1_gamma_k2               main.tex:182                   0.587   0.5871864    0.587    PASS  
-   fig2_OBF_M1_gamma_k3               main.tex:182                   0.500   0.5          0.500    PASS  
-   fig2_OBF_M2_null_k1                main.tex:182                   0.905   0.9049851    0.905    PASS  
-   fig2_OBF_M2_null_k2                main.tex:182                   0.814   0.8138094    0.814    PASS  
-   fig2_OBF_M2_null_k3                main.tex:182                   0.739   0.7393948    0.739    PASS  
-   fig2_OBF_M2_gamma_k1               main.tex:182                   0.309   0.309148     0.309    PASS  
-   fig2_OBF_M2_gamma_k2               main.tex:182                   0.067   0.06727804   0.067    PASS  
-   fig2_OBF_M2_gamma_k3               main.tex:182                   0.000   0            0.000    PASS  
-   fig2_OBF_M2_gamma_k1               main.tex:182                   0.309   0.309148     0.309    PASS  
-   fig2_Pocock_M1_null_k1             main.tex:184                   0.669   0.6687697    0.669    PASS  
-   fig2_Pocock_M1_null_k2             main.tex:184                   0.667   0.6667642    0.667    PASS  
-   fig2_Pocock_M1_null_k3             main.tex:184                   0.665   0.6646155    0.665    PASS  
-   fig2_Pocock_M2_null_k1             main.tex:184                   0.787   0.7873692    0.787    PASS  
-   fig2_Pocock_M2_null_k2             main.tex:184                   0.784   0.7838895    0.784    PASS  
-   fig2_Pocock_M2_null_k3             main.tex:184                   0.780   0.7796558    0.780    PASS  
-   fig2_Pocock_M1_gamma_k1            main.tex:184                   0.555   0.5545995    0.555    PASS  
-   fig2_Pocock_M1_gamma_k2            main.tex:184                   0.549   0.5488451    0.549    PASS  
-   fig2_Pocock_M1_gamma_k3            main.tex:184                   0.543   0.5425501    0.543    PASS  
-   fig2_Pocock_M2_gamma_k1            main.tex:184                   0.052   0.05171371   0.052    PASS  
-   fig2_Pocock_M2_gamma_k2            main.tex:184                   0.033   0.0334298    0.033    PASS  
-   fig2_Pocock_M2_gamma_k3            main.tex:184                   0.024   0.02428608   0.024    PASS  
-   -                                  main.tex:184                   0.05                          SKIP  
-   -                                  main.tex:184                   0.30                          SKIP  
-   fig2_OBF_M2_gamma_k1_range         main.tex:184                   0.002   0.001630619  0.002    PASS  
-   siS1_OBF_M1_maxdiff                main.tex:186                   0.124   0.1243671    0.124    PASS  
-   siS1_OBF_M2_maxdiff                main.tex:186                   0.150   0.149868     0.150    PASS  
-   siS1_Pocock_M1_maxdiff             main.tex:186                   0.027   0.02731816   0.027    PASS  
-   siS1_Pocock_M2_maxdiff             main.tex:186                   0.040   0.03987148   0.040    PASS  
-   fig3_tau_limit                     main.tex:191                   21.6    21.6         21.6     PASS  
-   fig3_time_k1                       main.tex:191                   15.2    15.23099     15.2     PASS  
-   fig3_tau6_f1_k1                    main.tex:191                   0.054   0.05361837   0.054    PASS  
-   fig3_tau6_f1_k2                    main.tex:191                   0.078   0.07843268   0.078    PASS  
-   fig3_tau6_f1_k3                    main.tex:191                   0.090   0.08995769   0.090    PASS  
-   fig3_tau6_events_r1_k1             main.tex:191                   6.0     6.005258     6.0      PASS  
-   fig3_tau6_events_r1_k2             main.tex:191                   17.5    17.49049     17.5     PASS  
-   fig3_tau6_events_r1_k3             main.tex:191                   30.1    30.13583     30.1     PASS  
-   -                                  main.tex:191                   0.1                           SKIP  
-   fig3_tau14_f1_k1                   main.tex:191                   0.002   0.0019521    0.002    PASS  
-   fig3_tau14_f1_k2                   main.tex:191                   0.043   0.04300357   0.043    PASS  
-   fig3_tau14_f1_k3                   main.tex:191                   0.073   0.07337556   0.073    PASS  
-   fig3_tau14_events_r1_k1            main.tex:191                   0.2     0.2186352    0.2      PASS  
-   fig3_tau14_events_r1_k2            main.tex:191                   9.6     9.589796     9.6      PASS  
-   fig3_tau14_events_r1_k3            main.tex:191                   24.6    24.58081     24.6     PASS  
-   fig1_OBF_M1_cond_k1                main.tex:193                   0.753   0.7526669    0.753    PASS  
-   fig3_tau6_M1_cond_k1               main.tex:193                   0.687   0.6872488    0.687    PASS  
-   fig3_tau14_M1_cond_k1              main.tex:193                   0.536   0.53616      0.536    PASS  
-   fig1_OBF_M2_cond_k1                main.tex:193                   0.913   0.9126327    0.913    PASS  
-   fig3_tau6_M2_cond_k1               main.tex:193                   0.835   0.8347031    0.835    PASS  
-   fig3_tau14_M2_cond_k1              main.tex:193                   0.572   0.5719674    0.572    PASS  
-   fig1_OBF_M1_cond_k3                main.tex:193                   0.681   0.6807936    0.681    PASS  
-   fig3_tau6_M1_cond_k3               main.tex:193                   0.684   0.6843792    0.684    PASS  
-   fig3_tau14_M1_cond_k3              main.tex:193                   0.693   0.6929992    0.693    PASS  
-   fig3_tau0_M1_overall               main.tex:193                   0.700   0.6997237    0.700    PASS  
-   fig3_tau6_M1_overall               main.tex:193                   0.687   0.6865754    0.687    PASS  
-   fig3_tau14_M1_overall              main.tex:193                   0.659   0.6587361    0.659    PASS  
-   fig3_tau0_M2_overall               main.tex:193                   0.838   0.838482     0.838    PASS  
-   fig3_tau6_M2_overall               main.tex:193                   0.818   0.8176212    0.818    PASS  
-   fig3_tau14_M2_overall              main.tex:193                   0.767   0.7668286    0.767    PASS  
-   -                                  main.tex:195                   0.8                           SKIP  
-   fig4_tau0_overall_M1_fs            main.tex:195                   0.226   0.2260664    0.226    PASS  
-   fig4_tau0_overall_M1_events        main.tex:195                   76      76           76       PASS  
-   fig4_tau0_unconditional_M1_fs      main.tex:195                   0.222   0.2217087    0.222    PASS  
-   fig4_tau0_unconditional_M1_events  main.tex:195                   75      75           75       PASS  
-   fig4_fixed_M1_fs                   main.tex:195                   0.224   0.223938     0.224    PASS  
-   fig4_tau0_overall_M2_fs            main.tex:195                   0.073   0.07280462   0.073    PASS  
-   fig4_tau0_overall_M2_events        main.tex:195                   25      25           25       PASS  
-   fig4_tau0_unconditional_M2_fs      main.tex:195                   0.080   0.07989981   0.080    PASS  
-   fig4_tau0_unconditional_M2_events  main.tex:195                   27      27           27       PASS  
-   fig4_fixed_M2_fs                   main.tex:195                   0.081   0.08146069   0.081    PASS  
-   fig4_tau14_overall_M1_fs           main.tex:195                   0.271   0.2714164    0.271    PASS  
-   fig4_tau14_overall_M1_events       main.tex:195                   91      91           91       PASS  
-   fig4_tau14_overall_M2_fs           main.tex:195                   0.098   0.09832259   0.098    PASS  
-   fig4_tau14_overall_M2_events       main.tex:195                   33      33           33       PASS  
-   fig4_stagewise_M1_limit            main.tex:195                   9.9     9.88         9.9      PASS  
-   fig4_stagewise_M2_limit            main.tex:195                   12.4    12.44        12.4     PASS  
-   -                                  main.tex:200                   0.05                          SKIP  
-   -                                  main.tex:200                   0.10                          SKIP  
-   -                                  main.tex:200                   0.15                          SKIP  
-   -                                  main.tex:200                   0.20                          SKIP  
-   fig5_M1_maxdiff_ev5                main.tex:202                   0.016   0.01570274   0.016    PASS  
-   fig5_M2_maxdiff_ev5                main.tex:202                   0.014   0.01366464   0.014    PASS  
-   fig5_power_min                     main.tex:202                   0.897   0.89683      0.897    PASS  
-   fig5_power_max                     main.tex:202                   0.901   0.90072      0.901    PASS  
-   -                                  main.tex:202                   5                             SKIP  
-   fig5_worst_events_r1               main.tex:202                   3.0     3.000185     3.0      PASS  
-   fig5_worst_p_inf                   main.tex:202                   36      35.846       36       PASS  
-   fig5_worst_p_no_est                main.tex:202                   4.8     4.752        4.8      PASS  
-   fig5_worst_M1_sim                  main.tex:202                   0.611   0.6105977    0.611    PASS  
-   fig5_worst_M2_sim                  main.tex:202                   0.704   0.7039433    0.704    PASS  
-   fig5_worst_M1_formula              main.tex:202                   0.633   0.6332019    0.633    PASS  
-   fig5_worst_M2_formula              main.tex:202                   0.752   0.7515776    0.752    PASS  
-   events_OBF_k1                      main.tex:207                   112     112          112      PASS  
-   events_OBF_k2                      main.tex:207                   223     223          223      PASS  
-   events_OBF_k3                      main.tex:207                   335     335          335      PASS  
-   fig3_tau6_events_r1_k1             main.tex:209                   6.0     6.005258     6.0      PASS  
-   fig3_tau6_events_r1_k2             main.tex:209                   17.5    17.49049     17.5     PASS  
-   fig3_tau6_events_r1_k3             main.tex:209                   30.1    30.13583     30.1     PASS  
-   tab1_peff_k2                       main.tex:209                   0.526   0.5264737    0.526    PASS  
-   tab1_M1_cond_k1                    main.tex:209                   0.687   0.6872488    0.687    PASS  
-   tab1_M1_cond_k2                    main.tex:209                   0.688   0.68795      0.688    PASS  
-   tab1_M1_cond_k3                    main.tex:209                   0.684   0.6843792    0.684    PASS  
-   tab1_M2_cond_k1                    main.tex:209                   0.835   0.8347031    0.835    PASS  
-   tab1_M2_cond_k2                    main.tex:209                   0.826   0.8264689    0.826    PASS  
-   tab1_M2_cond_k3                    main.tex:209                   0.802   0.8022039    0.802    PASS  
-   tab1_overall_unadj_M1              main.tex:209                   0.687   0.6865754    0.687    PASS  
-   tab1_overall_unadj_M2              main.tex:209                   0.818   0.8176212    0.818    PASS  
-   -                                  main.tex:209                   0.8                           SKIP  
-   tab1_M1_marginal_k3                main.tex:209                   0.705   0.705201     0.705    PASS  
-   tab1_M2_marginal_k3                main.tex:209                   0.846   0.8455906    0.846    PASS  
-   tab1_M1_cond_k3                    main.tex:209                   0.684   0.6843792    0.684    PASS  
-   tab1_M2_cond_k3                    main.tex:209                   0.802   0.8022039    0.802    PASS  
-   tab1_ref_M1                        main.tex:211                   0.643   0.6431703    0.643    PASS  
-   tab1_ref_M2                        main.tex:211                   0.731   0.7311275    0.731    PASS  
-   tab1_M1_gamma_k1                   main.tex:211                   0.610   0.6096468    0.610    PASS  
-   tab1_M1_gamma_k2                   main.tex:211                   0.558   0.558219     0.558    PASS  
-   tab1_M1_gamma_k3                   main.tex:211                   0.516   0.5163973    0.516    PASS  
-   tab1_M2_gamma_k1                   main.tex:211                   0.232   0.2318464    0.232    PASS  
-   tab1_M2_gamma_k2                   main.tex:211                   0.056   0.05618268   0.056    PASS  
-   tab1_M2_gamma_k3                   main.tex:211                   0.001   0.001200754  0.001    PASS  
-   tab1_overall_adj_M1                main.tex:211                   0.672   0.6715161    0.672    PASS  
-   tab1_overall_adj_M2                main.tex:211                   0.790   0.7895758    0.790    PASS  
-   tab1_peff_k1                       main.tex:211                   0.034   0.03415499   0.034    PASS  
-   -                                  main.tex:213                   0.8                           SKIP  
-   tab2_tau6_overall_M1_events        main.tex:213                   79      79           79       PASS  
-   tab2_tau6_overall_M1_fs            main.tex:213                   0.235   0.2347561    0.235    PASS  
-   tab2_tau0_overall_M1_events        main.tex:213                   76      76           76       PASS  
-   tab2_tau6_stagewise_M1_events      main.tex:213                   82      82           82       PASS  
-   tab2_tau0_stagewise_M1_events      main.tex:213                   90      90           90       PASS  
-   tab2_tau6_unconditional_M1_events  main.tex:213                   75      75           75       PASS  
-   tab2_tau0_overall_M2_events        main.tex:213                   25      25           25       PASS  
-   tab2_tau0_stagewise_M2_events      main.tex:213                   32      32           32       PASS  
-   fig3_tau6_events_r1_k3             main.tex:213                   30.1    30.13583     30.1     PASS  
-   siS5_Pocock_M2_k3_maxdiff          main.tex:218                   0.058   0.05787886   0.058    PASS  
-   -                                  main.tex:224                   10                            SKIP  
-   siS4_OBF_M1_overall_hr1            main.tex:224                   0.358   0.3578901    0.358    PASS  
-   siS4_OBF_M2_overall_hr1            main.tex:224                   0.547   0.5468612    0.547    PASS  
-   siS2_nonbinding_obeyed_M2_maxdiff  main.tex:224                   0.004   0.003685241  0.004    PASS  
-   siS3_OBF_maxdiff_cond              main.tex:224                   0.011   0.01095956   0.011    PASS  
-   -                                  main.tex:40                    5.5                           SKIP  
-   -                                  main.tex:46                    0.1                           SKIP  
-   -                                  main.tex:245                   0.025                         SKIP  
-   -                                  main.tex:245                   0.90                          SKIP  
-   -                                  main.tex:245                   0.70                          SKIP  
-   -                                  main.tex:245                   0.5                           SKIP  
-   -                                  main.tex:253                   0.5                           SKIP  
-   -                                  main.tex:261                   0.70                          SKIP  
-   -                                  main.tex:269                   0.8                           SKIP  
-   -                                  main.tex:277                   95                            SKIP  
-   -                                  supporting_information.tex:28  0.025                         SKIP  
-   -                                  supporting_information.tex:28  0.90                          SKIP  
-   -                                  supporting_information.tex:28  0.70                          SKIP  
-   -                                  supporting_information.tex:28  0.5                           SKIP  
-   -                                  supporting_information.tex:28  0.1                           SKIP  
-   events_OBF_k1                      supporting_information.tex:32  112     112          112      PASS  
-   events_OBF_k2                      supporting_information.tex:32  223     223          223      PASS  
-   events_OBF_k3                      supporting_information.tex:32  335     335          335      PASS  
-   events_Pocock_k1                   supporting_information.tex:32  127     127          127      PASS  
-   events_Pocock_k2                   supporting_information.tex:32  255     255          255      PASS  
-   events_Pocock_k3                   supporting_information.tex:32  382     382          382      PASS  
-   d_fix                              supporting_information.tex:36  330.4   330.3779     330.4    PASS  
-   -                                  supporting_information.tex:36  331                           SKIP  
-   check_time_k1_rpact                supporting_information.tex:38  15.21   15.20545     15.21    PASS  
-   check_time_k2_rpact                supporting_information.tex:38  22.68   22.67588     22.68    PASS  
-   check_time_k3_rpact                supporting_information.tex:38  30.03   30.03214     30.03    PASS  
-   check_time_k1_absdiff              supporting_information.tex:38  0.03    0.02553388   0.03     PASS  
-   check_time_k2_absdiff              supporting_information.tex:38  0.02    0.02004951   0.02     PASS  
-   check_time_k3_absdiff              supporting_information.tex:38  0.00    3.8888e-11   0.00     PASS  
-   check_power_rpact                  supporting_information.tex:38  0.901   0.9006012    0.901    PASS  
-   -                                  supporting_information.tex:38  0.005                         SKIP  
-   -                                  supporting_information.tex:42  0.70                          SKIP  
-   siS1_OBF_M1_maxdiff                supporting_information.tex:42  0.124   0.1243671    0.124    PASS  
-   siS1_OBF_M2_maxdiff                supporting_information.tex:42  0.150   0.149868     0.150    PASS  
-   siS1_Pocock_M1_maxdiff             supporting_information.tex:42  0.027   0.02731816   0.027    PASS  
-   siS1_Pocock_M2_maxdiff             supporting_information.tex:42  0.040   0.03987148   0.040    PASS  
-   -                                  supporting_information.tex:47  0.5                           SKIP  
-   -                                  supporting_information.tex:53  0.90                          SKIP  
-   siS2_binding_events_k1             supporting_information.tex:53  115     115          115      PASS  
-   siS2_binding_events_k2             supporting_information.tex:53  231     231          231      PASS  
-   siS2_binding_events_k3             supporting_information.tex:53  346     346          346      PASS  
-   siS2_binding_upper_k1              supporting_information.tex:53  3.710   3.710303     3.710    PASS  
-   siS2_binding_upper_k2              supporting_information.tex:53  2.511   2.511095     2.511    PASS  
-   siS2_binding_upper_k3              supporting_information.tex:53  1.958   1.95807      1.958    PASS  
-   siS2_binding_lower_k1              supporting_information.tex:53  -0.26   -0.2610123   -0.26    PASS  
-   siS2_binding_lower_k2              supporting_information.tex:53  0.91    0.9094593    0.91     PASS  
-   siS2_nonbinding_events_k1          supporting_information.tex:53  118     118          118      PASS  
-   siS2_nonbinding_events_k2          supporting_information.tex:53  235     235          235      PASS  
-   siS2_nonbinding_events_k3          supporting_information.tex:53  353     353          353      PASS  
-   siS2_nonbinding_upper_k1           supporting_information.tex:53  3.710   3.710303     3.710    PASS  
-   siS2_nonbinding_upper_k2           supporting_information.tex:53  2.511   2.511427     2.511    PASS  
-   siS2_nonbinding_upper_k3           supporting_information.tex:53  1.993   1.993048     1.993    PASS  
-   siS2_nonbinding_lower_k1           supporting_information.tex:53  -0.24   -0.2417748   -0.24    PASS  
-   siS2_nonbinding_lower_k2           supporting_information.tex:53  0.94    0.9366653    0.94     PASS  
-   siS2_power_binding                 supporting_information.tex:53  0.901   0.9005176    0.901    PASS  
-   siS2_power_nonbinding_obeyed       supporting_information.tex:53  0.901   0.9005043    0.901    PASS  
-   siS2_power_nonbinding_ignored      supporting_information.tex:53  0.915   0.9148643    0.915    PASS  
-   siS2_nonbinding_obeyed_M1_maxdiff  supporting_information.tex:55  0.002   0.002243355  0.002    PASS  
-   siS2_nonbinding_obeyed_M2_maxdiff  supporting_information.tex:55  0.004   0.003685241  0.004    PASS  
-   siS2_nonbinding_ignored_M1_maxdiff supporting_information.tex:55  0.001   0.0007547606 0.001    PASS  
-   -                                  supporting_information.tex:66  0.5                           SKIP  
-   siS3_OBF_maxdiff_cond              supporting_information.tex:66  0.011   0.01095956   0.011    PASS  
-   siS3_OBF_maxdiff_uncond            supporting_information.tex:66  0.004   0.004214659  0.004    PASS  
-   siS3_Pocock_maxdiff_cond           supporting_information.tex:66  0.003   0.003123866  0.003    PASS  
-   siS3_Pocock_maxdiff_uncond         supporting_information.tex:66  0.004   0.003884188  0.004    PASS  
-   -                                  supporting_information.tex:77  0.6                           SKIP  
-   -                                  supporting_information.tex:77  1.0                           SKIP  
-   -                                  supporting_information.tex:77  0.70                          SKIP  
-   -                                  supporting_information.tex:77  10                            SKIP  
-   siS4_OBF_power_hr1                 supporting_information.tex:77  0.831   0.8313551    0.831    PASS  
-   siS4_Pocock_power_hr1              supporting_information.tex:77  0.828   0.8276216    0.828    PASS  
-   siS4_OBF_M1_overall_hr1            supporting_information.tex:77  0.358   0.3578901    0.358    PASS  
-   siS4_OBF_M2_overall_hr1            supporting_information.tex:77  0.547   0.5468612    0.547    PASS  
-   siS4_Pocock_M1_overall_hr1         supporting_information.tex:77  0.378   0.3780562    0.378    PASS  
-   siS4_Pocock_M2_overall_hr1         supporting_information.tex:77  0.559   0.5591995    0.559    PASS  
-   -                                  supporting_information.tex:82  0.70                          SKIP  
-   -                                  supporting_information.tex:82  10                            SKIP  
-   siS5_OBF_M2_k2_maxdiff             supporting_information.tex:88  0.004   0.00378077   0.004    PASS  
-   siS5_Pocock_M1_k2_maxdiff          supporting_information.tex:88  0.023   0.02286594   0.023    PASS  
-   siS5_Pocock_M2_k2_maxdiff          supporting_information.tex:88  0.026   0.02614759   0.026    PASS  
-   siS5_OBF_M1_k3_maxdiff             supporting_information.tex:88  0.044   0.04384069   0.044    PASS  
-   siS5_OBF_M2_k3_maxdiff             supporting_information.tex:88  0.052   0.0522245    0.052    PASS  
-   siS5_Pocock_M1_k3_maxdiff          supporting_information.tex:88  0.052   0.05157867   0.052    PASS  
-   siS5_Pocock_M2_k3_maxdiff          supporting_information.tex:88  0.058   0.05787886   0.058    PASS  
-   -                                  supporting_information.tex:99  3.5                           SKIP  
-   -                                  supporting_information.tex:99  2.4                           SKIP  
-   -                                  supporting_information.tex:99  0.70                          SKIP  
-   -                                  supporting_information.tex:101 5                             SKIP  
-   fig5_worst_events_r1               supporting_information.tex:101 3.0     3.000185     3.0      PASS  
-   fig5_worst_p_inf                   supporting_information.tex:101 36      35.846       36       PASS  
+   -                                  main.tex:42                    0.5                           SKIP  
+   -                                  main.tex:42                    80                            SKIP  
+   -                                  main.tex:46                    2.6                           SKIP  
+   -                                  main.tex:86                    0.5                           SKIP  
+   -                                  main.tex:149                   0.025                         SKIP  
+   -                                  main.tex:149                   0.70                          SKIP  
+   -                                  main.tex:149                   0.90                          SKIP  
+   events_OBF_k1                      main.tex:149                   112     112          112      PASS  
+   events_OBF_k2                      main.tex:149                   223     223          223      PASS  
+   events_OBF_k3                      main.tex:149                   335     335          335      PASS  
+   upper_OBF_k1                       main.tex:149                   3.710   3.710303     3.710    PASS  
+   upper_OBF_k2                       main.tex:149                   2.511   2.511427     2.511    PASS  
+   upper_OBF_k3                       main.tex:149                   1.993   1.993048     1.993    PASS  
+   events_Pocock_k1                   main.tex:149                   127     127          127      PASS  
+   events_Pocock_k2                   main.tex:149                   255     255          255      PASS  
+   events_Pocock_k3                   main.tex:149                   382     382          382      PASS  
+   upper_Pocock_k1                    main.tex:149                   2.279   2.279428     2.279    PASS  
+   upper_Pocock_k2                    main.tex:149                   2.295   2.294911     2.295    PASS  
+   upper_Pocock_k3                    main.tex:149                   2.296   2.29594      2.296    PASS  
+   d_fix                              main.tex:149                   330.4   330.3779     330.4    PASS  
+   -                                  main.tex:149                   331                           SKIP  
+   -                                  main.tex:149                   0.5                           SKIP  
+   -                                  main.tex:149                   0.8                           SKIP  
+   fig3_time_k1                       main.tex:151                   15.2    15.23099     15.2     PASS  
+   fig3_time_k2                       main.tex:151                   22.7    22.65583     22.7     PASS  
+   fig3_time_k3                       main.tex:151                   30.0    30.03214     30.0     PASS  
+   check_power_rpact                  main.tex:151                   0.901   0.9006012    0.901    PASS  
+   check_time_k1_absdiff              main.tex:151                   0.03    0.02553388   0.03     PASS  
+   -                                  main.tex:156                   0.1                           SKIP  
+   fig1_OBF_M1_cond_k1                main.tex:156                   0.753   0.7526669    0.753    PASS  
+   fig1_OBF_M1_uncond_k1              main.tex:156                   0.622   0.6218252    0.622    PASS  
+   fig1_OBF_M1_cond_k2                main.tex:156                   0.709   0.7085134    0.709    PASS  
+   fig1_OBF_M1_cond_k3                main.tex:156                   0.681   0.6807936    0.681    PASS  
+   fig1_OBF_M1_uncond_k3              main.tex:156                   0.704   0.7042338    0.704    PASS  
+   fig1_OBF_M1_overall                main.tex:156                   0.700   0.6997237    0.700    PASS  
+   fig1_fixed_M1_cond                 main.tex:156                   0.715   0.7147697    0.715    PASS  
+   fig1_fixed_M1_uncond               main.tex:156                   0.703   0.7031228    0.703    PASS  
+   fig1_OBF_M2_cond_k1                main.tex:156                   0.913   0.9126327    0.913    PASS  
+   fig1_OBF_M2_cond_k2                main.tex:156                   0.855   0.8547099    0.855    PASS  
+   fig1_OBF_M2_cond_k3                main.tex:156                   0.806   0.8059029    0.806    PASS  
+   fig1_OBF_M2_uncond_k1              main.tex:156                   0.583   0.5834251    0.583    PASS  
+   fig1_OBF_M2_overall                main.tex:156                   0.838   0.838482     0.838    PASS  
+   fig1_fixed_M2_cond                 main.tex:156                   0.856   0.8558937    0.856    PASS  
+   fig1_power_OBF                     main.tex:156                   0.901   0.9006065    0.901    PASS  
+   fig1_Pocock_M1_cond_k1             main.tex:158                   0.690   0.6899076    0.690    PASS  
+   fig1_Pocock_M1_cond_k2             main.tex:158                   0.691   0.6906453    0.691    PASS  
+   fig1_Pocock_M1_cond_k3             main.tex:158                   0.687   0.6871004    0.687    PASS  
+   fig1_Pocock_M2_cond_k1             main.tex:158                   0.824   0.8239074    0.824    PASS  
+   fig1_Pocock_M2_cond_k2             main.tex:158                   0.826   0.8263266    0.826    PASS  
+   fig1_Pocock_M2_cond_k3             main.tex:158                   0.821   0.8213735    0.821    PASS  
+   fig1_Pocock_M1_overall             main.tex:158                   0.690   0.6896629    0.690    PASS  
+   fig1_Pocock_M2_overall             main.tex:158                   0.824   0.824347     0.824    PASS  
+   fig1_Pocock_M1_uncond_k1           main.tex:158                   0.629   0.6294521    0.629    PASS  
+   -                                  main.tex:160                   0.1                           SKIP  
+   fig1_OBF_M1_marginal_k3            main.tex:160                   0.716   0.7160936    0.716    PASS  
+   fig1_OBF_M2_marginal_k3            main.tex:160                   0.858   0.8581274    0.858    PASS  
+   fig1_OBF_M1_cond_k3                main.tex:160                   0.681   0.6807936    0.681    PASS  
+   fig1_OBF_M2_cond_k3                main.tex:160                   0.806   0.8059029    0.806    PASS  
+   -                                  main.tex:160                   0.05                          SKIP  
+   -                                  main.tex:160                   0.30                          SKIP  
+   siS5_OBF_M1_k3_maxdiff             main.tex:160                   0.044   0.04384069   0.044    PASS  
+   siS5_OBF_M2_k3_maxdiff             main.tex:160                   0.052   0.0522245    0.052    PASS  
+   siS5_Pocock_M1_k3_maxdiff          main.tex:160                   0.052   0.05157867   0.052    PASS  
+   siS5_Pocock_M2_k3_maxdiff          main.tex:160                   0.058   0.05787886   0.058    PASS  
+   -                                  main.tex:165                   0.1                           SKIP  
+   fig2_ref_M1                        main.tex:165                   0.651   0.6513492    0.651    PASS  
+   fig2_ref_M2                        main.tex:165                   0.742   0.7419674    0.742    PASS  
+   fig2_OBF_M1_null_k1                main.tex:165                   0.745   0.7446937    0.745    PASS  
+   fig2_OBF_M1_null_k2                main.tex:165                   0.681   0.6811546    0.681    PASS  
+   fig2_OBF_M1_null_k3                main.tex:165                   0.650   0.6497179    0.650    PASS  
+   fig2_OBF_M1_gamma_k1               main.tex:165                   0.705   0.7045226    0.705    PASS  
+   fig2_OBF_M1_gamma_k2               main.tex:165                   0.587   0.5871864    0.587    PASS  
+   fig2_OBF_M1_gamma_k3               main.tex:165                   0.500   0.5          0.500    PASS  
+   fig2_OBF_M2_null_k1                main.tex:165                   0.905   0.9049851    0.905    PASS  
+   fig2_OBF_M2_null_k2                main.tex:165                   0.814   0.8138094    0.814    PASS  
+   fig2_OBF_M2_null_k3                main.tex:165                   0.739   0.7393948    0.739    PASS  
+   fig2_OBF_M2_gamma_k1               main.tex:165                   0.309   0.309148     0.309    PASS  
+   fig2_OBF_M2_gamma_k2               main.tex:165                   0.067   0.06727804   0.067    PASS  
+   fig2_OBF_M2_gamma_k3               main.tex:165                   0.000   0            0.000    PASS  
+   fig2_OBF_M2_gamma_k1               main.tex:165                   0.309   0.309148     0.309    PASS  
+   fig2_Pocock_M1_null_k1             main.tex:167                   0.669   0.6687697    0.669    PASS  
+   fig2_Pocock_M1_null_k2             main.tex:167                   0.667   0.6667642    0.667    PASS  
+   fig2_Pocock_M1_null_k3             main.tex:167                   0.665   0.6646155    0.665    PASS  
+   fig2_Pocock_M2_null_k1             main.tex:167                   0.787   0.7873692    0.787    PASS  
+   fig2_Pocock_M2_null_k2             main.tex:167                   0.784   0.7838895    0.784    PASS  
+   fig2_Pocock_M2_null_k3             main.tex:167                   0.780   0.7796558    0.780    PASS  
+   fig2_Pocock_M1_gamma_k1            main.tex:167                   0.555   0.5545995    0.555    PASS  
+   fig2_Pocock_M1_gamma_k2            main.tex:167                   0.549   0.5488451    0.549    PASS  
+   fig2_Pocock_M1_gamma_k3            main.tex:167                   0.543   0.5425501    0.543    PASS  
+   fig2_Pocock_M2_gamma_k1            main.tex:167                   0.052   0.05171371   0.052    PASS  
+   fig2_Pocock_M2_gamma_k2            main.tex:167                   0.033   0.0334298    0.033    PASS  
+   fig2_Pocock_M2_gamma_k3            main.tex:167                   0.024   0.02428608   0.024    PASS  
+   -                                  main.tex:167                   0.05                          SKIP  
+   -                                  main.tex:167                   0.30                          SKIP  
+   fig2_OBF_M2_gamma_k1_range         main.tex:167                   0.002   0.001630619  0.002    PASS  
+   siS1_OBF_M1_maxdiff                main.tex:169                   0.124   0.1243671    0.124    PASS  
+   siS1_OBF_M2_maxdiff                main.tex:169                   0.150   0.149868     0.150    PASS  
+   siS1_Pocock_M1_maxdiff             main.tex:169                   0.027   0.02731816   0.027    PASS  
+   siS1_Pocock_M2_maxdiff             main.tex:169                   0.040   0.03987148   0.040    PASS  
+   fig3_tau_limit                     main.tex:174                   21.6    21.6         21.6     PASS  
+   fig3_time_k1                       main.tex:174                   15.2    15.23099     15.2     PASS  
+   fig3_tau6_f1_k1                    main.tex:174                   0.054   0.05361837   0.054    PASS  
+   fig3_tau6_f1_k2                    main.tex:174                   0.078   0.07843268   0.078    PASS  
+   fig3_tau6_f1_k3                    main.tex:174                   0.090   0.08995769   0.090    PASS  
+   fig3_tau6_events_r1_k1             main.tex:174                   6.0     6.005258     6.0      PASS  
+   fig3_tau6_events_r1_k2             main.tex:174                   17.5    17.49049     17.5     PASS  
+   fig3_tau6_events_r1_k3             main.tex:174                   30.1    30.13583     30.1     PASS  
+   -                                  main.tex:174                   0.1                           SKIP  
+   fig3_tau14_f1_k1                   main.tex:174                   0.002   0.0019521    0.002    PASS  
+   fig3_tau14_f1_k2                   main.tex:174                   0.043   0.04300357   0.043    PASS  
+   fig3_tau14_f1_k3                   main.tex:174                   0.073   0.07337556   0.073    PASS  
+   fig3_tau14_events_r1_k1            main.tex:174                   0.2     0.2186352    0.2      PASS  
+   fig3_tau14_events_r1_k2            main.tex:174                   9.6     9.589796     9.6      PASS  
+   fig3_tau14_events_r1_k3            main.tex:174                   24.6    24.58081     24.6     PASS  
+   fig1_OBF_M1_cond_k1                main.tex:176                   0.753   0.7526669    0.753    PASS  
+   fig3_tau6_M1_cond_k1               main.tex:176                   0.687   0.6872488    0.687    PASS  
+   fig3_tau14_M1_cond_k1              main.tex:176                   0.536   0.53616      0.536    PASS  
+   fig1_OBF_M2_cond_k1                main.tex:176                   0.913   0.9126327    0.913    PASS  
+   fig3_tau6_M2_cond_k1               main.tex:176                   0.835   0.8347031    0.835    PASS  
+   fig3_tau14_M2_cond_k1              main.tex:176                   0.572   0.5719674    0.572    PASS  
+   fig1_OBF_M1_cond_k3                main.tex:176                   0.681   0.6807936    0.681    PASS  
+   fig3_tau6_M1_cond_k3               main.tex:176                   0.684   0.6843792    0.684    PASS  
+   fig3_tau14_M1_cond_k3              main.tex:176                   0.693   0.6929992    0.693    PASS  
+   fig3_tau0_M1_overall               main.tex:176                   0.700   0.6997237    0.700    PASS  
+   fig3_tau6_M1_overall               main.tex:176                   0.687   0.6865754    0.687    PASS  
+   fig3_tau14_M1_overall              main.tex:176                   0.659   0.6587361    0.659    PASS  
+   fig3_tau0_M2_overall               main.tex:176                   0.838   0.838482     0.838    PASS  
+   fig3_tau6_M2_overall               main.tex:176                   0.818   0.8176212    0.818    PASS  
+   fig3_tau14_M2_overall              main.tex:176                   0.767   0.7668286    0.767    PASS  
+   -                                  main.tex:178                   0.8                           SKIP  
+   fig4_tau0_overall_M1_fs            main.tex:178                   0.226   0.2260664    0.226    PASS  
+   fig4_tau0_overall_M1_events        main.tex:178                   76      76           76       PASS  
+   fig4_tau0_unconditional_M1_fs      main.tex:178                   0.222   0.2217087    0.222    PASS  
+   fig4_tau0_unconditional_M1_events  main.tex:178                   75      75           75       PASS  
+   fig4_fixed_M1_fs                   main.tex:178                   0.224   0.223938     0.224    PASS  
+   fig4_tau0_overall_M2_fs            main.tex:178                   0.073   0.07280462   0.073    PASS  
+   fig4_tau0_overall_M2_events        main.tex:178                   25      25           25       PASS  
+   fig4_tau0_unconditional_M2_fs      main.tex:178                   0.080   0.07989981   0.080    PASS  
+   fig4_tau0_unconditional_M2_events  main.tex:178                   27      27           27       PASS  
+   fig4_fixed_M2_fs                   main.tex:178                   0.081   0.08146069   0.081    PASS  
+   fig4_tau14_overall_M1_fs           main.tex:178                   0.271   0.2714164    0.271    PASS  
+   fig4_tau14_overall_M1_events       main.tex:178                   91      91           91       PASS  
+   fig4_tau14_overall_M2_fs           main.tex:178                   0.098   0.09832259   0.098    PASS  
+   fig4_tau14_overall_M2_events       main.tex:178                   33      33           33       PASS  
+   fig4_stagewise_M1_limit            main.tex:178                   9.9     9.88         9.9      PASS  
+   fig4_stagewise_M2_limit            main.tex:178                   12.4    12.44        12.4     PASS  
+   -                                  main.tex:183                   0.05                          SKIP  
+   -                                  main.tex:183                   0.10                          SKIP  
+   -                                  main.tex:183                   0.15                          SKIP  
+   -                                  main.tex:183                   0.20                          SKIP  
+   fig5_M1_maxdiff_ev5                main.tex:185                   0.016   0.01570274   0.016    PASS  
+   fig5_M2_maxdiff_ev5                main.tex:185                   0.014   0.01366464   0.014    PASS  
+   fig5_power_min                     main.tex:185                   0.897   0.89683      0.897    PASS  
+   fig5_power_max                     main.tex:185                   0.901   0.90072      0.901    PASS  
+   -                                  main.tex:185                   5                             SKIP  
+   fig5_worst_events_r1               main.tex:185                   3.0     3.000185     3.0      PASS  
+   fig5_worst_p_inf                   main.tex:185                   36      35.846       36       PASS  
+   fig5_worst_p_no_est                main.tex:185                   4.8     4.752        4.8      PASS  
+   fig5_worst_M1_sim                  main.tex:185                   0.611   0.6105977    0.611    PASS  
+   fig5_worst_M2_sim                  main.tex:185                   0.704   0.7039433    0.704    PASS  
+   fig5_worst_M1_formula              main.tex:185                   0.633   0.6332019    0.633    PASS  
+   fig5_worst_M2_formula              main.tex:185                   0.752   0.7515776    0.752    PASS  
+   events_OBF_k1                      main.tex:190                   112     112          112      PASS  
+   events_OBF_k2                      main.tex:190                   223     223          223      PASS  
+   events_OBF_k3                      main.tex:190                   335     335          335      PASS  
+   fig3_tau6_events_r1_k1             main.tex:192                   6.0     6.005258     6.0      PASS  
+   fig3_tau6_events_r1_k2             main.tex:192                   17.5    17.49049     17.5     PASS  
+   fig3_tau6_events_r1_k3             main.tex:192                   30.1    30.13583     30.1     PASS  
+   tab1_peff_k2                       main.tex:192                   0.526   0.5264737    0.526    PASS  
+   tab1_M1_cond_k1                    main.tex:192                   0.687   0.6872488    0.687    PASS  
+   tab1_M1_cond_k2                    main.tex:192                   0.688   0.68795      0.688    PASS  
+   tab1_M1_cond_k3                    main.tex:192                   0.684   0.6843792    0.684    PASS  
+   tab1_M2_cond_k1                    main.tex:192                   0.835   0.8347031    0.835    PASS  
+   tab1_M2_cond_k2                    main.tex:192                   0.826   0.8264689    0.826    PASS  
+   tab1_M2_cond_k3                    main.tex:192                   0.802   0.8022039    0.802    PASS  
+   tab1_overall_unadj_M1              main.tex:192                   0.687   0.6865754    0.687    PASS  
+   tab1_overall_unadj_M2              main.tex:192                   0.818   0.8176212    0.818    PASS  
+   -                                  main.tex:192                   0.8                           SKIP  
+   tab1_M1_marginal_k3                main.tex:192                   0.705   0.705201     0.705    PASS  
+   tab1_M2_marginal_k3                main.tex:192                   0.846   0.8455906    0.846    PASS  
+   tab1_M1_cond_k3                    main.tex:192                   0.684   0.6843792    0.684    PASS  
+   tab1_M2_cond_k3                    main.tex:192                   0.802   0.8022039    0.802    PASS  
+   tab1_ref_M1                        main.tex:194                   0.643   0.6431703    0.643    PASS  
+   tab1_ref_M2                        main.tex:194                   0.731   0.7311275    0.731    PASS  
+   tab1_M1_gamma_k1                   main.tex:194                   0.610   0.6096468    0.610    PASS  
+   tab1_M1_gamma_k2                   main.tex:194                   0.558   0.558219     0.558    PASS  
+   tab1_M1_gamma_k3                   main.tex:194                   0.516   0.5163973    0.516    PASS  
+   tab1_M2_gamma_k1                   main.tex:194                   0.232   0.2318464    0.232    PASS  
+   tab1_M2_gamma_k2                   main.tex:194                   0.056   0.05618268   0.056    PASS  
+   tab1_M2_gamma_k3                   main.tex:194                   0.001   0.001200754  0.001    PASS  
+   tab1_overall_adj_M1                main.tex:194                   0.672   0.6715161    0.672    PASS  
+   tab1_overall_adj_M2                main.tex:194                   0.790   0.7895758    0.790    PASS  
+   tab1_peff_k1                       main.tex:194                   0.034   0.03415499   0.034    PASS  
+   -                                  main.tex:196                   0.8                           SKIP  
+   tab2_tau6_overall_M1_events        main.tex:196                   79      79           79       PASS  
+   tab2_tau6_overall_M1_fs            main.tex:196                   0.235   0.2347561    0.235    PASS  
+   tab2_tau0_overall_M1_events        main.tex:196                   76      76           76       PASS  
+   tab2_tau6_stagewise_M1_events      main.tex:196                   82      82           82       PASS  
+   tab2_tau0_stagewise_M1_events      main.tex:196                   90      90           90       PASS  
+   tab2_tau6_unconditional_M1_events  main.tex:196                   75      75           75       PASS  
+   tab2_tau0_overall_M2_events        main.tex:196                   25      25           25       PASS  
+   tab2_tau0_stagewise_M2_events      main.tex:196                   32      32           32       PASS  
+   fig3_tau6_events_r1_k3             main.tex:196                   30.1    30.13583     30.1     PASS  
+   siS5_Pocock_M2_k3_maxdiff          main.tex:201                   0.058   0.05787886   0.058    PASS  
+   -                                  main.tex:207                   10                            SKIP  
+   siS4_OBF_M1_overall_hr1            main.tex:207                   0.358   0.3578901    0.358    PASS  
+   siS4_OBF_M2_overall_hr1            main.tex:207                   0.547   0.5468612    0.547    PASS  
+   siS2_nonbinding_obeyed_M2_maxdiff  main.tex:207                   0.004   0.003685241  0.004    PASS  
+   siS3_OBF_maxdiff_cond              main.tex:207                   0.011   0.01095956   0.011    PASS  
+   -                                  main.tex:224                   5.5                           SKIP  
+   -                                  main.tex:232                   0.1                           SKIP  
+   -                                  main.tex:248                   0.025                         SKIP  
+   -                                  main.tex:248                   0.90                          SKIP  
+   -                                  main.tex:248                   0.70                          SKIP  
+   -                                  main.tex:248                   0.5                           SKIP  
+   -                                  main.tex:256                   0.5                           SKIP  
+   -                                  main.tex:264                   0.70                          SKIP  
+   -                                  main.tex:272                   0.8                           SKIP  
+   -                                  main.tex:280                   95                            SKIP  
+   -                                  supporting_information.tex:32  0.025                         SKIP  
+   -                                  supporting_information.tex:32  0.90                          SKIP  
+   -                                  supporting_information.tex:32  0.70                          SKIP  
+   -                                  supporting_information.tex:32  0.5                           SKIP  
+   -                                  supporting_information.tex:32  0.1                           SKIP  
+   events_OBF_k1                      supporting_information.tex:36  112     112          112      PASS  
+   events_OBF_k2                      supporting_information.tex:36  223     223          223      PASS  
+   events_OBF_k3                      supporting_information.tex:36  335     335          335      PASS  
+   events_Pocock_k1                   supporting_information.tex:36  127     127          127      PASS  
+   events_Pocock_k2                   supporting_information.tex:36  255     255          255      PASS  
+   events_Pocock_k3                   supporting_information.tex:36  382     382          382      PASS  
+   d_fix                              supporting_information.tex:40  330.4   330.3779     330.4    PASS  
+   -                                  supporting_information.tex:40  331                           SKIP  
+   check_time_k1_rpact                supporting_information.tex:42  15.21   15.20545     15.21    PASS  
+   check_time_k2_rpact                supporting_information.tex:42  22.68   22.67588     22.68    PASS  
+   check_time_k3_rpact                supporting_information.tex:42  30.03   30.03214     30.03    PASS  
+   check_time_k1_absdiff              supporting_information.tex:42  0.03    0.02553388   0.03     PASS  
+   check_time_k2_absdiff              supporting_information.tex:42  0.02    0.02004951   0.02     PASS  
+   check_time_k3_absdiff              supporting_information.tex:42  0.00    3.8888e-11   0.00     PASS  
+   check_power_rpact                  supporting_information.tex:42  0.901   0.9006012    0.901    PASS  
+   -                                  supporting_information.tex:42  0.005                         SKIP  
+   -                                  supporting_information.tex:46  0.70                          SKIP  
+   siS1_OBF_M1_maxdiff                supporting_information.tex:46  0.124   0.1243671    0.124    PASS  
+   siS1_OBF_M2_maxdiff                supporting_information.tex:46  0.150   0.149868     0.150    PASS  
+   siS1_Pocock_M1_maxdiff             supporting_information.tex:46  0.027   0.02731816   0.027    PASS  
+   siS1_Pocock_M2_maxdiff             supporting_information.tex:46  0.040   0.03987148   0.040    PASS  
+   -                                  supporting_information.tex:51  0.5                           SKIP  
+   -                                  supporting_information.tex:57  0.90                          SKIP  
+   siS2_binding_events_k1             supporting_information.tex:57  115     115          115      PASS  
+   siS2_binding_events_k2             supporting_information.tex:57  231     231          231      PASS  
+   siS2_binding_events_k3             supporting_information.tex:57  346     346          346      PASS  
+   siS2_binding_upper_k1              supporting_information.tex:57  3.710   3.710303     3.710    PASS  
+   siS2_binding_upper_k2              supporting_information.tex:57  2.511   2.511095     2.511    PASS  
+   siS2_binding_upper_k3              supporting_information.tex:57  1.958   1.95807      1.958    PASS  
+   siS2_binding_lower_k1              supporting_information.tex:57  -0.26   -0.2610123   -0.26    PASS  
+   siS2_binding_lower_k2              supporting_information.tex:57  0.91    0.9094593    0.91     PASS  
+   siS2_nonbinding_events_k1          supporting_information.tex:57  118     118          118      PASS  
+   siS2_nonbinding_events_k2          supporting_information.tex:57  235     235          235      PASS  
+   siS2_nonbinding_events_k3          supporting_information.tex:57  353     353          353      PASS  
+   siS2_nonbinding_upper_k1           supporting_information.tex:57  3.710   3.710303     3.710    PASS  
+   siS2_nonbinding_upper_k2           supporting_information.tex:57  2.511   2.511427     2.511    PASS  
+   siS2_nonbinding_upper_k3           supporting_information.tex:57  1.993   1.993048     1.993    PASS  
+   siS2_nonbinding_lower_k1           supporting_information.tex:57  -0.24   -0.2417748   -0.24    PASS  
+   siS2_nonbinding_lower_k2           supporting_information.tex:57  0.94    0.9366653    0.94     PASS  
+   siS2_power_binding                 supporting_information.tex:57  0.901   0.9005176    0.901    PASS  
+   siS2_power_nonbinding_obeyed       supporting_information.tex:57  0.901   0.9005043    0.901    PASS  
+   siS2_power_nonbinding_ignored      supporting_information.tex:57  0.915   0.9148643    0.915    PASS  
+   siS2_nonbinding_obeyed_M1_maxdiff  supporting_information.tex:59  0.002   0.002243355  0.002    PASS  
+   siS2_nonbinding_obeyed_M2_maxdiff  supporting_information.tex:59  0.004   0.003685241  0.004    PASS  
+   siS2_nonbinding_ignored_M1_maxdiff supporting_information.tex:59  0.001   0.0007547606 0.001    PASS  
+   -                                  supporting_information.tex:70  0.5                           SKIP  
+   siS3_OBF_maxdiff_cond              supporting_information.tex:70  0.011   0.01095956   0.011    PASS  
+   siS3_OBF_maxdiff_uncond            supporting_information.tex:70  0.004   0.004214659  0.004    PASS  
+   siS3_Pocock_maxdiff_cond           supporting_information.tex:70  0.003   0.003123866  0.003    PASS  
+   siS3_Pocock_maxdiff_uncond         supporting_information.tex:70  0.004   0.003884188  0.004    PASS  
+   -                                  supporting_information.tex:81  0.6                           SKIP  
+   -                                  supporting_information.tex:81  1.0                           SKIP  
+   -                                  supporting_information.tex:81  0.70                          SKIP  
+   -                                  supporting_information.tex:81  10                            SKIP  
+   siS4_OBF_power_hr1                 supporting_information.tex:81  0.831   0.8313551    0.831    PASS  
+   siS4_Pocock_power_hr1              supporting_information.tex:81  0.828   0.8276216    0.828    PASS  
+   siS4_OBF_M1_overall_hr1            supporting_information.tex:81  0.358   0.3578901    0.358    PASS  
+   siS4_OBF_M2_overall_hr1            supporting_information.tex:81  0.547   0.5468612    0.547    PASS  
+   siS4_Pocock_M1_overall_hr1         supporting_information.tex:81  0.378   0.3780562    0.378    PASS  
+   siS4_Pocock_M2_overall_hr1         supporting_information.tex:81  0.559   0.5591995    0.559    PASS  
+   -                                  supporting_information.tex:86  0.70                          SKIP  
+   -                                  supporting_information.tex:86  10                            SKIP  
+   siS5_OBF_M2_k2_maxdiff             supporting_information.tex:92  0.004   0.00378077   0.004    PASS  
+   siS5_Pocock_M1_k2_maxdiff          supporting_information.tex:92  0.023   0.02286594   0.023    PASS  
+   siS5_Pocock_M2_k2_maxdiff          supporting_information.tex:92  0.026   0.02614759   0.026    PASS  
+   siS5_OBF_M1_k3_maxdiff             supporting_information.tex:92  0.044   0.04384069   0.044    PASS  
+   siS5_OBF_M2_k3_maxdiff             supporting_information.tex:92  0.052   0.0522245    0.052    PASS  
+   siS5_Pocock_M1_k3_maxdiff          supporting_information.tex:92  0.052   0.05157867   0.052    PASS  
+   siS5_Pocock_M2_k3_maxdiff          supporting_information.tex:92  0.058   0.05787886   0.058    PASS  
+   -                                  supporting_information.tex:103 3.5                           SKIP  
+   -                                  supporting_information.tex:103 2.4                           SKIP  
+   -                                  supporting_information.tex:103 0.70                          SKIP  
+   -                                  supporting_information.tex:105 5                             SKIP  
+   fig5_worst_events_r1               supporting_information.tex:105 3.0     3.000185     3.0      PASS  
+   fig5_worst_p_inf                   supporting_information.tex:105 36      35.846       36       PASS  
    note                       
    not in the ledger by design
    not in the ledger by design
@@ -617,12 +617,15 @@
   PASS 241, FAIL 0, SKIP 58
 
 [4] Unregistered numbers (decimals and percentages not covered by number_locations.csv)
-  (none)
+   location                      number snippet                                 
+   supporting_information.tex:14 0.9    \\renewcommand{\\topfraction}{0.9}      
+   supporting_information.tex:15 0.07   \\renewcommand{\\textfraction}{0.07}    
+   supporting_information.tex:16 0.9    \\renewcommand{\\floatpagefraction}{0.9}
 
 [5] Ledger keys not cited in the manuscript: 81 of 282 (for information)
 
 ==================================================================
- Result: ALL CHECKS PASSED; 0 unregistered number(s) to review
+ Result: ALL CHECKS PASSED; 3 unregistered number(s) to review
 ==================================================================
 
 R version 4.6.0 (2026-04-24 ucrt)
@@ -642,15 +645,5 @@ tzcode source: internal
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
-other attached packages:
-[1] rcpgsd_0.1.0   testthat_3.3.2
-
 loaded via a namespace (and not attached):
- [1] gtable_0.3.6       dplyr_1.2.1        compiler_4.6.0     brio_1.1.5         tidyselect_1.2.1   xml2_1.6.0        
- [7] scales_1.4.0       fastmap_1.2.0      ggplot2_4.0.3      R6_2.6.1           commonmark_2.0.0   generics_0.1.4    
-[13] knitr_1.51         tibble_3.3.1       desc_1.4.3         rprojroot_2.1.1    pillar_1.11.1      RColorBrewer_1.1-3
-[19] rlang_1.3.0        cachem_1.1.0       roxygen2_8.0.0     xfun_0.57          fs_2.1.0           S7_0.2.2          
-[25] pkgload_1.5.2      otel_0.2.0         memoise_2.0.1      cli_3.6.6          withr_3.0.2        magrittr_2.0.5    
-[31] grid_4.6.0         rstudioapi_0.18.0  mvtnorm_1.4-2      devtools_2.5.2     lifecycle_1.0.5    waldo_0.6.2       
-[37] vctrs_0.7.3        evaluate_1.0.5     glue_1.8.1         farver_2.1.2       sessioninfo_1.2.3  pkgbuild_1.4.8    
-[43] purrr_1.2.2        tools_4.6.0        usethis_3.2.1      pkgconfig_2.0.3    ellipsis_0.3.3    
+[1] compiler_4.6.0    tools_4.6.0       rstudioapi_0.18.0
