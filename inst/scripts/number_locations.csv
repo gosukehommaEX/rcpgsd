@@ -298,3 +298,6 @@ siS5_Pocock_M2_k3_maxdiff,design and up to 0.052 and {} for,,
 -,"with a 6-month delay and {}\% Japanese patients at the first analysis, where Japan has",,setting
 fig5_worst_events_r1,where Japan has {} expected events and,,
 fig5_worst_p_inf,estimate is infinite in {}\% of the simulated,100,
+-,\renewcommand{\topfraction}{{}},,float placement setting of supporting_information.tex
+-,\renewcommand{\textfraction}{{}},,float placement setting of supporting_information.tex
+-,\renewcommand{\floatpagefraction}{{}},,float placement setting of supporting_information.tex
