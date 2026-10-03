@@ -353,9 +353,10 @@ make_delay <- function(n_region, tau) {
 }
 
 # Search interval for the required proportion of events in Japan at the
-# final analysis. Under the overall accrual plan, the expected numbers of
-# events in Japan are proportional to n_1 while the analysis times do not
-# change, so a proportion x corresponds to n_1 = x n_1^0 / f_{1,K}^0, where
+# final analysis. Under the overall accrual plan, and with the same hazards
+# and hazard ratio in all regions, the expected numbers of events in Japan
+# are proportional to n_1 while the analysis times do not change, so a
+# proportion x corresponds to n_1 = x n_1^0 / f_{1,K}^0, where
 # n_1^0 and f_{1,K}^0 are the planned values. Condition (4) of the article,
 # n_1 <= (1 - tau / T) N, then bounds x by f_{1,K}^0 (1 - tau / T) N / n_1^0.
 fs_interval <- function(fs, tau) {

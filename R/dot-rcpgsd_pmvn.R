@@ -7,9 +7,10 @@
 #' problems are evaluated with \code{stats::pnorm()} using the upper tail
 #' when this is numerically more accurate. For two or more dimensions the
 #' Genz-Bretz algorithm is used with a fixed seed, so that repeated calls
-#' return identical values, and with a relative error tolerance so that
-#' small probabilities (e.g., early stopping under the null hypothesis) are
-#' evaluated accurately. Singular covariance matrices, which arise for
+#' return identical values, and with absolute and relative error
+#' tolerances of 1e-10 and 1e-5, so that small probabilities (e.g., early
+#' stopping under the null hypothesis) are evaluated accurately. Singular
+#' covariance matrices, which arise for
 #' Method 2 because the overall statistic is a linear combination of all
 #' regional estimates, are handled by \code{mvtnorm::pmvnorm()}.
 #'

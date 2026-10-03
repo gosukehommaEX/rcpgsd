@@ -47,9 +47,12 @@
 #' fractions. For Method 2 with a positive threshold, and for Method 1 on
 #' the hazard reduction scale, the null RCP also depends on the numbers of
 #' events, so the adjusted thresholds apply only to the numbers of events
-#' in \code{events}. On the log hazard ratio scale, multiplying all the
-#' numbers of events by \eqn{c} divides the adjusted Method 2 thresholds by
-#' \eqn{\sqrt{c}}.
+#' in \code{events}. On the log hazard ratio scale and with
+#' \code{gamma_M2 = 0}, multiplying all the numbers of events by \eqn{c},
+#' with \code{r} and \code{fs} unchanged, divides the adjusted Method 2
+#' thresholds by \eqn{\sqrt{c}}. With a positive \code{gamma_M2}, the
+#' reference value also depends on \code{events[K]}, and this relation does
+#' not hold.
 #'
 #' At some analyses (typically the final analysis) the null RCP with the
 #' unadjusted threshold may be slightly below the reference value. With

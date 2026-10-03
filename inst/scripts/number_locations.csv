@@ -202,7 +202,7 @@ tab2_tau6_unconditional_M1_events,criterion requires {} in both cases,,equal to 
 tab2_tau0_overall_M2_events,require between {} and 32 events,,smallest of the six Method 2 numbers in Table 2
 tab2_tau0_stagewise_M2_events,require between 25 and {} events,,largest of the six Method 2 numbers in Table 2
 fig3_tau6_events_r1_k3,expected to contribute {} events at the final analysis,,
-siS5_Pocock_M2_k3_maxdiff,"it exceeded $\phi_K$ by up to {}, and after",,largest of the siS5 differences
+siS5_Pocock_M2_k3_maxdiff,exceeded $\phi_K$ by up to {} when the regional,,largest of the siS5 differences
 -,was 1 with {}\% of the events in Japan,,setting
 siS4_OBF_M1_overall_hr1,design fell to {} for Method~1,,
 siS4_OBF_M2_overall_hr1,fell to 0.358 for Method~1 and {} for Method~2,,
