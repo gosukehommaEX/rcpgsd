@@ -93,7 +93,7 @@ fig2_Pocock_M2_gamma_k2,"0.543 and 0.052, {} and 0.024",,
 fig2_Pocock_M2_gamma_k3,"0.052, 0.033 and {}. Over",,
 -,0.024. Over $f_1$ from {} to 0.30 the adjusted,,setting
 -,0.024. Over $f_1$ from 0.05 to {} the adjusted,,setting
-fig2_OBF_M2_gamma_k1_range,"change by at most {}, so a single",,largest of the fig2 ranges (equal to fig2_Pocock_M1_gamma_k3_range)
+fig2_OBF_M2_gamma_k1_range,"change by at most {}, so for a design",,largest of the fig2 ranges (equal to fig2_Pocock_M1_gamma_k3_range)
 siS1_OBF_M1_maxdiff,decreases by up to {} for Method~1 and 0.150,,
 siS1_OBF_M2_maxdiff,up to 0.124 for Method~1 and {} for Method~2,,
 siS1_Pocock_M1_maxdiff,it decreases by up to {} and 0.040,,
