@@ -1,16 +1,16 @@
-data_generate_supplement.R log -- 2026-10-02 01:04:02
+data_generate_supplement.R log -- 2026-10-03 21:48:05
 rcpgsd 0.1.0 loaded from C:/Users/i_lik/OneDrive/00_Amazon_drive/01_研究/08_MRCT/04_my_publication/05_MRCT_for_adaptive_design/Rpackage/rcpgsd
-git commit 7830fc1; modified tracked files: M inst/scripts/data/data_generate_main.log; M inst/scripts/data/fig1_data.rds; M inst/scripts/data/fig2_data.rds; M inst/scripts/data/fig3_data.rds; M inst/scripts/data/fig4_data.rds; M inst/scripts/data/fig5_data.rds; M inst/scripts/data/table1_data.rds; M inst/scripts/data/table2_data.rds; M inst/scripts/data_generate_main.R; M inst/scripts/number_check.R; M inst/scripts/results/Figure1.eps; M inst/scripts/results/Figure1.pdf; M inst/scripts/results/Figure2.eps; M inst/scripts/results/Figure2.pdf; M inst/scripts/results/Figure3.eps; M inst/scripts/results/Figure3.pdf; M inst/scripts/results/Figure4.eps; M inst/scripts/results/Figure4.pdf; M inst/scripts/results/Figure5.eps; M inst/scripts/results/Figure5.pdf; M inst/scripts/results/manuscript_numbers.csv; M inst/scripts/table_and_figure_manuscript.R; M inst/sup_info/data/data_generate_supplement.log
+git commit 15d9086; modified tracked files: M inst/sup_info/data/data_generate_supplement.log
 Settings from inst/scripts/data/fig1_data.rds: alpha = 0.025, power = 0.90, HR = 0.70, K = 3
   futility (binding): events = 115/231/346, upper = 3.7103/2.5111/1.9581, lower = -0.2610/0.9095
   futility (nonbinding): events = 118/235/353, upper = 3.7103/2.5114/1.9930, lower = -0.2418/0.9367
   RUN = S1, S2, S3, S4
-S1 (adjusted thresholds under H1)                41.7 sec
+S1 (adjusted thresholds under H1)                46.2 sec
 Saved inst/sup_info/data/siS1_data.rds
-S2 (futility boundaries)                         53.5 sec
+S2 (futility boundaries)                         54.6 sec
 Saved inst/sup_info/data/siS2_data.rds
-S3 (hazard reduction scale)                      54.4 sec
+S3 (hazard reduction scale)                      48.4 sec
 Saved inst/sup_info/data/siS3_data.rds
-S4 (hazard ratio in Japan)                       17.7 sec
+S4 (hazard ratio in Japan)                       17.2 sec
 Saved inst/sup_info/data/siS4_data.rds
 All requested data written to 'inst/sup_info/data/'.
