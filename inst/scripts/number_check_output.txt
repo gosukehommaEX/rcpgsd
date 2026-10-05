@@ -1,6 +1,6 @@
 ==================================================================
  Number check: manuscript versus ledger
- 2026-10-05 13:47:23 JST
+ 2026-10-05 13:59:21 JST
 ==================================================================
 
 [1] Ledgers
@@ -224,16 +224,16 @@
    siS4_OBF_M2_overall_hr1            main.tex:206                   0.547   0.5468612    0.547    PASS  
    siS2_nonbinding_obeyed_M2_maxdiff  main.tex:206                   0.004   0.003685241  0.004    PASS  
    siS3_OBF_maxdiff_cond              main.tex:206                   0.011   0.01095956   0.011    PASS  
-   -                                  main.tex:223                   5.5                           SKIP  
-   -                                  main.tex:231                   0.1                           SKIP  
-   -                                  main.tex:247                   0.025                         SKIP  
-   -                                  main.tex:247                   0.90                          SKIP  
-   -                                  main.tex:247                   0.70                          SKIP  
-   -                                  main.tex:247                   0.5                           SKIP  
-   -                                  main.tex:255                   0.5                           SKIP  
-   -                                  main.tex:263                   0.70                          SKIP  
-   -                                  main.tex:271                   0.8                           SKIP  
-   -                                  main.tex:279                   95                            SKIP  
+   -                                  main.tex:220                   5.5                           SKIP  
+   -                                  main.tex:226                   0.1                           SKIP  
+   -                                  main.tex:242                   0.025                         SKIP  
+   -                                  main.tex:242                   0.90                          SKIP  
+   -                                  main.tex:242                   0.70                          SKIP  
+   -                                  main.tex:242                   0.5                           SKIP  
+   -                                  main.tex:250                   0.5                           SKIP  
+   -                                  main.tex:258                   0.70                          SKIP  
+   -                                  main.tex:266                   0.8                           SKIP  
+   -                                  main.tex:274                   95                            SKIP  
    -                                  supporting_information.tex:33  0.025                         SKIP  
    -                                  supporting_information.tex:33  0.90                          SKIP  
    -                                  supporting_information.tex:33  0.70                          SKIP  
